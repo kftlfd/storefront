@@ -1,0 +1,12 @@
+build
+node_modules
+
+Dockerfile
+Dockerfile_wAPI
+
+gql.sh
+README.md
+
+.git
+.gitignore
+.dockerignore

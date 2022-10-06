@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  color: #1D1F22;
+  font-family: 'Raleway', 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  position: relative;
+  min-height: 100vh;
+  font-family: 'Raleway', 'Roboto', sans-serif;
+  font-size: 16px;
+}
+
+.PageWrapper {
+  padding-block: 4rem;
+  padding-inline: 1rem;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.PageMainText {
+  font-family: Raleway;
+  font-size: 30px;
+  font-weight: 400;
+  text-align: center;
+}
+
+.SplashScreenContainer {
+  height: 100vh;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  row-gap: 3rem;
+}

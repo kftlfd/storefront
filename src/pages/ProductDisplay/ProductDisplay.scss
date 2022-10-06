@@ -1,0 +1,102 @@
+.ProductDisplayContainer {
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 50px;
+
+  @media (min-width: 800px) {
+    grid-template-columns: 3fr 2fr;
+    column-gap: 100px;
+  }
+}
+
+.ProductGallery {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+
+  @media (max-width: 799px) {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+
+  .previews-container {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 2px;
+
+    @media (max-width: 799px) {
+      flex-direction: row;
+      align-self: flex-start;
+      max-width: calc(100vw - 2rem);
+      overflow-x: scroll;
+    }
+
+    .preview-button {
+      display: block;
+      height: 4.75rem;
+      aspect-ratio: 1/1;
+      flex-shrink: 0;
+      padding: 0;
+      border: none;
+      border-radius: 0;
+      background-color: transparent;
+      background-size: cover;
+      cursor: pointer;
+    }
+  }
+
+  .image-container {
+    flex-grow: 1;
+
+    .image-main {
+      display: block;
+      margin: auto;
+      height: 60vh;
+
+      @media (min-width: 799px) {
+        width: 100%;
+        height: auto;
+      }
+    }
+  }
+}
+
+@mixin ProductBranding {
+  line-height: 27px;
+  font-size: 30px;
+}
+
+.ProductInfo {
+  .brand {
+    @include ProductBranding;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+
+  .name {
+    @include ProductBranding;
+    font-weight: 400;
+    margin-bottom: 40px;
+  }
+
+  .price {
+    margin-top: 40px;
+    font-weight: 700;
+
+    .heading {
+      font-family: "Roboto Condensed";
+      font-size: 18px;
+      text-transform: uppercase;
+    }
+
+    .content {
+      margin-top: 10px;
+      font-size: 24px;
+    }
+  }
+
+  .description {
+    margin-top: 40px;
+  }
+}

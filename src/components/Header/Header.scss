@@ -1,0 +1,20 @@
+.NavBtns {
+  justify-self: left;
+  align-self: stretch;
+  display: flex;
+}
+
+.BrandLogo {
+  display: block;
+  height: 2rem;
+}
+
+.HeaderBtns {
+  justify-self: right;
+  display: flex;
+}
+
+.CurrencyBtn {
+  display: flex;
+  gap: 0.5rem;
+}
