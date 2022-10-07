@@ -6,6 +6,7 @@ import "./Header.scss";
 
 import { links } from "../Router";
 import brandLogo from "../../assets/brand.svg";
+import { ThemeSwitch } from "./ThemeSwitch";
 import { CurrencySwitch } from "./CurrencySwitch";
 import { MiniCart } from "./MiniCart";
 
@@ -46,6 +47,7 @@ export class Header extends React.Component {
           </LogoBtn>
 
           <div className="HeaderBtns">
+            <ThemeSwitch />
             <CurrencySwitch
               currency={this.props.currency}
               currencyList={this.props.currencyList}
