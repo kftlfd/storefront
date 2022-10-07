@@ -7,7 +7,13 @@ Simple SPA front-end for e-store
 ### Development
 
 ```
+# 0. install dependencies
 $ npm install
+
+# 1. start API server
+$ node server.js
+
+# 2. in other terminal start the app
 $ npm run start
 ```
 
