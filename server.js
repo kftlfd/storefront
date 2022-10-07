@@ -14,7 +14,9 @@ app.use(express.json());
 app.post("/api/", parseAPIrequest);
 app.get("*", (req, res) => res.sendFile(indexFile));
 
-app.listen(port, () => console.log(`Started server at port:\t${port}`));
+app.listen(port, () =>
+  console.log(`Started server at:\thttp://localhost:${port}`)
+);
 
 function parseAPIrequest(req, res) {
   /*
