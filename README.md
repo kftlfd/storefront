@@ -4,28 +4,36 @@ Simple SPA front-end for e-store
 
 # Setup
 
-### Development
+## Development
 
 ```
 # 0. install dependencies
-$ npm install
+$ yarn install
 
 # 1. start API server
-$ node server.js
+$ yarn serve
 
 # 2. in other terminal start the app
+$ yarn start
+```
+
+or
+
+```
+$ npm install
+$ npm run serve
 $ npm run start
 ```
 
-### Production
+## Production
 
 ```
-$ npm install
-$ npm run build
-$ npm run serve
+$ yarn install
+$ yarn build
+$ yarn serve
 ```
 
-### Docker container
+## Docker container
 
 ```
 $ sudo docker build -t IMAGE_NAME .

@@ -2,9 +2,9 @@ FROM node:latest
 
 WORKDIR /app
 COPY . .
-RUN npm install
-RUN npm run build
+RUN yarn install
+RUN yarn build
 
 EXPOSE 8000
 
-CMD ["npm", "run", "serve"]
+CMD ["yarn", "serve"]
