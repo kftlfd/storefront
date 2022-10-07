@@ -1,5 +1,6 @@
 import React from "react";
 
+import { PageWrapper } from "../../layout/page";
 import Header from "../Header";
 import Router, { links } from "../Router";
 import { SplashScreen } from "../SplashScreen";
@@ -48,17 +49,27 @@ export class App extends React.Component {
 
   render() {
     if (this.state.error) {
-      return <SplashScreen error={this.state.error} />;
+      return (
+        <PageWrapper>
+          <SplashScreen error={this.state.error} />
+        </PageWrapper>
+      );
     }
 
     if (this.state.loading) {
-      return <SplashScreen />;
+      return (
+        <PageWrapper>
+          <SplashScreen />
+        </PageWrapper>
+      );
     }
 
     return (
-      <Router def={links.category(this.props.defCategory)}>
-        <Header />
-      </Router>
+      <PageWrapper>
+        <Router def={links.category(this.props.defCategory)}>
+          <Header />
+        </Router>
+      </PageWrapper>
     );
   }
 }

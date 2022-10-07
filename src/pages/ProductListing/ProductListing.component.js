@@ -2,6 +2,7 @@ import React from "react";
 
 import "./ProductListing.scss";
 
+import { PageContainer, PageMainText } from "../../layout/page";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { ListingItem } from "./ListingItem";
 
@@ -80,19 +81,19 @@ export class ProductListing extends React.Component {
   render() {
     if (this.state.error) {
       return (
-        <div className="PageWrapper">
-          <div className="PageMainText">{this.state.error}</div>
-        </div>
+        <PageContainer>
+          <PageMainText>{this.state.error}</PageMainText>
+        </PageContainer>
       );
     }
 
     if (this.state.loading) {
       return (
-        <div className="PageWrapper">
-          <div className="PageMainText">
+        <PageContainer>
+          <PageMainText>
             <LoadingSpinner size={60} />
-          </div>
-        </div>
+          </PageMainText>
+        </PageContainer>
       );
     }
 
@@ -110,7 +111,7 @@ export class ProductListing extends React.Component {
       this.state.categoryId.slice(1);
 
     return (
-      <div className="PageWrapper">
+      <PageContainer>
         <div className="CategoryTitle">{title}</div>
         <div className="ListingsGrid">
           {items.map((id) => (
@@ -123,7 +124,7 @@ export class ProductListing extends React.Component {
             />
           ))}
         </div>
-      </div>
+      </PageContainer>
     );
   }
 }

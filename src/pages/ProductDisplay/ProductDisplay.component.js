@@ -2,6 +2,7 @@ import React from "react";
 
 import "./ProductDisplay.scss";
 
+import { PageContainer, PageMainText } from "../../layout/page";
 import { ProductAttributes } from "../../components/ProductAttributes";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { AccentButton } from "../../components/Button";
@@ -71,24 +72,24 @@ export class ProductDisplay extends React.PureComponent {
   render() {
     if (this.state.error) {
       return (
-        <div className="PageWrapper">
-          <div className="PageMainText">{this.state.error}</div>
-        </div>
+        <PageContainer>
+          <PageMainText>{this.state.error}</PageMainText>
+        </PageContainer>
       );
     }
 
     if (this.state.loading) {
       return (
-        <div className="PageWrapper">
+        <PageContainer>
           <LoadingSpinner size={60} />
-        </div>
+        </PageContainer>
       );
     }
 
     const product = this.props.product;
 
     return (
-      <div className="PageWrapper">
+      <PageContainer>
         <div className="ProductDisplayContainer">
           <ProductGallery gallery={product.gallery} name={product.name} />
 
@@ -119,7 +120,7 @@ export class ProductDisplay extends React.PureComponent {
             <ProductDescription html={product.description} />
           </div>
         </div>
-      </div>
+      </PageContainer>
     );
   }
 }

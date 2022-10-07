@@ -1,5 +1,6 @@
 import React from "react";
 
+import { PageContainer } from "../../layout/page";
 import Cart from "../../components/Cart";
 
 export default class CartPage extends React.Component {
@@ -10,9 +11,9 @@ export default class CartPage extends React.Component {
 
   render() {
     return (
-      <div className="PageWrapper">
+      <PageContainer>
         <Cart />
-      </div>
+      </PageContainer>
     );
   }
 }
