@@ -2,12 +2,26 @@
 
 Simple SPA front-end for e-store
 
-# Docker
+# Setup
+
+### Development
 
 ```
-# Build image
-$ sudo docker build -t IMAGE_NAME .
+$ npm install
+$ npm run start
+```
 
-# Run container
+### Production
+
+```
+$ npm install
+$ npm run build
+$ npm run serve
+```
+
+### Docker container
+
+```
+$ sudo docker build -t IMAGE_NAME .
 $ sudo docker run -d -p 8000:8000 --name CONTAINER_NAME IMAGE_NAME
 ```
