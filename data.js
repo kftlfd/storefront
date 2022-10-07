@@ -722,4 +722,4 @@ const products = {
   },
 };
 
-export { currencies, categories, categoryproducts, products };
+module.exports = { currencies, categories, categoryproducts, products };
