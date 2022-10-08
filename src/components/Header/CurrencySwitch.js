@@ -102,8 +102,9 @@ const Chevron = styled.img({
 
 const CurrencyMenu = styled.div({
   position: "absolute",
-  top: "90%",
-  left: 0,
+  top: "100%",
+  right: 0,
+  borderRadius: "3px",
   backgroundColor: (props) => props.theme.color.bg,
   boxShadow: (props) => props.theme.shadow.lighter,
   paddingBlock: "0.5rem",

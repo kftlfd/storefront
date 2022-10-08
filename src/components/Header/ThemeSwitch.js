@@ -13,7 +13,7 @@ export class ThemeSwitch extends React.Component {
     const variant = this.context.variant;
     const light = variant === "light";
     return (
-      <HeaderButtonContainer zIndex={80}>
+      <HeaderButtonContainer zIndex={71}>
         <HeaderButton onClick={this.context.switchTheme}>
           <ThemeButton
             src={light ? themeLightIcon : themeDarkIcon}
