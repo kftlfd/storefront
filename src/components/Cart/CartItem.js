@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-import plusBtn from "../../assets/plusBtn.svg";
-import minusBtn from "../../assets/minusBtn.svg";
+import plusIcon from "../../assets/plus.svg";
+import minusIcon from "../../assets/minus.svg";
 import chevronIcon from "../../assets/chevron.svg";
 import { ProductAttributes } from "../ProductAttributes";
 import { formatPrice } from "../../utils/price";
@@ -53,17 +53,13 @@ export class CartItem extends React.Component {
         </div>
 
         <div className="CartItemQuantity">
-          <QuantityBtn
-            className="button"
-            img={plusBtn}
-            onClick={increaseQuantity}
-          />
+          <QuantityBtn onClick={increaseQuantity}>
+            <QuantityBtnIcon src={plusIcon} mini={mini} />
+          </QuantityBtn>
           <div className="count">{item.quantity}</div>
-          <QuantityBtn
-            className="button"
-            img={minusBtn}
-            onClick={decreaseQuantity}
-          />
+          <QuantityBtn onClick={decreaseQuantity}>
+            <QuantityBtnIcon src={minusIcon} mini={mini} />
+          </QuantityBtn>
         </div>
 
         <CartItemImage
@@ -95,12 +91,23 @@ export class CartItem extends React.Component {
 }
 
 const QuantityBtn = styled.button({
+  border: (props) => `1px solid ${props.theme.color.text}`,
+  borderRadius: "3px",
   backgroundColor: (props) => props.theme.color.bg,
-  backgroundImage: (props) => `url(${props.img})`,
   transition: (props) => props.theme.transition.standard,
   "&:hover": {
     backgroundColor: (props) => props.theme.color.bgHover,
   },
+  width: "100%",
+  aspectRatio: "1/1",
+  display: "grid",
+  placeContent: "center",
+  cursor: "pointer",
+});
+
+const QuantityBtnIcon = styled.img({
+  filter: (props) => props.theme.img.filter,
+  width: (props) => (props.mini ? "0.7rem" : "1.6rem"),
 });
 
 const CartItemImage = styled.div({

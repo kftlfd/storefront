@@ -84,12 +84,12 @@ const CartContentContainer = styled.div({
   "&::before": {
     top: 0,
     boxShadow: (props) =>
-      props.showTopShadow ? props.theme.shadow.raised : "",
+      props.showTopShadow ? props.theme.shadow.darker : "",
   },
   "&::after": {
     bottom: 0,
     boxShadow: (props) =>
-      props.showBottomShadow ? props.theme.shadow.raised : "",
+      props.showBottomShadow ? props.theme.shadow.darker : "",
   },
 
   "&::-webkit-scrollbar": {
