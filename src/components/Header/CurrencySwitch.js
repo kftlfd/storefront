@@ -7,7 +7,7 @@ import {
   HeaderButtonContainer,
   HeaderButton,
   HeaderButtonBackdrop,
-} from "./ui";
+} from "../../layout/header";
 
 export class CurrencySwitch extends React.Component {
   constructor(props) {
@@ -36,13 +36,13 @@ export class CurrencySwitch extends React.Component {
       <>
         <HeaderButtonContainer zIndex={71}>
           <HeaderButton onClick={this.toggleMenu}>
-            <div className="CurrencyBtn">
+            <CurrencyButton>
               {currency.symbol}
               <Chevron
                 src={chevronIcon}
                 className={this.state.menuOpen ? "open" : ""}
               />
-            </div>
+            </CurrencyButton>
           </HeaderButton>
 
           <CurrencyMenu className={this.state.menuOpen ? "show" : ""}>
@@ -70,6 +70,11 @@ export class CurrencySwitch extends React.Component {
     );
   }
 }
+
+const CurrencyButton = styled.div({
+  display: "flex",
+  gap: "0.5rem",
+});
 
 const Chevron = styled.img({
   width: "0.5rem",

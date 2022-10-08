@@ -7,7 +7,7 @@ import {
   HeaderButtonContainer,
   HeaderButton,
   HeaderButtonBackdrop,
-} from "./ui";
+} from "../../layout/header";
 import Cart from "../Cart";
 
 export class MiniCart extends React.Component {

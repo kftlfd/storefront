@@ -1,9 +1,8 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-import "./Header.scss";
-
+import { MainHeader, MainNav, HeaderButtons } from "../../layout/header";
 import { links } from "../Router";
 import brandLogo from "../../assets/brand.svg";
 import { ThemeSwitch } from "./ThemeSwitch";
@@ -28,74 +27,78 @@ export class Header extends React.Component {
 
   render() {
     return (
-      <StyledHeader shadow={this.state.shadow}>
-        <Wrapper>
-          <LogoBtn to={"/"}>
-            <img className="BrandLogo" src={brandLogo} alt={"Brand Logo"} />
-          </LogoBtn>
+      <MainHeader shadow={this.state.shadow}>
+        <BrandLink to={"/"}>
+          <BrandLogo src={brandLogo} alt={"Brand Logo"} />
+        </BrandLink>
 
-          <div className="NavBtns">
-            {this.props.categories.map((id, index) => (
-              <NavBtn
-                key={index}
-                to={links.category(id)}
-                className={id === this.props.activeCategory ? "active" : ""}
-              >
-                {id}
-              </NavBtn>
-            ))}
-          </div>
+        <MainNav>
+          {this.props.categories.map((id) => (
+            <NavLink
+              key={id}
+              to={links.category(id)}
+              className={id === this.props.activeCategory ? "active" : ""}
+            >
+              {id[0].toUpperCase() + id.slice(1)}
+            </NavLink>
+          ))}
+        </MainNav>
 
-          <div className="HeaderBtns">
-            <ThemeSwitch />
-            <CurrencySwitch
-              currency={this.props.currency}
-              currencyList={this.props.currencyList}
-              selectCurrency={this.props.selectCurrency}
-            />
-            <MiniCart
-              cart={this.props.cart}
-              miniCartOpen={this.props.miniCartOpen}
-              toggleMiniCart={this.props.toggleMiniCart}
-            />
-          </div>
-        </Wrapper>
-      </StyledHeader>
+        <HeaderButtons>
+          <ThemeSwitch />
+          <CurrencySwitch
+            currency={this.props.currency}
+            currencyList={this.props.currencyList}
+            selectCurrency={this.props.selectCurrency}
+          />
+          <MiniCart
+            cart={this.props.cart}
+            miniCartOpen={this.props.miniCartOpen}
+            toggleMiniCart={this.props.toggleMiniCart}
+          />
+        </HeaderButtons>
+      </MainHeader>
     );
   }
 }
 
-const StyledHeader = styled.header({
-  position: "sticky",
-  top: 0,
-  zIndex: 50,
-  paddingInline: "1rem",
-  backgroundColor: (props) => props.theme.color.bg,
-  transition: (props) => props.theme.transition.default,
-  boxShadow: (props) => (props.shadow ? props.theme.shadow.darker : "none"),
-});
-
-const Wrapper = styled.nav({
-  maxWidth: "1200px",
-  margin: "auto",
-  display: "flex",
-  height: (props) => props.theme.size.headerHeight,
-});
-
-const NavBtn = styled(NavLink)({
-  display: "flex",
-  alignItems: "center",
-  paddingInline: "1rem",
-  color: (props) => props.theme.color.text,
-  fontSize: "16px",
-  fontWeight: 400,
-  textTransform: "uppercase",
-  textDecoration: "none",
+const BrandLink = styled(Link)({
+  borderRadius: "3px",
+  marginBlock: "3px",
+  aspectRatio: "1/1",
+  display: "grid",
+  placeContent: "center",
   cursor: "pointer",
   transition: (props) => props.theme.transition.default,
+
+  "&:hover": {
+    backgroundColor: (props) => props.theme.color.bgHover,
+  },
+});
+
+const BrandLogo = styled.img({
+  display: "block",
+  height: "2rem",
+});
+
+const NavLink = styled(Link)({
   position: "relative",
-  marginBlock: "6px",
+  height: (props) => `calc(${props.theme.size.headerHeight} - (6px * 2))`,
+  paddingInline: "1rem",
+  display: "grid",
+  placeContent: "center",
+
+  color: (props) => props.theme.color.text,
+  backgroundColor: (props) => props.theme.color.bg,
+  border: "none",
   borderRadius: "3px",
+
+  fontSize: "1rem",
+  fontWeight: 400,
+  textDecoration: "none",
+
+  cursor: "pointer",
+  transition: (props) => props.theme.transition.default,
 
   "&::after": {
     display: "block",
@@ -116,21 +119,6 @@ const NavBtn = styled(NavLink)({
       backgroundColor: (props) => props.theme.color.accent,
     },
   },
-
-  "&:hover": {
-    backgroundColor: (props) => props.theme.color.bgHover,
-  },
-});
-
-const LogoBtn = styled(NavLink)({
-  borderRadius: "3px",
-  marginBlock: "3px",
-  marginRight: "6px",
-  aspectRatio: "1/1",
-  display: "grid",
-  placeContent: "center",
-  cursor: "pointer",
-  transition: (props) => props.theme.transition.default,
 
   "&:hover": {
     backgroundColor: (props) => props.theme.color.bgHover,

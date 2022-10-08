@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { ThemeContext } from "../ThemeContext";
-import { HeaderButtonContainer, HeaderButton } from "./ui";
+import { HeaderButtonContainer, HeaderButton } from "../../layout/header";
 
 import themeLightIcon from "../../assets/theme-light.svg";
 import themeDarkIcon from "../../assets/theme-dark.svg";
