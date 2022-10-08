@@ -1,6 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 
+import { connect } from "react-redux";
+import { toggleMiniCart } from "../../store/cart";
+
 import cartIcon from "../../assets/cart.svg";
 import {
   hide,
@@ -10,7 +13,16 @@ import {
 } from "../../layout/header";
 import Cart from "../Cart";
 
-export class MiniCart extends React.Component {
+const mapStateToProps = (state) => ({
+  cart: state.cart.items,
+  miniCartOpen: state.cart.miniCartOpen,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  toggleMiniCart: (payload) => dispatch(toggleMiniCart(payload)),
+});
+
+class MiniCart extends React.Component {
   render() {
     const cartCount = this.props.cart.reduce(
       (prev, x) => (prev += x.quantity),
@@ -48,6 +60,8 @@ export class MiniCart extends React.Component {
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(MiniCart);
 
 const IconContainer = styled.div({
   position: "relative",

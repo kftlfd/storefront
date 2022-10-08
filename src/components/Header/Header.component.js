@@ -7,7 +7,7 @@ import { links } from "../Router";
 import brandLogo from "../../assets/brand.svg";
 import { ThemeSwitch } from "./ThemeSwitch";
 import { CurrencySwitch } from "./CurrencySwitch";
-import { MiniCart } from "./MiniCart";
+import MiniCart from "./MiniCart";
 
 export class Header extends React.Component {
   constructor(props) {
@@ -51,11 +51,7 @@ export class Header extends React.Component {
             currencyList={this.props.currencyList}
             selectCurrency={this.props.selectCurrency}
           />
-          <MiniCart
-            cart={this.props.cart}
-            miniCartOpen={this.props.miniCartOpen}
-            toggleMiniCart={this.props.toggleMiniCart}
-          />
+          <MiniCart />
         </HeaderButtons>
       </MainHeader>
     );
