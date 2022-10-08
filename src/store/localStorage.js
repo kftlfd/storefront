@@ -5,6 +5,7 @@ export const ls = {
   categoryList: "categoryList",
   products: "products",
   cart: "cart",
+  theme: "settings",
 };
 
 export const exp = {

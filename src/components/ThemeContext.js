@@ -1,13 +1,16 @@
 import React from "react";
+import { connect } from "react-redux";
 import { ThemeProvider as StyledProvider } from "styled-components";
+
+import { switchTheme } from "../store/settings";
 
 export const ThemeContext = React.createContext();
 
-export default class ThemeProvider extends React.Component {
+class ThemeProvider extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      variant: "light",
+      variant: this.props.theme,
     };
   }
 
@@ -15,6 +18,7 @@ export default class ThemeProvider extends React.Component {
     this.setState((prev) => ({
       variant: prev.variant === "light" ? "dark" : "light",
     }));
+    this.props.switchTheme();
   };
 
   getTheme = () => {
@@ -52,3 +56,13 @@ export default class ThemeProvider extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  theme: state.settings.theme,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  switchTheme: () => dispatch(switchTheme()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ThemeProvider);

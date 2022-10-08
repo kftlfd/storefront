@@ -4,6 +4,7 @@ import currency from "./currency";
 import category from "./category";
 import products from "./products";
 import cart from "./cart";
+import settings from "./settings";
 
 export default configureStore({
   reducer: {
@@ -11,5 +12,6 @@ export default configureStore({
     category,
     products,
     cart,
+    settings,
   },
 });
