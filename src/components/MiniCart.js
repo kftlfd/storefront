@@ -2,16 +2,16 @@ import React from "react";
 import styled from "styled-components";
 
 import { connect } from "react-redux";
-import { toggleMiniCart } from "../../store/cart";
+import { toggleMiniCart } from "../store/cart";
 
-import cartIcon from "../../assets/cart.svg";
+import cartIcon from "../assets/cart.svg";
 import {
   hide,
   HeaderButtonContainer,
   HeaderButton,
   HeaderButtonBackdrop,
-} from "../../layout/header";
-import Cart from "../Cart";
+} from "../layout/header";
+import Cart from "./Cart";
 
 const mapStateToProps = (state) => ({
   cart: state.cart.items,

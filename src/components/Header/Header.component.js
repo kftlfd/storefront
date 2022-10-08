@@ -5,9 +5,10 @@ import styled from "styled-components";
 import { MainHeader, MainNav, HeaderButtons } from "../../layout/header";
 import { links } from "../Router";
 import brandLogo from "../../assets/brand.svg";
-import { ThemeSwitch } from "./ThemeSwitch";
-import CurrencySwitch from "./CurrencySwitch";
-import MiniCart from "./MiniCart";
+
+import ThemeSwitch from "../ThemeSwitch";
+import CurrencySwitch from "../CurrencySwitch";
+import MiniCart from "../MiniCart";
 
 export class Header extends React.Component {
   constructor(props) {

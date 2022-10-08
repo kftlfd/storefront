@@ -2,15 +2,15 @@ import React from "react";
 import styled from "styled-components";
 
 import { connect } from "react-redux";
-import { selectCurrency } from "../../store/currency";
+import { selectCurrency } from "../store/currency";
 
-import chevronIcon from "../../assets/chevron.svg";
+import chevronIcon from "../assets/chevron.svg";
 import {
   hide,
   HeaderButtonContainer,
   HeaderButton,
   HeaderButtonBackdrop,
-} from "../../layout/header";
+} from "../layout/header";
 
 const mapStateToProps = (state) => ({
   currency: state.currency.selected,

@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import { ThemeContext } from "../ThemeContext";
-import { HeaderButtonContainer, HeaderButton } from "../../layout/header";
+import { ThemeContext } from "./ThemeContext";
+import { HeaderButtonContainer, HeaderButton } from "../layout/header";
 
-import themeLightIcon from "../../assets/theme-light.svg";
-import themeDarkIcon from "../../assets/theme-dark.svg";
+import themeLightIcon from "../assets/theme-light.svg";
+import themeDarkIcon from "../assets/theme-dark.svg";
 
-export class ThemeSwitch extends React.Component {
+export default class ThemeSwitch extends React.Component {
   static contextType = ThemeContext;
 
   render() {
