@@ -38,6 +38,8 @@ class ThemeProvider extends React.Component {
       size: {
         pageInlinePadding: "max((100vw - 1200px) / 2, 1rem)",
         headerHeight: "60px",
+        headerBtnSpacing: "6px",
+        borderRadius: "3px",
       },
       shadow: {
         lighter: light

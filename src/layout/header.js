@@ -26,20 +26,21 @@ export const MainHeader = styled.header({
 export const MainNav = styled.nav({
   flexGrow: 1,
   display: "flex",
-  gap: "6px",
+  gap: (props) => props.theme.size.headerBtnSpacing,
   alignItems: "center",
 });
 
 export const HeaderButtons = styled.div({
   display: "flex",
-  gap: "6px",
+  gap: (props) => props.theme.size.headerBtnSpacing,
   alignItems: "center",
 });
 
 export const HeaderButtonContainer = styled.div({
   position: "relative",
   zIndex: (props) => props.zIndex || "auto",
-  height: (props) => `calc(${props.theme.size.headerHeight} - (6px * 2))`,
+  height: (props) =>
+    `calc(${props.theme.size.headerHeight} - (${props.theme.size.headerBtnSpacing} * 2))`,
   aspectRatio: "1/1",
 });
 
@@ -53,7 +54,7 @@ export const HeaderButton = styled.button({
   color: (props) => props.theme.color.text,
   backgroundColor: (props) => props.theme.color.bg,
   border: "none",
-  borderRadius: "3px",
+  borderRadius: (props) => props.theme.size.borderRadius,
 
   fontFamily: "inherit",
   fontSize: "1rem",

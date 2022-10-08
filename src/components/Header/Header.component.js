@@ -55,7 +55,7 @@ export class Header extends React.Component {
 }
 
 const BrandLink = styled(Link)({
-  borderRadius: "3px",
+  borderRadius: (props) => props.theme.size.borderRadius,
   marginBlock: "3px",
   aspectRatio: "1/1",
   display: "grid",
@@ -75,7 +75,8 @@ const BrandLogo = styled.img({
 
 const NavLink = styled(Link)({
   position: "relative",
-  height: (props) => `calc(${props.theme.size.headerHeight} - (6px * 2))`,
+  height: (props) =>
+    `calc(${props.theme.size.headerHeight} - (${props.theme.size.headerBtnSpacing} * 2))`,
   paddingInline: "1rem",
   display: "grid",
   placeContent: "center",
@@ -83,7 +84,7 @@ const NavLink = styled(Link)({
   color: (props) => props.theme.color.text,
   backgroundColor: (props) => props.theme.color.bg,
   border: "none",
-  borderRadius: "3px",
+  borderRadius: (props) => props.theme.size.borderRadius,
 
   fontSize: "1rem",
   fontWeight: 400,
@@ -99,7 +100,7 @@ const NavLink = styled(Link)({
     position: "absolute",
     left: 0,
     right: 0,
-    bottom: "-6px",
+    bottom: (props) => `-${props.theme.size.headerBtnSpacing}`,
     backgroundColor: "transparent",
     transition: (props) => props.theme.transition.default,
   },
