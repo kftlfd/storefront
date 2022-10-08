@@ -1,7 +1,10 @@
 .NavBtns {
+  flex-grow: 1;
   justify-self: left;
   align-self: stretch;
   display: flex;
+  gap: 6px;
+  margin-right: 6px;
 }
 
 .BrandLogo {
@@ -12,6 +15,7 @@
 .HeaderBtns {
   justify-self: right;
   display: flex;
+  gap: 6px;
 }
 
 .CurrencyBtn {

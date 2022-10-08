@@ -78,6 +78,7 @@ const Chevron = styled.img({
   "&.open": {
     transform: "rotate(-180deg)",
   },
+  filter: (props) => props.theme.img.filter,
 });
 
 const CurrencyMenu = styled.div({
@@ -85,7 +86,7 @@ const CurrencyMenu = styled.div({
   top: "90%",
   left: 0,
   backgroundColor: (props) => props.theme.color.bg,
-  boxShadow: (props) => props.theme.shadow.light,
+  boxShadow: (props) => props.theme.shadow.lighter,
   paddingBlock: "0.5rem",
   ...hide,
 });

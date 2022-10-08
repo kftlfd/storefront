@@ -56,6 +56,7 @@ const IconContainer = styled.div({
 const CartIcon = styled.img({
   height: "1rem",
   display: "block",
+  filter: (props) => props.theme.img.filter,
 });
 
 const Badge = styled.div({
@@ -89,7 +90,7 @@ const MiniCartMenu = styled.div({
   display: "flex",
   flexDirection: "column",
   overflowY: "hidden",
-  backgroundColor: "#fff",
+  backgroundColor: (props) => props.theme.color.bg,
   ...hide,
 });
 
@@ -104,5 +105,5 @@ const BackdropTop = styled.div({
 
 const BackdropBottom = styled.div({
   height: (props) => `calc(100vh - ${props.theme.size.headerHeight})`,
-  backgroundColor: "hsla(247, 13%, 25%, 0.22)",
+  backgroundColor: (props) => props.theme.color.backdrop,
 });

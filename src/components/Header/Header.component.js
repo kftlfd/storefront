@@ -30,6 +30,10 @@ export class Header extends React.Component {
     return (
       <StyledHeader shadow={this.state.shadow}>
         <Wrapper>
+          <LogoBtn to={"/"}>
+            <img className="BrandLogo" src={brandLogo} alt={"Brand Logo"} />
+          </LogoBtn>
+
           <div className="NavBtns">
             {this.props.categories.map((id, index) => (
               <NavBtn
@@ -41,10 +45,6 @@ export class Header extends React.Component {
               </NavBtn>
             ))}
           </div>
-
-          <LogoBtn to={"/"}>
-            <img className="BrandLogo" src={brandLogo} alt={"Brand Logo"} />
-          </LogoBtn>
 
           <div className="HeaderBtns">
             <ThemeSwitch />
@@ -72,15 +72,13 @@ const StyledHeader = styled.header({
   paddingInline: "1rem",
   backgroundColor: (props) => props.theme.color.bg,
   transition: (props) => props.theme.transition.default,
-  boxShadow: (props) => (props.shadow ? props.theme.shadow.raised : "none"),
+  boxShadow: (props) => (props.shadow ? props.theme.shadow.darker : "none"),
 });
 
 const Wrapper = styled.nav({
   maxWidth: "1200px",
   margin: "auto",
-  display: "grid",
-  gridTemplateColumns: "repeat(3, 1fr)",
-  justifyItems: "center",
+  display: "flex",
   height: (props) => props.theme.size.headerHeight,
 });
 
@@ -96,6 +94,8 @@ const NavBtn = styled(NavLink)({
   cursor: "pointer",
   transition: (props) => props.theme.transition.default,
   position: "relative",
+  marginBlock: "6px",
+  borderRadius: "3px",
 
   "&::after": {
     display: "block",
@@ -104,7 +104,7 @@ const NavBtn = styled(NavLink)({
     position: "absolute",
     left: 0,
     right: 0,
-    bottom: 0,
+    bottom: "-6px",
     backgroundColor: "transparent",
     transition: (props) => props.theme.transition.default,
   },
@@ -123,9 +123,12 @@ const NavBtn = styled(NavLink)({
 });
 
 const LogoBtn = styled(NavLink)({
-  paddingInline: "1.5rem",
-  display: "flex",
-  alignItems: "center",
+  borderRadius: "3px",
+  marginBlock: "3px",
+  marginRight: "6px",
+  aspectRatio: "1/1",
+  display: "grid",
+  placeContent: "center",
   cursor: "pointer",
   transition: (props) => props.theme.transition.default,
 

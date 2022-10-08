@@ -35,9 +35,12 @@ export class ListingItem extends React.Component {
             src={item.gallery[0]}
             alt={item.name}
           />
-          <QuickAddBtn className="quick-add-btn" onClick={handleQuickAdd}>
-            <img className="cart-image" src={cartIcon} alt={item.name} />
-          </QuickAddBtn>
+          <QuickAddBtnContainer
+            className="quick-add-btn"
+            onClick={handleQuickAdd}
+          >
+            <QuickAddBtn src={cartIcon} alt={`buy ${item.name}`} />
+          </QuickAddBtnContainer>
           {!available && (
             <div className="out-of-stock-overlay">Out of stock</div>
           )}
@@ -59,10 +62,15 @@ const Card = styled.div({
   },
 });
 
-const QuickAddBtn = styled.button({
+const QuickAddBtnContainer = styled.button({
   transition: (props) => props.theme.transition.default,
   backgroundColor: (props) => props.theme.color.accent,
   "&:hover": {
     backgroundColor: (props) => props.theme.color.accentHover,
   },
+});
+
+const QuickAddBtn = styled.img({
+  height: "1.2rem",
+  filter: "invert(100%)",
 });
