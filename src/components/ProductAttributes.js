@@ -8,110 +8,102 @@ export class ProductAttributes extends React.Component {
     // selected = {attrId: valId}
     // selectAttr = function(attrId, valId) {...}
     // small = true | false | undefined
+    const mini = small;
 
     return (
-      <AttributesContainer small={small}>
+      <AttributesList mini={mini}>
         {attributes.map((attr) => (
           <div key={attr.id}>
-            <AttributeHeading small={small}>{attr.name}:</AttributeHeading>
-            <AttributeButtons small={small} type={attr.type}>
-              {attr.items.map((item) => (
-                <AttributeButton
-                  key={item.id}
-                  small={small}
-                  displayOnly={displayOnly}
-                  onClick={() => !displayOnly && selectAttr(attr.id, item.id)}
-                  className={selected[attr.id] === item.id ? "selected" : ""}
-                >
-                  {attr.type === "swatch" ? (
-                    <Swatch
-                      small={small}
-                      displayOnly={displayOnly}
-                      color={item.value}
-                    />
-                  ) : (
-                    <Attribute small={small} displayOnly={displayOnly}>
-                      {item.value}
-                    </Attribute>
-                  )}
-                </AttributeButton>
-              ))}
+            <AttributeHeading mini={mini}>{attr.name}:</AttributeHeading>
+            <AttributeButtons>
+              {attr.items.map((item) => {
+                const swatch = attr.type === "swatch";
+                const El = swatch ? SwatchAttribute : RegularAttribute;
+                return (
+                  <El
+                    key={item.id}
+                    onClick={() => !displayOnly && selectAttr(attr.id, item.id)}
+                    className={selected[attr.id] === item.id ? "selected" : ""}
+                    mini={mini}
+                    displayOnly={displayOnly}
+                    color={item.value}
+                  >
+                    {!swatch && item.value}
+                  </El>
+                );
+              })}
             </AttributeButtons>
           </div>
         ))}
-      </AttributesContainer>
+      </AttributesList>
     );
   }
 }
 
-const AttributesContainer = styled.div({
+const AttributesList = styled.div({
   display: "flex",
   flexDirection: "column",
-  gap: (props) => (props.small ? "8px" : "24px"),
+  gap: (props) => (props.mini ? "12px" : "24px"),
 });
 
 const AttributeHeading = styled.div({
-  textTransform: (props) => (props.small ? "none" : "uppercase"),
-  fontFamily: (props) => (props.small ? "Raleway" : "Roboto Condensed"),
-  fontSize: (props) => (props.small ? "14px" : "18px"),
-  fontWeight: (props) => (props.small ? 400 : 700),
+  textTransform: (props) => (props.mini ? "none" : "uppercase"),
+  fontFamily: (props) => (props.mini ? "Raleway" : "Roboto Condensed"),
+  fontSize: (props) => (props.mini ? "14px" : "18px"),
+  fontWeight: (props) => (props.mini ? 400 : 700),
   marginBottom: "8px",
 });
 
 const AttributeButtons = styled.div({
   display: "flex",
   flexWrap: "wrap",
-  gap: "8px",
-  paddingLeft: (props) => (props.type === "swatch" ? "2px" : 0),
-  paddingBottom: (props) => (props.type === "swatch" ? "2px" : 0),
+  gap: "6px",
 });
 
 const AttributeButton = styled.button({
   padding: 0,
-  border: "none",
-  borderRadius: "none",
-  backgroundColor: "none",
-  fontFamily: "Source Sans Pro",
-  fontSize: (props) => (props.small ? "14px" : "16px"),
-  fontWeight: 400,
-  color: (props) => props.theme.color.text,
+  borderRadius: "3px",
+  border: (props) => `1px solid ${props.theme.color.text}`,
   cursor: (props) => (props.displayOnly ? "default" : "pointer"),
   transition: (props) => props.theme.transition.default,
+  fontFamily: "Source Sans Pro",
+  fontWeight: 400,
+  fontSize: (props) => (props.mini ? "14px" : "16px"),
 });
 
-const Swatch = styled.div({
-  height: (props) => (props.small ? "16px" : "32px"),
+const SwatchAttribute = styled(AttributeButton)({
+  margin: "2px",
   aspectRatio: "1/1",
+  height: (props) => (props.mini ? "16px" : "32px"),
   backgroundColor: (props) => props.color,
-  border: (props) => (props.color === "#FFFFFF" ? "1px solid #000" : "none"),
-  transition: "inherit",
+
   "&:hover": {
     boxShadow: (props) =>
-      props.displayOnly
-        ? "none"
-        : `0 0 0 1px #fff, 0 0 0 2px ${props.theme.color.text}`,
+      props.displayOnly ? "none" : `0 0 0 2px ${props.theme.color.text}`,
   },
-  ".selected &": {
-    boxShadow: (props) =>
-      `0 0 0 1px #fff, 0 0 0 2px ${props.theme.color.accent}`,
+
+  "&.selected": {
+    borderColor: (props) => `1px solid ${props.theme.color.accent}`,
+    boxShadow: (props) => `0 0 0 2px ${props.theme.color.accent}`,
   },
 });
 
-const Attribute = styled.div({
-  paddingInline: (props) => (props.small ? "0.2rem" : "0.4rem"),
+const RegularAttribute = styled(AttributeButton)({
   display: "grid",
   placeContent: "center",
-  height: (props) => (props.small ? "24px" : "45px"),
-  minWidth: (props) => (props.small ? "24px" : "63px"),
-  border: (props) => `1px solid ${props.theme.color.text}`,
-  backgroundColor: "#fff",
-  transition: "inherit",
+  height: (props) => (props.mini ? "24px" : "40px"),
+  minWidth: (props) => (props.mini ? "24px" : "40px"),
+  paddingInline: (props) => (props.mini ? "0.2rem" : "0.4rem"),
+  color: (props) => props.theme.color.text,
+  backgroundColor: (props) => props.theme.color.bg,
+
   "&:hover": {
     backgroundColor: (props) =>
       props.displayOnly ? props.theme.color.bg : props.theme.color.bgHover,
   },
-  ".selected &": {
-    color: "#fff",
+
+  "&.selected": {
+    color: (props) => props.theme.color.bg,
     backgroundColor: (props) => props.theme.color.text,
   },
 });
