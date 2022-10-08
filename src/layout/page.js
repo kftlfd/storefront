@@ -7,11 +7,8 @@ export const PageWrapper = styled.div({
   minHeight: "100vh",
 });
 
-export const PageContainer = styled.div({
-  paddingBlock: "4rem",
-  paddingInline: "1rem",
-  maxWidth: "1200px",
-  margin: "auto",
+export const PageContainer = styled.main({
+  paddingInline: (props) => props.theme.size.pageInlinePadding,
 });
 
 export const PageMainText = styled.div({

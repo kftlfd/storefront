@@ -12,7 +12,7 @@ export const hide = {
 
 export const MainHeader = styled.header({
   height: (props) => props.theme.size.headerHeight,
-  paddingInline: "max((100vw - 1200px) / 2, 1rem)",
+  paddingInline: (props) => props.theme.size.pageInlinePadding,
   position: "sticky",
   top: 0,
   zIndex: 50,
