@@ -25,30 +25,44 @@ class ThemeProvider extends React.Component {
     const light = this.state.variant === "light";
     return {
       color: {
-        bg: light ? "#FFFFFF" : "#333",
-        bgHover: light ? "#EEEEEE" : "#444",
+        bg: light ? "#fff" : "#1D1F22",
+        bgHover: light ? "#eee" : "#444",
         accent: "#5ECE7B",
         accentHover: "#92DDA6",
-        text: light ? "#1D1F22" : "#bbb",
-        backdrop: "hsla(247, 13%, 25%, 0.22)",
+        text: light ? "#1D1F22" : "#bfbfbf",
+        backdrop: light ? "hsla(247, 13%, 25%, 0.22)" : "hsla(0, 0%, 0%, 0.4)",
       },
       transition: {
         default: "all 0.2s ease",
       },
       size: {
-        headerHeight: "80px",
+        headerHeight: "60px",
       },
       shadow: {
-        light: "0px 4px 35px 0px hsla(210, 5%, 67%, 0.19)",
-        normal: "0px 4px 35px 0px hsla(210, 5%, 67%, 0.19)",
-        raised: "0 0 10px 1px #ccc",
+        lighter: light
+          ? "0 0 20px 5px hsla(0, 0%, 50%, 0.1)"
+          : "0 0 20px 10px hsla(0, 0%, 60%, 0.1)",
+        normal: light
+          ? "0 0 20px 5px hsla(0, 0%, 50%, 0.2)"
+          : "0 0 20px 10px hsla(0, 0%, 90%, 0.15)",
+        darker: light
+          ? "0 0 20px 5px hsla(0, 0%, 50%, 0.3)"
+          : "0 0 35px 5px hsla(0, 0%, 60%, 0.2)",
+      },
+      img: {
+        filter: light ? "invert(25%)" : "invert(75%)",
       },
     };
   };
 
   render() {
+    const contextVal = {
+      switchTheme: this.switchTheme,
+      variant: this.state.variant,
+    };
+
     return (
-      <ThemeContext.Provider value={{ switchTheme: this.switchTheme }}>
+      <ThemeContext.Provider value={contextVal}>
         <StyledProvider theme={this.getTheme()}>
           {this.props.children}
         </StyledProvider>
