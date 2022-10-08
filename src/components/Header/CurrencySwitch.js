@@ -1,6 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 
+import { connect } from "react-redux";
+import { selectCurrency } from "../../store/currency";
+
 import chevronIcon from "../../assets/chevron.svg";
 import {
   hide,
@@ -9,7 +12,16 @@ import {
   HeaderButtonBackdrop,
 } from "../../layout/header";
 
-export class CurrencySwitch extends React.Component {
+const mapStateToProps = (state) => ({
+  currency: state.currency.selected,
+  currencyList: state.currency.list,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  selectCurrency: (payload) => dispatch(selectCurrency(payload)),
+});
+
+class CurrencySwitch extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -70,6 +82,8 @@ export class CurrencySwitch extends React.Component {
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(CurrencySwitch);
 
 const CurrencyButton = styled.div({
   display: "flex",
