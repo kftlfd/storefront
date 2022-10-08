@@ -1,15 +1,32 @@
 import React from "react";
+import styled from "styled-components";
 import { ThemeContext } from "../ThemeContext";
 import { HeaderButtonContainer, HeaderButton } from "./ui";
+
+import themeLightIcon from "../../assets/theme-light.svg";
+import themeDarkIcon from "../../assets/theme-dark.svg";
 
 export class ThemeSwitch extends React.Component {
   static contextType = ThemeContext;
 
   render() {
+    const variant = this.context.variant;
+    const light = variant === "light";
     return (
-      <HeaderButtonContainer>
-        <HeaderButton onClick={this.context.switchTheme}>theme</HeaderButton>
+      <HeaderButtonContainer zIndex={80}>
+        <HeaderButton onClick={this.context.switchTheme}>
+          <ThemeButton
+            src={light ? themeLightIcon : themeDarkIcon}
+            alt={`${variant} theme`}
+          />
+        </HeaderButton>
       </HeaderButtonContainer>
     );
   }
 }
+
+const ThemeButton = styled.img({
+  height: "1rem",
+  width: "1rem",
+  filter: (props) => props.theme.img.filter,
+});
