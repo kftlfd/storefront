@@ -10,7 +10,7 @@ const mapStateToProps = (state, ownProps) => ({
   currency: state.currency.selected,
   productId: ownProps.match.params.productId,
   product: state.products.items[ownProps.match.params.productId],
-  getProduct: () => getProductById(ownProps.match.params.productId),
+  getProductById,
 });
 
 const mapDispatchToProps = (dispatch) => ({

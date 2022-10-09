@@ -30,7 +30,9 @@ export class ProductDisplay extends React.PureComponent {
       return this.props.product;
     }
     try {
-      const product = await this.props.getProduct();
+      const product = await this.props.getProductById(
+        this.props.match.params.productId
+      );
       this.props.loadProduct(product);
       return product;
     } catch (err) {
