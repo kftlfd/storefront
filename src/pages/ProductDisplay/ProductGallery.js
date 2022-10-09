@@ -46,14 +46,16 @@ export class ProductGallery extends React.Component {
               );
             })}
           </div>
-          <div className="previews-controlls">
-            <PreviewControllBtn onClick={this.prevImage}>
-              <Chevron src={chevronIcon} direction={"left"} />
-            </PreviewControllBtn>
-            <PreviewControllBtn onClick={this.nextImage}>
-              <Chevron src={chevronIcon} direction={"right"} />
-            </PreviewControllBtn>
-          </div>
+          {this.state.galleryLen > 1 && (
+            <div className="previews-controlls">
+              <PreviewControllBtn onClick={this.prevImage}>
+                <Chevron src={chevronIcon} direction={"left"} />
+              </PreviewControllBtn>
+              <PreviewControllBtn onClick={this.nextImage}>
+                <Chevron src={chevronIcon} direction={"right"} />
+              </PreviewControllBtn>
+            </div>
+          )}
         </div>
 
         <div className="image-container">
