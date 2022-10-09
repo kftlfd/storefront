@@ -1,27 +1,19 @@
 import React from "react";
-import styled from "styled-components";
 
-import { connect } from "react-redux";
-import { selectCurrency } from "../store/currency";
-
-import chevronIcon from "../assets/chevron.svg";
+import chevronIcon from "../../assets/chevron.svg";
 import {
-  hide,
   HeaderButtonContainer,
   HeaderButton,
   HeaderButtonBackdrop,
-} from "../layout/header";
+} from "../../layout/header";
+import {
+  CurrencyButton,
+  Chevron,
+  CurrencyMenu,
+  CurrencyMenuButton,
+} from "./CurrencySwith.ui";
 
-const mapStateToProps = (state) => ({
-  currency: state.currency.selected,
-  currencyList: state.currency.list,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  selectCurrency: (payload) => dispatch(selectCurrency(payload)),
-});
-
-class CurrencySwitch extends React.Component {
+export class CurrencySwitch extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -82,42 +74,3 @@ class CurrencySwitch extends React.Component {
     );
   }
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(CurrencySwitch);
-
-const CurrencyButton = styled.div({
-  display: "flex",
-  gap: "0.5rem",
-});
-
-const Chevron = styled.img({
-  width: "0.5rem",
-  aspectRatio: "1/1",
-  transition: (props) => props.theme.transition.default,
-  "&.open": {
-    transform: "rotate(-180deg)",
-  },
-  filter: (props) => props.theme.img.filter,
-});
-
-const CurrencyMenu = styled.div({
-  position: "absolute",
-  top: "100%",
-  right: 0,
-  borderRadius: (props) => props.theme.size.borderRadius,
-  backgroundColor: (props) => props.theme.color.bg,
-  boxShadow: (props) => props.theme.shadow.lighter,
-  paddingBlock: "0.5rem",
-  ...hide,
-});
-
-const CurrencyMenuButton = styled.div({
-  paddingInline: "1rem",
-  paddingBlock: "0.5rem",
-  display: "flex",
-  gap: "0.5rem",
-  cursor: "pointer",
-  "&:hover": {
-    backgroundColor: (props) => props.theme.color.bgHover,
-  },
-});
