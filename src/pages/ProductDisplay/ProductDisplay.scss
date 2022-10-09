@@ -1,48 +1,51 @@
 .ProductDisplayContainer {
+  padding-block: 4rem;
   display: grid;
-  grid-template-columns: 1fr;
-  row-gap: 50px;
+  grid-template-columns: 3fr 2fr;
+  gap: 3rem;
 
-  @media (min-width: 800px) {
-    grid-template-columns: 3fr 2fr;
-    column-gap: 100px;
+  @media (max-width: 799px) {
+    grid-template-columns: 1fr;
   }
 }
 
 .ProductGallery {
   display: flex;
-  gap: 40px;
+  gap: 2rem;
   align-items: flex-start;
 
-  @media (max-width: 799px) {
-    flex-direction: column-reverse;
-    align-items: center;
-  }
-
-  .previews-container {
+  .previews-section {
     display: flex;
     flex-direction: column;
-    gap: 40px;
-    padding: 2px;
+    gap: 2rem;
 
-    @media (max-width: 799px) {
-      flex-direction: row;
-      align-self: flex-start;
-      max-width: calc(100vw - 2rem);
-      overflow-x: scroll;
+    .previews-container {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      padding: 2px;
+
+      max-height: 25rem;
+      overflow-x: hidden;
+      overflow-y: auto;
+      flex-shrink: 0;
+
+      .preview-button {
+        display: block;
+        height: 4.75rem;
+        aspect-ratio: 1/1;
+        flex-shrink: 0;
+        padding: 0;
+        border: none;
+        background-color: transparent;
+        background-size: cover;
+        cursor: pointer;
+      }
     }
 
-    .preview-button {
-      display: block;
-      height: 4.75rem;
-      aspect-ratio: 1/1;
-      flex-shrink: 0;
-      padding: 0;
-      border: none;
-      border-radius: 0;
-      background-color: transparent;
-      background-size: cover;
-      cursor: pointer;
+    .previews-controlls {
+      display: flex;
+      gap: 0.5rem;
     }
   }
 
@@ -53,10 +56,36 @@
       display: block;
       margin: auto;
       height: 60vh;
+    }
+  }
 
-      @media (min-width: 799px) {
-        width: 100%;
-        height: auto;
+  @media (max-width: 799px) {
+    flex-direction: column-reverse;
+    align-items: center;
+    max-width: calc(100vw - 2rem);
+
+    .previews-section {
+      flex-direction: row;
+      max-width: 100%;
+
+      .previews-container {
+        flex-shrink: 1;
+        flex-direction: row;
+        align-self: flex-start;
+        overflow-x: scroll;
+      }
+
+      .previews-controlls {
+        flex-shrink: 0;
+        flex-direction: column;
+        aspect-ratio: 1/2;
+      }
+    }
+
+    .image-container {
+      .image-main {
+        max-height: 50vh;
+        max-width: calc(100vw - 2rem);
       }
     }
   }
