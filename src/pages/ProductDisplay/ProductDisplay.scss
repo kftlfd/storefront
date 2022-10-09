@@ -1,7 +1,7 @@
 .ProductDisplayContainer {
   padding-block: 4rem;
   display: grid;
-  grid-template-columns: 3fr 2fr;
+  grid-template-columns: 1fr 1fr;
   gap: 3rem;
 
   @media (max-width: 799px) {
@@ -10,30 +10,32 @@
 }
 
 .ProductGallery {
-  display: flex;
-  gap: 2rem;
+  display: grid;
+  grid-template-columns: min-content auto;
   align-items: flex-start;
+  justify-items: flex-start;
+  gap: 2rem;
+  max-height: max(75vh, 500px);
 
   .previews-section {
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    max-height: inherit;
 
     .previews-container {
       display: flex;
       flex-direction: column;
       gap: 2rem;
-      padding: 2px;
 
-      max-height: 25rem;
       overflow-x: hidden;
       overflow-y: auto;
-      flex-shrink: 0;
 
       .preview-button {
+        margin: 2px;
         display: block;
         height: 4.75rem;
-        aspect-ratio: 1/1;
+        width: 4.75rem;
         flex-shrink: 0;
         padding: 0;
         border: none;
@@ -50,23 +52,23 @@
   }
 
   .image-container {
-    flex-grow: 1;
+    max-height: inherit;
 
     .image-main {
       display: block;
-      margin: auto;
-      height: 60vh;
+      max-height: inherit;
+      max-width: 100%;
     }
   }
 
   @media (max-width: 799px) {
-    flex-direction: column-reverse;
-    align-items: center;
+    grid-template-columns: 1fr;
     max-width: calc(100vw - 2rem);
+    max-height: none;
 
     .previews-section {
       flex-direction: row;
-      max-width: 100%;
+      max-width: inherit;
 
       .previews-container {
         flex-shrink: 1;
@@ -78,13 +80,17 @@
       .previews-controlls {
         flex-shrink: 0;
         flex-direction: column;
+        height: 4.75rem;
         aspect-ratio: 1/2;
       }
     }
 
     .image-container {
+      grid-row: 1;
+      justify-self: center;
+
       .image-main {
-        max-height: 50vh;
+        max-height: 60vh;
         max-width: calc(100vw - 2rem);
       }
     }
