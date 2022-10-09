@@ -18,16 +18,20 @@ import {
 } from "./MiniCart.ui";
 
 export class MiniCart extends React.Component {
+  toggleMiniCart = () => this.props.toggleMiniCart();
+
+  closeMiniCart = () => this.props.toggleMiniCart(false);
+
+  getCartCount = () =>
+    this.props.cart.reduce((prev, x) => (prev += x.quantity), 0);
+
   render() {
-    const cartCount = this.props.cart.reduce(
-      (prev, x) => (prev += x.quantity),
-      0
-    );
+    const cartCount = this.getCartCount();
 
     return (
       <>
         <HeaderButtonContainer zIndex={61}>
-          <HeaderButton onClick={() => this.props.toggleMiniCart()}>
+          <HeaderButton onClick={this.toggleMiniCart}>
             <IconContainer>
               <CartIcon src={cartIcon} alt={"Mini Cart"} />
               {cartCount > 0 && <Badge className="show">{cartCount}</Badge>}
@@ -46,7 +50,7 @@ export class MiniCart extends React.Component {
         <HeaderButtonBackdrop
           zIndex={60}
           className={this.props.miniCartOpen ? "show" : ""}
-          onClick={() => this.props.toggleMiniCart(false)}
+          onClick={this.closeMiniCart}
         >
           <BackdropTop />
           <BackdropBottom />
