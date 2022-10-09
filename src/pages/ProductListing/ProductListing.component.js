@@ -1,10 +1,10 @@
 import React from "react";
 
-import "./ProductListing.scss";
-
-import { PageContainer, PageMainText } from "../../layout/page";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { ListingItem } from "./ListingItem";
+
+import { PageContainer, PageMainText } from "../../layout/page";
+import { CategoryTitle, ListingsGrid } from "./ProductListing.ui";
 
 export class ProductListing extends React.Component {
   constructor(props) {
@@ -112,8 +112,8 @@ export class ProductListing extends React.Component {
 
     return (
       <PageContainer>
-        <div className="CategoryTitle">{title}</div>
-        <div className="ListingsGrid">
+        <CategoryTitle>{title}</CategoryTitle>
+        <ListingsGrid>
           {items.map((id) => (
             <ListingItem
               key={id}
@@ -123,7 +123,7 @@ export class ProductListing extends React.Component {
               addToCart={this.addToCart}
             />
           ))}
-        </div>
+        </ListingsGrid>
       </PageContainer>
     );
   }

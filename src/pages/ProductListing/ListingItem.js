@@ -1,43 +1,37 @@
 import React from "react";
 import styled from "styled-components";
-import cartIcon from "../../assets/cart.svg";
 
 import { links } from "../../components/Router";
 import { formatPrice } from "../../utils/price";
 
+import "./ListingItem.scss";
+import cartIcon from "../../assets/cart.svg";
+
 export class ListingItem extends React.Component {
+  handleClick = () => {
+    this.props.navigate(links.product(this.props.item.id));
+  };
+
+  handleQuickAdd = (e) => {
+    e.stopPropagation();
+    this.props.addToCart(this.props.item.id);
+  };
+
   render() {
-    const { item, currency, navigate, addToCart } = this.props;
-
+    const { item, currency } = this.props;
     const available = item.inStock;
-
-    const handleClick = () => {
-      navigate(links.product(item.id));
-    };
-
-    const handleQuickAdd = (e) => {
-      e.stopPropagation();
-      addToCart(item.id);
-    };
-
     const price = formatPrice(item.prices, currency);
 
     return (
       <Card
-        className={
-          !available ? "ListingItemCard out-of-stock" : "ListingItemCard"
-        }
-        onClick={handleClick}
+        className={`ListingItemCard ${!available && "out-of-stock"}`}
+        onClick={this.handleClick}
       >
         <div className="product-image-container">
-          <img
-            className="product-image"
-            src={item.gallery[0]}
-            alt={item.name}
-          />
+          <ProductImage src={item.gallery[0]} alt={item.name} />
           <QuickAddBtnContainer
             className="quick-add-btn"
-            onClick={handleQuickAdd}
+            onClick={this.handleQuickAdd}
           >
             <QuickAddBtn src={cartIcon} alt={`buy ${item.name}`} />
           </QuickAddBtnContainer>
@@ -57,9 +51,19 @@ export class ListingItem extends React.Component {
 
 const Card = styled.div({
   transition: (props) => props.theme.transition.default,
+  borderRadius: (props) => props.theme.size.borderRadius,
   "&:hover": {
     boxShadow: (props) => props.theme.shadow.normal,
   },
+});
+
+const ProductImage = styled.img({
+  width: "100%",
+  minHeight: "6rem",
+  display: "block",
+  borderRadius: (props) => props.theme.size.borderRadius,
+  textAlign: "center",
+  color: (props) => props.theme.color.text,
 });
 
 const QuickAddBtnContainer = styled.button({
