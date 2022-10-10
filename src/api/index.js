@@ -1,3 +1,5 @@
+// @ts-check
+
 export {
   getCategoriesAndCurrencies,
   getProductsByCategory,
