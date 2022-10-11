@@ -83,7 +83,9 @@ export class ProductDisplay extends React.PureComponent {
     if (this.state.loading) {
       return (
         <PageContainer>
-          <LoadingSpinner size={60} />
+          <PageMainText>
+            <LoadingSpinner size={60} />
+          </PageMainText>
         </PageContainer>
       );
     }
