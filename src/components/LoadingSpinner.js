@@ -9,7 +9,8 @@ export const LoadingSpinner = styled.div({
   height: (props) => (props.size ? `${props.size}px` : "40px"),
   width: (props) => (props.size ? `${props.size}px` : "40px"),
   border: (props) =>
-    (props.size ? `${props.size / 10}` : "4") + "px solid #1c87c9",
+    (props.size ? `${props.size / 10}` : "4") +
+    `px solid ${props.theme.color.accent}`,
   borderRadius: "50%",
   borderRightColor: "transparent",
   animation: css`1.5s linear infinite ${spinnerAnimation}`,
