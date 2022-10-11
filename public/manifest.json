@@ -1,11 +1,11 @@
 {
-  "short_name": "React Test",
-  "name": "React Test",
+  "short_name": "eStore",
+  "name": "eStore",
   "icons": [
     {
       "src": "favicon.png",
       "type": "image/png",
-      "sizes": "126x121"
+      "sizes": "180x180"
     }
   ],
   "start_url": ".",

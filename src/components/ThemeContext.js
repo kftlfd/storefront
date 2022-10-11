@@ -25,11 +25,12 @@ class ThemeProvider extends React.Component {
     const light = this.state.variant === "light";
     return {
       color: {
-        bg: light ? "#fff" : "#1D1F22",
-        bgHover: light ? "#eee" : "#444",
-        accent: "#5ECE7B",
-        accentHover: "#92DDA6",
-        text: light ? "#1D1F22" : "#bfbfbf",
+        text: light ? "#333333" : "#CCCCCC",
+        bg: light ? "#FFFFFF" : "#1D1F22",
+        bgButton: light ? "#F5F5F5" : "#2F3237",
+        bgHover: light ? "#EEEEEE" : "#42464D",
+        accent: "#8199EE",
+        accentHover: light ? "#5D7CE9" : "#A5B6F3",
         backdrop: light ? "hsla(247, 13%, 25%, 0.22)" : "hsla(0, 0%, 0%, 0.4)",
       },
       transition: {
@@ -53,7 +54,7 @@ class ThemeProvider extends React.Component {
           : "0 0 35px 5px hsla(0, 0%, 60%, 0.2)",
       },
       img: {
-        filter: light ? "invert(25%)" : "invert(75%)",
+        filter: light ? "invert(20%)" : "invert(80%)",
       },
     };
   };
