@@ -18,21 +18,35 @@ const Chevron = styled.img({
 
 const CurrencyMenu = styled.div({
   position: "absolute",
-  top: "100%",
+  top: 0, // "100%",
   right: 0,
+  paddingBlock: "0.5rem",
   borderRadius: (props) => props.theme.size.borderRadius,
   backgroundColor: (props) => props.theme.color.bg,
   boxShadow: (props) => props.theme.shadow.lighter,
-  paddingBlock: "0.5rem",
+  transition: (props) => props.theme.transition.default,
   ...hide,
 });
 
 const CurrencyMenuButton = styled.div({
   paddingInline: "1rem",
   paddingBlock: "0.5rem",
-  display: "flex",
-  gap: "0.5rem",
   cursor: "pointer",
+  transition: (props) => props.theme.transition.default,
+
+  display: "grid",
+  gridTemplateColumns: "1rem auto",
+  gap: "0.5rem",
+  "& span:nth-child(2n + 1)": {
+    justifySelf: "center",
+  },
+  "& span:nth-child(2n)": {
+    justifySelf: "start",
+  },
+
+  "&.selected": {
+    backgroundColor: (props) => props.theme.color.bgButton,
+  },
   "&:hover": {
     backgroundColor: (props) => props.theme.color.bgHover,
   },

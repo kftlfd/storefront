@@ -31,7 +31,10 @@ export class MiniCart extends React.Component {
     return (
       <>
         <HeaderButtonContainer zIndex={61}>
-          <HeaderButton onClick={this.toggleMiniCart}>
+          <HeaderButton
+            onClick={this.toggleMiniCart}
+            className={this.props.miniCartOpen ? "active" : ""}
+          >
             <IconContainer>
               <CartIcon src={cartIcon} alt={"Mini Cart"} />
               {cartCount > 0 && <Badge className="show">{cartCount}</Badge>}

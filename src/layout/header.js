@@ -63,6 +63,10 @@ export const HeaderButton = styled.button({
   cursor: "pointer",
   transition: (props) => props.theme.transition.default,
 
+  "&.active": {
+    backgroundColor: (props) => props.theme.color.bgButton,
+  },
+
   "&:hover": {
     backgroundColor: (props) => props.theme.color.bgHover,
   },

@@ -39,13 +39,18 @@ export class CurrencySwitch extends React.Component {
     return (
       <>
         <HeaderButtonContainer zIndex={71}>
-          <HeaderButton onClick={this.toggleMenu}>
+          <HeaderButton
+            onClick={this.toggleMenu}
+            className={this.state.menuOpen ? "active" : ""}
+          >
             <CurrencyButton>
               {currency.symbol}
-              <Chevron
-                src={chevronIcon}
-                className={this.state.menuOpen ? "open" : ""}
-              />
+              {/*
+                <Chevron
+                  src={chevronIcon}
+                  className={this.state.menuOpen ? "open" : ""}
+                />
+              */}
             </CurrencyButton>
           </HeaderButton>
 
@@ -57,6 +62,7 @@ export class CurrencySwitch extends React.Component {
                   this.props.selectCurrency(item.label);
                   this.setState({ menuOpen: false });
                 }}
+                className={item.label === currency.label ? "selected" : ""}
               >
                 <span>{item.symbol}</span>
                 <span>{item.label}</span>
