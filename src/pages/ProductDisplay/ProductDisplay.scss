@@ -48,6 +48,12 @@
     .previews-controlls {
       display: flex;
       gap: 0.5rem;
+      aspect-ratio: 2/1;
+
+      button {
+        width: 100%;
+        aspect-ratio: 1/1;
+      }
     }
   }
 
@@ -75,6 +81,11 @@
         flex-direction: row;
         align-self: flex-start;
         overflow-x: scroll;
+
+        button {
+          width: auto;
+          height: 100%;
+        }
       }
 
       .previews-controlls {
