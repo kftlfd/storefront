@@ -48,7 +48,6 @@ const AttributesList = styled.div({
 
 const AttributeHeading = styled.div({
   textTransform: (props) => (props.mini ? "none" : "uppercase"),
-  fontFamily: (props) => (props.mini ? "Raleway" : "Roboto Condensed"),
   fontSize: (props) => (props.mini ? "14px" : "18px"),
   fontWeight: (props) => (props.mini ? 400 : 700),
   marginBottom: "8px",
@@ -66,7 +65,7 @@ const AttributeButton = styled.button({
   border: (props) => `1px solid ${props.theme.color.text}`,
   cursor: (props) => (props.displayOnly ? "default" : "pointer"),
   transition: (props) => props.theme.transition.default,
-  fontFamily: "Source Sans Pro",
+  fontFamily: "inherit",
   fontWeight: 400,
   fontSize: (props) => (props.mini ? "14px" : "16px"),
 });

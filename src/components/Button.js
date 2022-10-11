@@ -10,7 +10,7 @@ export const Button = styled.button({
   marginTop: (props) => (props.mt ? "20px" : 0),
   border: (props) => `1px solid ${props.theme.color.text}`,
   borderRadius: 0,
-  fontFamily: "Raleway",
+  fontFamily: "inherit",
   fontSize: (props) => (props.biggerFont ? "16px" : "14px"),
   fontWeight: 600,
   textTransform: "uppercase",

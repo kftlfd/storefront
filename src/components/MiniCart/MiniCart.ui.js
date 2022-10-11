@@ -22,7 +22,7 @@ const Badge = styled.div({
   color: (props) => props.theme.color.bg,
 
   paddingInline: "0.2rem",
-  fontFamily: "sans-serif",
+  fontFamily: "Arial, sans-serif",
   fontSize: "0.6rem",
   fontWeight: 600,
   display: "grid",
