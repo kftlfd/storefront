@@ -4,15 +4,31 @@ import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { ListingItem } from "./ListingItem";
 
 import { PageContainer, PageMainText } from "../../layout/page";
-import { CategoryTitle, ListingsGrid } from "./ProductListing.ui";
+import {
+  CategoryHeader,
+  CategoryTitle,
+  CategorySorting,
+  SortingLabel,
+  DropdownContainer,
+  DropdownMenu,
+  DropdownMenuButton,
+  DropdownMenuBackdrop,
+  Button,
+  ButtonIcon,
+  ListingsGrid,
+} from "./ProductListing.ui";
+import chevronIcon from "../../assets/chevron.svg";
 
 export class ProductListing extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      categoryId: this.props.categoryId,
       loading: true,
       error: null,
+
+      sortDropdownOpen: false,
+      sortBy: null,
+      sortAsc: true,
     };
   }
 
@@ -20,10 +36,9 @@ export class ProductListing extends React.Component {
     this.loadCategoryProducts();
   }
 
-  componentDidUpdate() {
-    if (this.state.categoryId !== this.props.categoryId) {
+  componentDidUpdate(prevProps) {
+    if (prevProps.categoryId !== this.props.categoryId) {
       this.setState({
-        categoryId: this.props.categoryId,
         error: null,
         loading: true,
       });
@@ -78,52 +93,155 @@ export class ProductListing extends React.Component {
     this.props.toggleMiniCart(true);
   };
 
-  render() {
-    if (this.state.error) {
-      return (
-        <PageContainer>
-          <PageMainText>{this.state.error}</PageMainText>
-        </PageContainer>
-      );
-    }
+  toggleSortDropdown = () => {
+    this.setState((prev) => ({ sortDropdownOpen: !prev.sortDropdownOpen }));
+  };
 
-    if (this.state.loading) {
-      return (
-        <PageContainer>
-          <PageMainText>
-            <LoadingSpinner size={60} />
-          </PageMainText>
-        </PageContainer>
-      );
-    }
+  closeSortDropdown = () => {
+    this.setState({ sortDropdownOpen: false });
+  };
 
-    if (!this.props.categoryItems) return;
+  toggleSortOrder = () => {
+    this.setState((prev) => ({ sortAsc: !prev.sortAsc }));
+  };
 
-    // sort items by category name
-    const items = [...this.props.categoryItems];
-    items.sort(
-      (a, b) =>
-        this.props.products[a].category > this.props.products[b].category
+  sortOptions = [
+    {
+      id: "category",
+      f: () => this.setState({ sortBy: "category", sortDropdownOpen: false }),
+    },
+    {
+      id: "name",
+      f: () => this.setState({ sortBy: "name", sortDropdownOpen: false }),
+    },
+    {
+      id: "brand",
+      f: () => this.setState({ sortBy: "brand", sortDropdownOpen: false }),
+    },
+    {
+      id: "price",
+      f: () => this.setState({ sortBy: "price", sortDropdownOpen: false }),
+    },
+    {
+      id: "inStock",
+      f: () => this.setState({ sortBy: "inStock", sortDropdownOpen: false }),
+    },
+  ];
+
+  sortOptionsTitles = {
+    category: "Category",
+    name: "Name",
+    brand: "Brand",
+    price: "Price",
+    inStock: "In Stock",
+  };
+
+  sortingFunctions = {
+    string: (a, b) =>
+      this.props.products[a][this.state.sortBy].toLowerCase() >
+      this.props.products[b][this.state.sortBy].toLowerCase(),
+
+    price: (a, b) =>
+      this.props.products[a].prices[0].amount >
+      this.props.products[b].prices[0].amount,
+
+    inStock: (a, b) =>
+      this.props.products[a].inStock < this.props.products[b].inStock,
+  };
+
+  sortByFunctions = {
+    name: this.sortingFunctions.string,
+    brand: this.sortingFunctions.string,
+    category: this.sortingFunctions.string,
+    price: this.sortingFunctions.price,
+    inStock: this.sortingFunctions.inStock,
+  };
+
+  renderError = () => (
+    <PageContainer>
+      <PageMainText>{this.state.error}</PageMainText>
+    </PageContainer>
+  );
+
+  renderLoading = () => (
+    <PageContainer>
+      <PageMainText>
+        <LoadingSpinner size={60} />
+      </PageMainText>
+    </PageContainer>
+  );
+
+  renderCategoryHeader = () => (
+    <CategoryHeader>
+      <CategoryTitle>
+        {this.props.categoryId.charAt(0).toUpperCase() +
+          this.props.categoryId.slice(1)}
+      </CategoryTitle>
+      <CategorySorting>
+        <SortingLabel>Sort by</SortingLabel>
+
+        <DropdownContainer>
+          <Button onClick={this.toggleSortDropdown}>
+            {this.state.sortBy
+              ? this.sortOptionsTitles[this.state.sortBy]
+              : "None"}
+          </Button>
+
+          <DropdownMenu className={this.state.sortDropdownOpen ? "show" : ""}>
+            {this.sortOptions.map(({ id, f }) => (
+              <DropdownMenuButton
+                key={id}
+                onClick={f}
+                className={this.state.sortBy === id ? "selected" : ""}
+              >
+                {this.sortOptionsTitles[id]}
+              </DropdownMenuButton>
+            ))}
+          </DropdownMenu>
+
+          <DropdownMenuBackdrop
+            show={this.state.sortDropdownOpen}
+            onClick={this.closeSortDropdown}
+          />
+        </DropdownContainer>
+
+        <Button onClick={this.toggleSortOrder}>
+          <ButtonIcon src={chevronIcon} up={this.state.sortAsc} />
+        </Button>
+      </CategorySorting>
+    </CategoryHeader>
+  );
+
+  renderListingsGrid = () => {
+    const items = [...(this.props.categoryItems || [])];
+
+    if (this.state.sortBy) items.sort(this.sortByFunctions[this.state.sortBy]);
+
+    if (!this.state.sortAsc) items.reverse();
+
+    return (
+      <ListingsGrid>
+        {items.map((id) => (
+          <ListingItem
+            key={id}
+            item={this.props.products[id]}
+            currency={this.props.currency}
+            navigate={this.props.navigate}
+            addToCart={this.addToCart}
+          />
+        ))}
+      </ListingsGrid>
     );
+  };
 
-    const title =
-      this.state.categoryId.charAt(0).toUpperCase() +
-      this.state.categoryId.slice(1);
+  render() {
+    if (this.state.error) return this.renderError();
+    if (this.state.loading) return this.renderLoading();
 
     return (
       <PageContainer>
-        <CategoryTitle>{title}</CategoryTitle>
-        <ListingsGrid>
-          {items.map((id) => (
-            <ListingItem
-              key={id}
-              item={this.props.products[id]}
-              currency={this.props.currency}
-              navigate={this.props.navigate}
-              addToCart={this.addToCart}
-            />
-          ))}
-        </ListingsGrid>
+        {this.renderCategoryHeader()}
+        {this.renderListingsGrid()}
       </PageContainer>
     );
   }
