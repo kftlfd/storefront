@@ -1,5 +1,5 @@
 .ProductDisplayContainer {
-  padding-block: 4rem;
+  padding-block: min(4rem, 8vh);
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 3rem;
@@ -10,50 +10,31 @@
 }
 
 .ProductGallery {
+  max-height: min(75vh, 600px);
   display: grid;
   grid-template-columns: min-content auto;
   align-items: flex-start;
   justify-items: flex-start;
   gap: 2rem;
-  max-height: max(75vh, 500px);
 
   .previews-section {
+    max-height: inherit;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    max-height: inherit;
+    gap: 1rem;
 
     .previews-container {
       display: flex;
       flex-direction: column;
-      gap: 2rem;
-
+      gap: 1rem;
       overflow-x: hidden;
       overflow-y: auto;
-
-      .preview-button {
-        margin: 2px;
-        display: block;
-        height: 4.75rem;
-        width: 4.75rem;
-        flex-shrink: 0;
-        padding: 0;
-        border: none;
-        background-color: transparent;
-        background-size: cover;
-        cursor: pointer;
-      }
     }
 
     .previews-controlls {
+      flex-shrink: 0;
       display: flex;
-      gap: 0.5rem;
-      aspect-ratio: 2/1;
-
-      button {
-        width: 100%;
-        aspect-ratio: 1/1;
-      }
+      justify-content: space-between;
     }
   }
 
@@ -77,22 +58,13 @@
       max-width: inherit;
 
       .previews-container {
-        flex-shrink: 1;
         flex-direction: row;
-        align-self: flex-start;
-        overflow-x: scroll;
-
-        button {
-          width: auto;
-          height: 100%;
-        }
+        overflow-x: auto;
+        overflow-y: hidden;
       }
 
       .previews-controlls {
-        flex-shrink: 0;
-        flex-direction: column;
-        height: 4.75rem;
-        aspect-ratio: 1/2;
+        flex-direction: column-reverse;
       }
     }
 
@@ -101,7 +73,7 @@
       justify-self: center;
 
       .image-main {
-        max-height: 60vh;
+        max-height: 66vh;
         max-width: calc(100vw - 2rem);
       }
     }

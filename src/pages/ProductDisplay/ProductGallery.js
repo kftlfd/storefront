@@ -35,13 +35,13 @@ export class ProductGallery extends React.Component {
           <div className="previews-container">
             {this.props.gallery.map((img, i) => {
               const status =
-                i === this.state.imgIndexSelected ? " selected" : "";
+                i === this.state.imgIndexSelected ? "selected" : "";
               return (
                 <PreviewImgBtn
                   key={img}
                   img={img}
                   onClick={this.selectImg(i)}
-                  className={"preview-button" + status}
+                  className={status}
                 />
               );
             })}
@@ -71,9 +71,20 @@ export class ProductGallery extends React.Component {
 }
 
 const PreviewImgBtn = styled.button({
-  transition: (props) => props.theme.transition.default,
-  backgroundImage: (props) => `url(${props.img})`,
+  margin: "2px",
+  padding: 0,
+  display: "block",
+  height: "4rem",
+  aspectRatio: "1",
+  flexShrink: 0,
+  border: "none",
   borderRadius: (props) => props.theme.size.borderRadius,
+  backgroundColor: "transparent",
+  backgroundImage: (props) => `url(${props.img})`,
+  backgroundSize: "cover",
+  transition: (props) => props.theme.transition.default,
+  cursor: "pointer",
+
   "&:hover": {
     boxShadow: (props) => `0 0 0 2px ${props.theme.color.text}`,
   },
@@ -83,14 +94,15 @@ const PreviewImgBtn = styled.button({
 });
 
 const PreviewControllBtn = styled.button({
-  display: "block",
-  flexGrow: 1,
-  aspectRatio: "1/1",
+  // flexGrow: 1,
+  padding: 0,
+  display: "grid",
+  placeContent: "center",
+  height: "30px",
+  aspectRatio: "1",
   backgroundColor: (props) => props.theme.color.bg,
   border: "none",
   borderRadius: (props) => props.theme.size.borderRadius,
-  display: "grid",
-  placeContent: "center",
   cursor: "pointer",
   transition: (props) => props.theme.transition.default,
 
