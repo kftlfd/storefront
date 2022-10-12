@@ -43,6 +43,7 @@ export class ProductListing extends React.Component {
         loading: true,
       });
       this.loadCategoryProducts();
+      window.scrollTo(0, 0);
     }
   }
 
