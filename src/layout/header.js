@@ -25,9 +25,14 @@ export const MainHeader = styled.header({
 
 export const MainNav = styled.nav({
   flexGrow: 1,
+  paddingBlock: (props) => props.theme.size.headerBtnSpacing,
   display: "flex",
   gap: (props) => props.theme.size.headerBtnSpacing,
-  alignItems: "center",
+  overflowX: "auto",
+
+  "@media (max-width: 799px)": {
+    display: "none",
+  },
 });
 
 export const HeaderButtons = styled.div({
