@@ -49,7 +49,7 @@ const AttributesList = styled.div({
 const AttributeHeading = styled.div({
   textTransform: (props) => (props.mini ? "none" : "none"),
   fontSize: (props) => (props.mini ? "0.9rem" : "1rem"),
-  fontWeight: (props) => (props.mini ? 400 : 700),
+  fontWeight: (props) => (props.mini ? 400 : 500),
   marginBottom: "4px",
 });
 

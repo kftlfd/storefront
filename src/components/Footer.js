@@ -28,6 +28,7 @@ const FooterContent = styled.div({
   gap: "0.5rem",
   color: (props) => props.theme.color.text,
   borderTop: (props) => `1px solid ${props.theme.color.bgHover}`,
+  transition: (props) => props.theme.transition.default,
 
   "& a": {
     color: "inherit",
