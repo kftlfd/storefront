@@ -2,6 +2,7 @@ import React from "react";
 
 import { PageWrapper } from "../../layout/page";
 import Header from "../Header";
+import Footer from "../Footer";
 import Router, { links } from "../Router";
 import { SplashScreen } from "../SplashScreen";
 
@@ -66,9 +67,11 @@ export class App extends React.Component {
 
     return (
       <PageWrapper>
-        <Router def={links.category(this.props.defCategory)}>
-          <Header />
-        </Router>
+        <Router
+          def={links.category(this.props.defCategory)}
+          header={<Header />}
+          footer={<Footer />}
+        />
       </PageWrapper>
     );
   }

@@ -41,12 +41,13 @@ export default class Router extends React.Component {
   render() {
     return (
       <BrowserRouter>
-        {this.props.children}
+        {this.props.header}
         <Switch>
           {this.routes.map((props, index) => (
             <Route {...props} key={index} />
           ))}
         </Switch>
+        {this.props.footer}
       </BrowserRouter>
     );
   }
