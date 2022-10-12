@@ -69,7 +69,6 @@ export class CartContent extends React.Component {
 const CartContentContainer = styled.div({
   overflowY: (props) => (props.mini ? "auto" : "hidden"),
   position: "relative",
-  marginInline: (props) => (props.mini ? "-1rem" : 0),
   scrollbarWidth: "thin",
   scrollbarColor: "#ccc #fff",
 

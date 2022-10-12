@@ -54,13 +54,13 @@ export class Cart extends React.Component {
       <>
         {this.props.mini ? (
           <div className="MiniCartInfo">
-            <span className="header-text">My bag, </span>
+            <span className="header-text">My cart, </span>
             <span className="header-count">
               {cartTotal.quantity} item{cartTotal.quantity > 1 && "s"}
             </span>
           </div>
         ) : (
-          <div className="FullCartTitle">Cart</div>
+          <h1 className="FullCartTitle">Cart</h1>
         )}
 
         <CartContent mini={this.props.mini}>
@@ -88,11 +88,6 @@ export class Cart extends React.Component {
           </div>
         ) : (
           <div className="FullCartTotal">
-            <div className="normal">Tax 21%:</div>
-            <div className="bold">
-              {formatTotal(cartTotal.amount * 0.21, currencyObj)}
-            </div>
-
             <div className="normal">Quantity:</div>
             <div className="bold">{cartTotal.quantity}</div>
 
@@ -100,18 +95,25 @@ export class Cart extends React.Component {
             <div className="bold">
               {formatTotal(cartTotal.amount, currencyObj)}
             </div>
+
+            <div className="normal">Tax 21%:</div>
+            <div className="bold">
+              {formatTotal(cartTotal.amount * 0.21, currencyObj)}
+            </div>
           </div>
         )}
 
         {this.props.mini ? (
           <div className="MiniCartButtons">
-            <Button onClick={openCartPage}>View bag</Button>
-            <AccentButton onClick={openCheckOut}>Check out</AccentButton>
+            <Button onClick={openCartPage}>View cart</Button>
+            <AccentButton onClick={openCheckOut}>Checkout</AccentButton>
           </div>
         ) : (
-          <AccentButton big={true} onClick={openCheckOut}>
-            Order
-          </AccentButton>
+          <div className="FullCartButtons">
+            <AccentButton big={true} onClick={openCheckOut}>
+              Checkout
+            </AccentButton>
+          </div>
         )}
       </>
     );

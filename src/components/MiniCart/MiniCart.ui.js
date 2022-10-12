@@ -32,16 +32,16 @@ const Badge = styled.div({
 });
 
 const MiniCartMenu = styled.div({
-  paddingInline: "1rem",
-  paddingBottom: "2rem",
+  paddingBlock: "1rem",
   position: "absolute",
   top: (props) => `calc(100% + ${props.theme.size.headerBtnSpacing} + 0.5rem)`,
   borderRadius: (props) => props.theme.size.borderRadius,
   right: 0,
-  width: "325px",
+  minWidth: "350px",
   maxHeight: (props) => `calc(100vh - ${props.theme.size.headerHeight} - 1rem)`,
   display: "flex",
   flexDirection: "column",
+  gap: "1.5rem",
   overflowY: "hidden",
   backgroundColor: (props) => props.theme.color.bg,
   ...hide,

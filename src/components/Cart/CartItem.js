@@ -19,10 +19,6 @@ export class CartItem extends React.Component {
     const { item, product, mini, increaseQuantity, decreaseQuantity } =
       this.props;
 
-    const selectAttr = (attrId, valId) => {
-      // Disabled in cart as per spec
-    };
-
     const galleryCount = product.gallery.length;
 
     const prevImage = () =>
@@ -35,31 +31,39 @@ export class CartItem extends React.Component {
         imgIndex: (prev.imgIndex + 1) % galleryCount,
       }));
 
-    const price = formatPrice(product.prices, this.props.currency);
+    const price = formatPrice(
+      product.prices,
+      this.props.currency,
+      item.quantity
+    );
 
     return (
-      <div className={mini ? "CartItem MiniCart" : "CartItem"} mini={mini}>
+      <CartItemDiv
+        className={mini ? "CartItem MiniCart" : "CartItem"}
+        mini={mini}
+      >
         <div className="CartItemInfo">
           <div className="brand">{product.brand}</div>
           <div className="name">{product.name}</div>
+          {Object.keys(item.attributes).length > 0 && (
+            <ProductAttributes
+              attributes={product.attributes}
+              selected={item.attributes}
+              small={this.props.mini}
+              displayOnly={true}
+            />
+          )}
+          <div className="quantity-label">Quantity:</div>
+          <div className="CartItemQuantity">
+            <QuantityBtn onClick={decreaseQuantity}>
+              <QuantityBtnIcon src={minusIcon} mini={mini} />
+            </QuantityBtn>
+            <div className="count">{item.quantity}</div>
+            <QuantityBtn onClick={increaseQuantity}>
+              <QuantityBtnIcon src={plusIcon} mini={mini} />
+            </QuantityBtn>
+          </div>
           <div className="price">{price}</div>
-          <ProductAttributes
-            attributes={product.attributes}
-            selected={item.attributes}
-            selectAttr={selectAttr}
-            small={this.props.mini}
-            displayOnly={true}
-          />
-        </div>
-
-        <div className="CartItemQuantity">
-          <QuantityBtn onClick={increaseQuantity}>
-            <QuantityBtnIcon src={plusIcon} mini={mini} />
-          </QuantityBtn>
-          <div className="count">{item.quantity}</div>
-          <QuantityBtn onClick={decreaseQuantity}>
-            <QuantityBtnIcon src={minusIcon} mini={mini} />
-          </QuantityBtn>
         </div>
 
         <CartItemImage
@@ -85,20 +89,29 @@ export class CartItem extends React.Component {
             </div>
           )}
         </CartItemImage>
-      </div>
+      </CartItemDiv>
     );
   }
 }
 
+const CartItemDiv = styled.div({
+  transition: (props) => props.theme.transition.default,
+  borderBottom: (props) => `1px solid ${props.theme.color.bgHover}`,
+
+  "&:first-of-type": {
+    borderTop: (props) => `1px solid ${props.theme.color.bgHover}`,
+  },
+});
+
 const QuantityBtn = styled.button({
-  border: (props) => `1px solid ${props.theme.color.text}`,
+  border: "none",
   borderRadius: "3px",
   backgroundColor: (props) => props.theme.color.bg,
-  transition: (props) => props.theme.transition.standard,
+  transition: (props) => props.theme.transition.default,
   "&:hover": {
     backgroundColor: (props) => props.theme.color.bgHover,
   },
-  width: "100%",
+  height: "100%",
   aspectRatio: "1/1",
   display: "grid",
   placeContent: "center",
@@ -107,9 +120,10 @@ const QuantityBtn = styled.button({
 
 const QuantityBtnIcon = styled.img({
   filter: (props) => props.theme.img.filter,
-  width: (props) => (props.mini ? "0.7rem" : "1.6rem"),
+  width: (props) => (props.mini ? "0.8rem" : "1rem"),
 });
 
 const CartItemImage = styled.div({
   backgroundImage: (props) => `url(${props.img})`,
+  borderRadius: (props) => props.theme.size.borderRadius,
 });
