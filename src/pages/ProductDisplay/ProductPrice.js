@@ -8,11 +8,6 @@ export class ProductPrice extends React.Component {
 
     const price = formatPrice(prices, currency);
 
-    return (
-      <div className="price">
-        <div className="heading">Price:</div>
-        <div className="content">{price}</div>
-      </div>
-    );
+    return <div className="price">{price}</div>;
   }
 }

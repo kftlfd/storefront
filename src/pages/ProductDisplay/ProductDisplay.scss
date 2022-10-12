@@ -80,40 +80,24 @@
   }
 }
 
-@mixin ProductBranding {
-  line-height: 27px;
-  font-size: 30px;
-}
-
 .ProductInfo {
   .brand {
-    @include ProductBranding;
-    font-weight: 600;
-    margin-bottom: 16px;
+    font-size: 1.5rem;
   }
 
   .name {
-    @include ProductBranding;
-    font-weight: 400;
-    margin-bottom: 40px;
+    font-size: 2rem;
+    font-weight: 500;
+    margin-bottom: 2rem;
   }
 
   .price {
-    margin-top: 40px;
+    margin-block: 2rem;
+    font-size: 1.5rem;
     font-weight: 700;
-
-    .heading {
-      font-size: 18px;
-      text-transform: uppercase;
-    }
-
-    .content {
-      margin-top: 10px;
-      font-size: 24px;
-    }
   }
 
   .description {
-    margin-top: 40px;
+    margin-top: 2rem;
   }
 }

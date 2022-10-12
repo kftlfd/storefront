@@ -43,14 +43,14 @@ export class ProductAttributes extends React.Component {
 const AttributesList = styled.div({
   display: "flex",
   flexDirection: "column",
-  gap: (props) => (props.mini ? "12px" : "24px"),
+  gap: (props) => (props.mini ? "0.5rem" : "1rem"),
 });
 
 const AttributeHeading = styled.div({
-  textTransform: (props) => (props.mini ? "none" : "uppercase"),
-  fontSize: (props) => (props.mini ? "14px" : "18px"),
+  textTransform: (props) => (props.mini ? "none" : "none"),
+  fontSize: (props) => (props.mini ? "0.9rem" : "1rem"),
   fontWeight: (props) => (props.mini ? 400 : 700),
-  marginBottom: "8px",
+  marginBottom: "4px",
 });
 
 const AttributeButtons = styled.div({
@@ -61,13 +61,13 @@ const AttributeButtons = styled.div({
 
 const AttributeButton = styled.button({
   padding: 0,
-  borderRadius: "3px",
+  borderRadius: (props) => props.theme.size.borderRadius,
   border: (props) => `1px solid ${props.theme.color.text}`,
   cursor: (props) => (props.displayOnly ? "default" : "pointer"),
   transition: (props) => props.theme.transition.default,
   fontFamily: "inherit",
   fontWeight: 400,
-  fontSize: (props) => (props.mini ? "14px" : "16px"),
+  fontSize: (props) => (props.mini ? "0.8rem" : "1rem"),
 });
 
 const SwatchAttribute = styled(AttributeButton)({
@@ -90,8 +90,8 @@ const SwatchAttribute = styled(AttributeButton)({
 const RegularAttribute = styled(AttributeButton)({
   display: "grid",
   placeContent: "center",
-  height: (props) => (props.mini ? "24px" : "40px"),
-  minWidth: (props) => (props.mini ? "24px" : "40px"),
+  height: (props) => (props.mini ? "1.5rem" : "2rem"),
+  minWidth: (props) => (props.mini ? "1.5rem" : "2rem"),
   paddingInline: (props) => (props.mini ? "0.2rem" : "0.4rem"),
   color: (props) => props.theme.color.text,
   backgroundColor: (props) => props.theme.color.bg,

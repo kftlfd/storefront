@@ -113,7 +113,6 @@ export class ProductDisplay extends React.PureComponent {
             />
             {product.inStock && (
               <AccentButton
-                mt={true}
                 big={true}
                 biggerFont={true}
                 onClick={this.addToCart}
