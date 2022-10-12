@@ -6,7 +6,7 @@ function getFormatter(currencyLabel) {
   });
 }
 
-export function formatPrice(prices, currency) {
+export function formatPrice(prices, currency, quantity = 1) {
   const priceObj = currency
     ? prices.find((x) => x.currency.label === currency)
     : prices[0];
@@ -14,7 +14,8 @@ export function formatPrice(prices, currency) {
   const formatter = getFormatter(priceObj.currency.label);
 
   const price =
-    priceObj.currency.symbol + formatter.format(priceObj.amount).slice(1);
+    priceObj.currency.symbol +
+    formatter.format(priceObj.amount * quantity).slice(1);
 
   return price;
 }
