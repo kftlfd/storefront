@@ -100,7 +100,7 @@ const PreviewControllBtn = styled.button({
   placeContent: "center",
   height: "30px",
   aspectRatio: "1",
-  backgroundColor: (props) => props.theme.color.bg,
+  backgroundColor: (props) => props.theme.color.bgButton,
   border: "none",
   borderRadius: (props) => props.theme.size.borderRadius,
   cursor: "pointer",

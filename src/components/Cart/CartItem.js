@@ -106,7 +106,7 @@ const CartItemDiv = styled.div({
 const QuantityBtn = styled.button({
   border: "none",
   borderRadius: "3px",
-  backgroundColor: (props) => props.theme.color.bg,
+  backgroundColor: (props) => props.theme.color.bgButton,
   transition: (props) => props.theme.transition.default,
   "&:hover": {
     backgroundColor: (props) => props.theme.color.bgHover,
