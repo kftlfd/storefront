@@ -118,8 +118,12 @@ const ListingsGrid = styled.div({
     gridTemplateColumns: "repeat(2, 1fr)",
   },
 
-  "@media (min-width: 900px)": {
+  "@media (min-width: 800px)": {
     gridTemplateColumns: "repeat(3, 1fr)",
+  },
+
+  "@media (min-width: 1000px)": {
+    gridTemplateColumns: "repeat(4, 1fr)",
   },
 });
 

@@ -18,6 +18,9 @@
 
   .product-image-container {
     position: relative;
+    max-height: 350px;
+    display: flex;
+    justify-content: center;
   }
 
   .out-of-stock-overlay {
@@ -50,10 +53,13 @@
   }
 
   .product-info {
-    font-size: 18px;
-    line-height: 28.8px;
+    .brand {
+      font-weight: 400;
+    }
 
     .name {
+      margin-block: 4px;
+      font-size: 1.2rem;
       font-weight: 300;
     }
 

@@ -41,6 +41,7 @@ export class ListingItem extends React.Component {
         </div>
 
         <div className="product-info">
+          <div className="brand">{item.brand}</div>
           <div className="name">{item.name}</div>
           <div className="price">{price}</div>
         </div>
@@ -58,8 +59,9 @@ const Card = styled.div({
 });
 
 const ProductImage = styled.img({
-  width: "100%",
+  maxWidth: "100%",
   minHeight: "6rem",
+  maxHeight: "inherit",
   display: "block",
   borderRadius: (props) => props.theme.size.borderRadius,
   textAlign: "center",
