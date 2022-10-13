@@ -65,6 +65,7 @@ const Circle = styled.div({
   height: "3rem",
   aspectRatio: "1",
   borderRadius: "50%",
+  color: (props) => props.theme.color.bg,
   backgroundColor: (props) => props.theme.color.bgHover,
   transition: (props) => props.theme.transition.default,
   position: "relative",
@@ -99,4 +100,9 @@ const Title = styled.div({
   top: "100%",
   left: "50%",
   translate: "-50% 0.5rem",
+  transition: "all 0.5s ease",
+  opacity: 0.5,
+  ".current &, .complete &": {
+    opacity: 1,
+  },
 });
