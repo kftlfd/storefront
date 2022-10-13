@@ -37,10 +37,10 @@ class ThemeProvider extends React.Component {
         default: "all 0.2s ease",
       },
       size: {
-        pageInlinePadding: "max((100vw - 1200px) / 2, 1rem)",
+        pageInlinePadding: "max((100vw - 1100px) / 2, 1rem)",
         headerHeight: "60px",
         headerBtnSpacing: "6px",
-        borderRadius: "3px",
+        borderRadius: "4px",
       },
       shadow: {
         lighter: light
