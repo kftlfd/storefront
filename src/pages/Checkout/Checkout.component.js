@@ -1,5 +1,6 @@
 import React from "react";
 import { PageContainer, PageMainText } from "../../layout/page";
+import CheckoutProgressBar from "./CheckoutProgressBar";
 import CheckoutForm from "./CheckoutForm";
 
 export default class Checkout extends React.Component {
@@ -57,6 +58,10 @@ export default class Checkout extends React.Component {
 
     return (
       <PageContainer>
+        <CheckoutProgressBar
+          steps={this.checkoutSteps}
+          current={this.state.currentStepIndex}
+        />
         <CheckoutForm
           steps={this.checkoutSteps}
           current={this.state.currentStepIndex}
