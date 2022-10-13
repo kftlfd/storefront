@@ -48,7 +48,7 @@ const MiniCartMenu = styled.div({
 });
 
 const EmptyCart = styled.div({
-  paddingTop: "2rem",
+  paddingBlock: "2rem",
   textAlign: "center",
 });
 
