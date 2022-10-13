@@ -9,6 +9,7 @@ import {
   HeaderButtonBackdrop,
 } from "../../layout/header";
 import {
+  EmptyCart,
   IconContainer,
   CartIcon,
   Badge,
