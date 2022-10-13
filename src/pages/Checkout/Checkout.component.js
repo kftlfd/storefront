@@ -1,5 +1,6 @@
 import React from "react";
 import { PageContainer, PageMainText } from "../../layout/page";
+import CheckoutForm from "./CheckoutForm";
 
 export default class Checkout extends React.Component {
   constructor(props) {
@@ -54,6 +55,15 @@ export default class Checkout extends React.Component {
   render() {
     if (this.props.cart.length < 1) return this.renderEmpty();
 
-    return <PageContainer>Checkout</PageContainer>;
+    return (
+      <PageContainer>
+        <CheckoutForm
+          steps={this.checkoutSteps}
+          current={this.state.currentStepIndex}
+          prevStep={this.prevStep}
+          nextStep={this.nextStep}
+        />
+      </PageContainer>
+    );
   }
 }
