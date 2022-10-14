@@ -183,6 +183,10 @@
   background-position: center;
   position: relative;
 
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+
   .MiniCart & {
     width: 120px;
   }

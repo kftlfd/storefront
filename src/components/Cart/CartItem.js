@@ -68,8 +68,9 @@ export class CartItem extends React.Component {
 
         <CartItemImage
           className="CartItemImage"
-          img={product.gallery[this.state.imgIndex]}
+          img={!mini && product.gallery[this.state.imgIndex]}
         >
+          {mini && <ProductImage src={product.gallery[this.state.imgIndex]} />}
           {!mini && galleryCount > 1 && (
             <div className="gallery-buttons">
               <button className="gallery-button" onClick={prevImage}>
@@ -125,5 +126,11 @@ const QuantityBtnIcon = styled.img({
 
 const CartItemImage = styled.div({
   backgroundImage: (props) => `url(${props.img})`,
+  borderRadius: (props) => props.theme.size.borderRadius,
+});
+
+const ProductImage = styled.img({
+  maxWidth: "100%",
+  maxHeight: "250px",
   borderRadius: (props) => props.theme.size.borderRadius,
 });
