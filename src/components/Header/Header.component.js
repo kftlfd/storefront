@@ -102,6 +102,7 @@ const CategoriesDropdownBtn = styled.button({
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",
+  alignItems: "stretch",
   fontFamily: "inherit",
   fontSize: "1rem",
   fontWeight: 600,
