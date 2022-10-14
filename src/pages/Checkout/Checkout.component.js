@@ -14,6 +14,10 @@ export default class Checkout extends React.Component {
     };
   }
 
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  }
+
   checkoutSteps = [
     {
       id: CHECKOUT.SHIPPING,
