@@ -36,18 +36,8 @@ export class Cart extends React.Component {
     };
 
     const openCheckOut = () => {
-      const summary = {
-        description: "Order summary",
-        items: this.props.cart,
-        total: {
-          ...cartTotal,
-          tax: cartTotal.amount * 0.21,
-          withTax: cartTotal.amount * 1.21,
-          currency: currencyObj.label,
-        },
-      };
-      window.alert(JSON.stringify(summary, 2, 2));
-      console.log(summary);
+      this.props.toggleMiniCart(false);
+      this.props.history.push(links.checkout);
     };
 
     return (
