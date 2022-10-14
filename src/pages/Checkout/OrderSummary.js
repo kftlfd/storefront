@@ -68,9 +68,7 @@ export default class OrderSummary extends React.Component {
   }
 }
 
-const SummaryWrapper = styled.div({
-  paddingBlock: "1rem",
-});
+const SummaryWrapper = styled.div({});
 
 const SummaryItem = styled.div({
   display: "flex",

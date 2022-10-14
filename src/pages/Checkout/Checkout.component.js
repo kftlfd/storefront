@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 import { PageContainer, PageMainText } from "../../layout/page";
 import CheckoutProgressBar from "./CheckoutProgressBar";
 import OrderSummary from "./OrderSummary";
@@ -64,7 +65,7 @@ export default class Checkout extends React.Component {
     if (this.props.cart.length < 1) return this.renderEmpty();
 
     return (
-      <PageContainer>
+      <CheckoutContainer>
         <CheckoutProgressBar
           steps={this.checkoutSteps}
           current={this.state.currentStepIndex}
@@ -81,7 +82,22 @@ export default class Checkout extends React.Component {
           prevStep={this.prevStep}
           nextStep={this.nextStep}
         />
-      </PageContainer>
+      </CheckoutContainer>
     );
   }
 }
+
+const CheckoutContainer = styled(PageContainer)({
+  paddingBottom: "3rem",
+  display: "grid",
+  rowGap: "1rem",
+
+  "@media (min-width: 800px)": {
+    gridTemplateColumns: "3fr 2fr",
+    columnGap: "3rem",
+
+    "& :nth-child(1)": { gridColumnStart: 1, gridColumnEnd: "span 2" },
+    "& :nth-child(2)": { gridRow: 2, gridColumn: 2 },
+    "& :nth-child(3)": { gridRow: 2, gridColumn: 1 },
+  },
+});

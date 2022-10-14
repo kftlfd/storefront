@@ -86,7 +86,6 @@ const Form = styled.form({
 
 const ButtonsContainer = styled.div({
   paddingTop: "1rem",
-  paddingBottom: "3rem",
   display: "flex",
   justifyContent: "flex-end",
   alignItems: "center",
