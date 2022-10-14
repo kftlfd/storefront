@@ -40,6 +40,8 @@ export class Cart extends React.Component {
       this.props.history.push(links.checkout);
     };
 
+    const closeCart = () => this.props.toggleMiniCart(false);
+
     return (
       <>
         {this.props.mini ? (
@@ -63,6 +65,7 @@ export class Cart extends React.Component {
               currency={currencyObj.label}
               increaseQuantity={() => this.props.increaseQuantity(index)}
               decreaseQuantity={() => this.props.decreaseQuantity(index)}
+              closeCart={closeCart}
             />
           ))}
         </CartContent>

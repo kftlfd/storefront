@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
+import { links } from "../../components/Router";
 
 import plusIcon from "../../assets/plus.svg";
 import minusIcon from "../../assets/minus.svg";
@@ -44,7 +46,11 @@ export class CartItem extends React.Component {
       >
         <div className="CartItemInfo">
           <div className="brand">{product.brand}</div>
-          <div className="name">{product.name}</div>
+          <div className="name" onClick={this.props.closeCart}>
+            <ProductLink to={links.product(product.id)}>
+              {product.name}
+            </ProductLink>
+          </div>
           {Object.keys(item.attributes).length > 0 && (
             <ProductAttributes
               attributes={product.attributes}
@@ -101,6 +107,17 @@ const CartItemDiv = styled.div({
 
   "&:first-of-type": {
     borderTop: (props) => `1px solid ${props.theme.color.bgHover}`,
+  },
+});
+
+const ProductLink = styled(Link)({
+  color: (props) => props.theme.color.text,
+  textDecoration: "none",
+  ":visited": {
+    color: (props) => props.theme.color.text,
+  },
+  ":hover": {
+    textDecoration: "underline",
   },
 });
 
