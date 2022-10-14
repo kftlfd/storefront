@@ -77,7 +77,7 @@ export class ProductDisplay extends React.PureComponent {
     if (this.state.error) {
       return (
         <PageContainer>
-          <PageMainText>{this.state.error}</PageMainText>
+          <PageMainText>{/*this.state.error*/}Page not found</PageMainText>
         </PageContainer>
       );
     }

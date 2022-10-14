@@ -173,7 +173,7 @@ export class ProductListing extends React.Component {
 
   renderError = () => (
     <PageContainer>
-      <PageMainText>{this.state.error}</PageMainText>
+      <PageMainText>{/*this.state.error*/}Page not found</PageMainText>
     </PageContainer>
   );
 
