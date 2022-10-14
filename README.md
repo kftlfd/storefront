@@ -1,6 +1,8 @@
-# SPA store front-end
+# Simple front-end for a web store
 
-Simple SPA front-end for e-store
+Build with React (class components), Redux, React-Router-DOM and styled-components.
+
+ExpressJS server is used to serve the app and the fake data.
 
 # Setup
 
@@ -31,6 +33,8 @@ $ npm run start
 $ yarn install
 $ yarn build
 $ yarn serve
+
+go to http://localhost:8000
 ```
 
 ## Docker container
@@ -38,4 +42,6 @@ $ yarn serve
 ```
 $ sudo docker build -t IMAGE_NAME .
 $ sudo docker run -d -p 8000:8000 --name CONTAINER_NAME IMAGE_NAME
+
+go to http://localhost:8000
 ```
