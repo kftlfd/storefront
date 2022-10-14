@@ -92,12 +92,12 @@ const CartContentContainer = styled.div({
   },
 
   "&::-webkit-scrollbar": {
-    width: "5px",
+    width: "8px",
   },
   "&::-webkit-scrollbar-thumb": {
-    background: "#ccc",
+    background: (props) => props.theme.color.bgHover,
   },
   "&::-webkit-scrollbar-thumb:hover": {
-    background: "#999",
+    background: "#777",
   },
 });

@@ -32,7 +32,7 @@ export class ProductGallery extends React.Component {
     return (
       <div className="ProductGallery">
         <div className="previews-section">
-          <div className="previews-container">
+          <PreviewContainer className="previews-container">
             {this.props.gallery.map((img, i) => {
               const status =
                 i === this.state.imgIndexSelected ? "selected" : "";
@@ -45,7 +45,7 @@ export class ProductGallery extends React.Component {
                 />
               );
             })}
-          </div>
+          </PreviewContainer>
           {this.state.galleryLen > 1 && (
             <div className="previews-controlls">
               <PreviewControllBtn onClick={this.prevImage}>
@@ -69,6 +69,18 @@ export class ProductGallery extends React.Component {
     );
   }
 }
+
+const PreviewContainer = styled.div({
+  "&::-webkit-scrollbar": {
+    height: "8px",
+  },
+  "&::-webkit-scrollbar-thumb": {
+    background: (props) => props.theme.color.bgHover,
+  },
+  "&::-webkit-scrollbar-thumb:hover": {
+    background: "#777",
+  },
+});
 
 const PreviewImgBtn = styled.button({
   margin: "2px",
