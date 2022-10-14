@@ -1,24 +1,48 @@
 import React from "react";
 import styled from "styled-components";
 
+import { CHECKOUT } from "./config";
+
 export default class CheckoutForm extends React.Component {
-  formActions = {
-    prevStep: (e) => {
-      e.preventDefault();
-      this.props.prevStep();
+  formSteps = {
+    [CHECKOUT.SHIPPING]: {
+      el: (
+        <>
+          <label htmlFor={"Shipping"}>Shipping info</label>
+          <FormInput name="shipping" type="text" placeholder="Shipping info" />
+        </>
+      ),
+      f: (e) => {
+        e.preventDefault();
+        this.props.nextStep();
+      },
     },
-    shipping: (e) => {
-      e.preventDefault();
-      this.props.nextStep();
+
+    [CHECKOUT.BILLING]: {
+      el: (
+        <>
+          <label htmlFor={"billing"}>Billing info</label>
+          <FormInput name="billing" type="text" placeholder="Billing info" />
+        </>
+      ),
+      f: (e) => {
+        e.preventDefault();
+        this.props.nextStep();
+      },
     },
-    billing: (e) => {
-      e.preventDefault();
-      this.props.nextStep();
+
+    [CHECKOUT.CONFIRM]: {
+      el: <h3>Click Confirm to send the order!</h3>,
+      f: (e) => {
+        e.preventDefault();
+        window.alert("Thanks for shoping at eStore!");
+      },
     },
-    confirm: (e) => {
-      e.preventDefault();
-      window.alert("Thanks for shoping at eStore!");
-    },
+  };
+
+  goBack = (e) => {
+    e.preventDefault();
+    this.props.prevStep();
   };
 
   render() {
@@ -28,25 +52,23 @@ export default class CheckoutForm extends React.Component {
 
     return (
       <Form>
-        <Collapse title={"Shipping"} open={stepId === "shipping"}>
-          <label htmlFor={"address"}>Address</label>
-          <FormInput name="address" type="text" placeholder="Address" />
-        </Collapse>
-
-        <Collapse title={"Billing"} open={stepId === "billing"}>
-          <label htmlFor={"card"}>Card</label>
-          <FormInput name="card" type="text" placeholder="Card" />
-        </Collapse>
-
-        <Collapse title={"Confirm"} open={stepId === "confirm"}>
-          <div>Review Order Summary and click Confirm to send the order</div>
-        </Collapse>
+        {this.props.steps.map((step, index) => {
+          const title = (
+            <>
+              {step.title} {index < this.props.current && <>&#10004;</>}
+            </>
+          );
+          const current = step.id === stepId;
+          return (
+            <Collapse key={step.id} title={title} open={current}>
+              {this.formSteps[step.id].el}
+            </Collapse>
+          );
+        })}
 
         <ButtonsContainer>
-          {!isFirstStep && (
-            <Button onClick={this.formActions.prevStep}>Back</Button>
-          )}
-          <AccentButton onClick={this.formActions[stepId]}>
+          {!isFirstStep && <Button onClick={this.goBack}>Back</Button>}
+          <AccentButton onClick={this.formSteps[stepId].f}>
             {isLastStep ? "Confirm" : "Next"}
           </AccentButton>
         </ButtonsContainer>
@@ -163,5 +185,5 @@ const CollapseContentWrapper = styled.div({
 });
 
 const CollapseContent = styled.div({
-  padding: "1rem 1rem 3rem",
+  padding: "1rem 1rem 2rem",
 });
