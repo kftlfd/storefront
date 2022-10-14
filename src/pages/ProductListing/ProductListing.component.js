@@ -151,16 +151,19 @@ export class ProductListing extends React.Component {
   };
 
   sortingFunctions = {
-    string: (a, b) =>
-      this.props.products[a][this.state.sortBy].toLowerCase() >
-      this.props.products[b][this.state.sortBy].toLowerCase(),
+    string: (a, b) => {
+      let s1 = this.props.products[a][this.state.sortBy].toLowerCase();
+      let s2 = this.props.products[b][this.state.sortBy].toLowerCase();
+      if (s1 === s2) return 0;
+      return s1 > s2 ? 1 : -1;
+    },
 
     price: (a, b) =>
-      this.props.products[a].prices[0].amount >
+      this.props.products[a].prices[0].amount -
       this.props.products[b].prices[0].amount,
 
     inStock: (a, b) =>
-      this.props.products[a].inStock < this.props.products[b].inStock,
+      this.props.products[a].inStock - this.props.products[b].inStock,
   };
 
   sortByFunctions = {
