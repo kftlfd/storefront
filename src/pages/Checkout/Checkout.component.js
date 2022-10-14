@@ -3,6 +3,8 @@ import { PageContainer, PageMainText } from "../../layout/page";
 import CheckoutProgressBar from "./CheckoutProgressBar";
 import CheckoutForm from "./CheckoutForm";
 
+import { CHECKOUT } from "./config";
+
 export default class Checkout extends React.Component {
   constructor(props) {
     super(props);
@@ -13,15 +15,15 @@ export default class Checkout extends React.Component {
 
   checkoutSteps = [
     {
-      id: "shipping",
+      id: CHECKOUT.SHIPPING,
       title: "Shipping",
     },
     {
-      id: "billing",
+      id: CHECKOUT.BILLING,
       title: "Billing",
     },
     {
-      id: "confirm",
+      id: CHECKOUT.CONFIRM,
       title: "Confirm",
     },
   ];
