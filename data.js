@@ -197,7 +197,7 @@ const products = [
   new Product("Apple-iPad-2018", categories.electronics, 154.7)
     .setBrand("Apple")
     .setName("iPad 2018")
-    .setInStock(true)
+    .setInStock(false)
     .setGallery([
       "https://m.media-amazon.com/images/I/61aeen0K1NL._AC_SL1000_.jpg",
       "https://m.media-amazon.com/images/I/51r7ALHm9FL._AC_SL1000_.jpg",
@@ -332,7 +332,7 @@ const products = [
   new Product("Nike-Air-Force", categories.fashion, 130.4)
     .setBrand("Nike")
     .setName("Air Force 1 '07 Low")
-    .setInStock(true)
+    .setInStock(false)
     .setGallery([
       "https://m.media-amazon.com/images/I/61sRKTZ4LjL._AC_UX500_.jpg",
       "https://m.media-amazon.com/images/I/71EwdyOQPpL._AC_UX500_.jpg",
