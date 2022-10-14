@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const path = require("path");
 const data = require("./data");
 
@@ -10,6 +11,7 @@ const delay = () => Math.floor(Math.random() * 400);
 
 app.use(express.static(staticDir));
 app.use(express.json());
+app.use(cors({ origin: "*" }));
 
 app.post("/api/", parseAPIrequest);
 app.get("*", (req, res) => res.sendFile(indexFile));
