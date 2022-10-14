@@ -15,23 +15,29 @@ export class CartItem extends React.Component {
     this.state = {
       imgIndex: 0,
     };
+    this.galleryCount = this.props.product.gallery.length;
   }
 
+  increaseQuantity = () =>
+    this.props.increaseQuantity(this.props.cartItemIndex);
+
+  decreaseQuantity = () =>
+    this.props.decreaseQuantity(this.props.cartItemIndex);
+
+  prevImage = () => {
+    this.setState((prev) => ({
+      imgIndex: (prev.imgIndex - 1 + this.galleryCount) % this.galleryCount,
+    }));
+  };
+
+  nextImage = () => {
+    this.setState((prev) => ({
+      imgIndex: (prev.imgIndex + 1 + this.galleryCount) % this.galleryCount,
+    }));
+  };
+
   render() {
-    const { item, product, mini, increaseQuantity, decreaseQuantity } =
-      this.props;
-
-    const galleryCount = product.gallery.length;
-
-    const prevImage = () =>
-      this.setState((prev) => ({
-        imgIndex: (prev.imgIndex + galleryCount - 1) % galleryCount,
-      }));
-
-    const nextImage = () =>
-      this.setState((prev) => ({
-        imgIndex: (prev.imgIndex + 1) % galleryCount,
-      }));
+    const { item, product, mini } = this.props;
 
     const price = formatPrice(
       product.prices,
@@ -61,11 +67,11 @@ export class CartItem extends React.Component {
           )}
           <div className="quantity-label">Quantity:</div>
           <div className="CartItemQuantity">
-            <QuantityBtn onClick={decreaseQuantity}>
+            <QuantityBtn onClick={this.decreaseQuantity}>
               <QuantityBtnIcon src={minusIcon} mini={mini} />
             </QuantityBtn>
             <div className="count">{item.quantity}</div>
-            <QuantityBtn onClick={increaseQuantity}>
+            <QuantityBtn onClick={this.increaseQuantity}>
               <QuantityBtnIcon src={plusIcon} mini={mini} />
             </QuantityBtn>
           </div>
@@ -77,16 +83,16 @@ export class CartItem extends React.Component {
           img={!mini && product.gallery[this.state.imgIndex]}
         >
           {mini && <ProductImage src={product.gallery[this.state.imgIndex]} />}
-          {!mini && galleryCount > 1 && (
+          {!mini && this.galleryCount > 1 && (
             <div className="gallery-buttons">
-              <button className="gallery-button" onClick={prevImage}>
+              <button className="gallery-button" onClick={this.prevImage}>
                 <img
                   className="gallery-button-img left"
                   src={chevronIcon}
                   alt="Previous"
                 />
               </button>
-              <button className="gallery-button" onClick={nextImage}>
+              <button className="gallery-button" onClick={this.nextImage}>
                 <img
                   className="gallery-button-img right"
                   src={chevronIcon}

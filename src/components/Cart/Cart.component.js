@@ -9,6 +9,18 @@ import { CartContent } from "./CartContent";
 import { CartItem } from "./CartItem";
 
 export class Cart extends React.Component {
+  openCartPage = () => {
+    this.props.toggleMiniCart();
+    this.props.navigate(links.cart);
+  };
+
+  openCheckOut = () => {
+    this.props.toggleMiniCart(false);
+    this.props.history.push(links.checkout);
+  };
+
+  closeCart = () => this.props.toggleMiniCart(false);
+
   render() {
     if (this.props.cart.length < 1) {
       return <div className="EmptyCart">Cart is empty</div>;
@@ -29,18 +41,6 @@ export class Cart extends React.Component {
       },
       { quantity: 0, amount: 0 }
     );
-
-    const openCartPage = () => {
-      this.props.toggleMiniCart();
-      this.props.navigate(links.cart);
-    };
-
-    const openCheckOut = () => {
-      this.props.toggleMiniCart(false);
-      this.props.history.push(links.checkout);
-    };
-
-    const closeCart = () => this.props.toggleMiniCart(false);
 
     return (
       <>
@@ -63,9 +63,10 @@ export class Cart extends React.Component {
               item={item}
               product={this.props.products[item.id]}
               currency={currencyObj.label}
-              increaseQuantity={() => this.props.increaseQuantity(index)}
-              decreaseQuantity={() => this.props.decreaseQuantity(index)}
-              closeCart={closeCart}
+              cartItemIndex={index}
+              increaseQuantity={this.props.increaseQuantity}
+              decreaseQuantity={this.props.decreaseQuantity}
+              closeCart={this.closeCart}
             />
           ))}
         </CartContent>
@@ -98,12 +99,12 @@ export class Cart extends React.Component {
 
         {this.props.mini ? (
           <div className="MiniCartButtons">
-            <Button onClick={openCartPage}>View cart</Button>
-            <AccentButton onClick={openCheckOut}>Checkout</AccentButton>
+            <Button onClick={this.openCartPage}>View cart</Button>
+            <AccentButton onClick={this.openCheckOut}>Checkout</AccentButton>
           </div>
         ) : (
           <div className="FullCartButtons">
-            <AccentButton big={true} onClick={openCheckOut}>
+            <AccentButton big={true} onClick={this.openCheckOut}>
               Checkout
             </AccentButton>
           </div>
