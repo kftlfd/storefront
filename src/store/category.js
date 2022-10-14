@@ -10,7 +10,6 @@ const categorySlice = createSlice({
   initialState: {
     ids: LocalStorage.get(ls.categoryList, []),
     items: {},
-    active: LocalStorage.get(ls.category, null),
   },
 
   reducers: {
@@ -21,11 +20,6 @@ const categorySlice = createSlice({
     loadCategory: (state, action) => {
       const { id, productIds } = action.payload;
       state.items[id] = productIds;
-    },
-    setActiveCategory: (state, action) => {
-      const categoryId = action.payload;
-      state.active = categoryId;
-      LocalStorage.set(ls.category, categoryId);
     },
   },
 });

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink as Link } from "react-router-dom";
 import styled from "styled-components";
 
 import { MainHeader, MainNav, HeaderButtons } from "../../layout/header";
@@ -37,11 +37,7 @@ export class Header extends React.Component {
 
   getCategoryLinks = (El) =>
     this.props.categories.map((id) => (
-      <El
-        key={id}
-        to={links.category(id)}
-        className={id === this.props.activeCategory ? "active" : ""}
-      >
+      <El key={id} to={links.category(id)}>
         {id[0].toUpperCase() + id.slice(1)}
       </El>
     ));

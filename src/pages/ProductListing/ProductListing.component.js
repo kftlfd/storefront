@@ -48,7 +48,6 @@ export class ProductListing extends React.Component {
   }
 
   loadCategoryProducts = () => {
-    this.props.setActiveCategory(this.props.categoryId);
     const title =
       this.props.categoryId.charAt(0).toUpperCase() +
       this.props.categoryId.slice(1);

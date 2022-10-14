@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 
 import { getProductsByCategory, getProductById } from "../../api";
-import { loadCategory, setActiveCategory } from "../../store/category";
+import { loadCategory } from "../../store/category";
 import { loadProductsBasics, loadProduct } from "../../store/products";
 import { addToCart, toggleMiniCart } from "../../store/cart";
 import { ProductListing } from "./ProductListing.component";
@@ -22,7 +22,6 @@ const mapDispatchToProps = (dispatch) => ({
   loadProduct: (payload) => dispatch(loadProduct(payload)),
   addToCart: (payload) => dispatch(addToCart(payload)),
   toggleMiniCart: (payload) => dispatch(toggleMiniCart(payload)),
-  setActiveCategory: (payload) => dispatch(setActiveCategory(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductListing);

@@ -1,4 +1,7 @@
 import React from "react";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
+import { links } from "../../components/Router";
 
 import "./ProductDisplay.scss";
 
@@ -50,7 +53,6 @@ export class ProductDisplay extends React.PureComponent {
     const attributes = product.attributes || [];
     attributes.forEach((attr) => (selectedAttrs[attr.id] = attr.items[0].id));
 
-    this.props.setActiveCategory(product.category);
     this.setState({ loading: false, selectedAttrs });
     document.title = product.name;
   };
@@ -98,6 +100,12 @@ export class ProductDisplay extends React.PureComponent {
           <ProductGallery gallery={product.gallery} name={product.name} />
 
           <div className="ProductInfo">
+            <div className="category">
+              Category:{" "}
+              <CategoryLink to={links.category(product.category)}>
+                {product.category[0].toUpperCase() + product.category.slice(1)}
+              </CategoryLink>
+            </div>
             <div className="brand">{product.brand}</div>
             <div className="name">{product.name}</div>
             {product.attributes.length > 0 && (
@@ -127,3 +135,15 @@ export class ProductDisplay extends React.PureComponent {
     );
   }
 }
+
+const CategoryLink = styled(Link)({
+  fontWeight: 500,
+  color: (props) => props.theme.color.text,
+  textDecoration: "none",
+  ":visited": {
+    color: (props) => props.theme.color.text,
+  },
+  ":hover": {
+    textDecoration: "underline",
+  },
+});
