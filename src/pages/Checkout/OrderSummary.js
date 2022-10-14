@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import chevronIcon from "../../assets/chevron.svg";
+import { formatTotal } from "../../utils/price";
 
 export default class OrderSummary extends React.Component {
   constructor(props) {
@@ -27,17 +28,6 @@ export default class OrderSummary extends React.Component {
       { quantity: 0, amount: 0 }
     );
 
-    const summary = {
-      description: "Order summary",
-      items: this.props.cart,
-      total: {
-        ...cartTotal,
-        tax: cartTotal.amount * 0.21,
-        withTax: cartTotal.amount * 1.21,
-        currency: currencyObj.label,
-      },
-    };
-
     return (
       <SummaryWrapper>
         <Collapse
@@ -45,7 +35,33 @@ export default class OrderSummary extends React.Component {
           open={this.state.open}
           onClick={this.toggle}
         >
-          <pre>{JSON.stringify(summary, 2, 2)}</pre>
+          {this.props.cart.map((cartItem, index) => {
+            const p = this.props.products[cartItem.id];
+            return (
+              <SummaryItem key={cartItem.id + index}>
+                <ItemQuantity>
+                  <b>{cartItem.quantity}</b> &times;
+                </ItemQuantity>
+                <ItemDetails>
+                  <div>
+                    <b>{`${p.brand} ${p.name}`}</b>
+                  </div>
+                  {Object.keys(cartItem.attributes).map((attrId) => (
+                    <div key={attrId}>
+                      {attrId}: <b>{cartItem.attributes[attrId]}</b>
+                    </div>
+                  ))}
+                </ItemDetails>
+                <ItemImage src={p.gallery[0]} />
+              </SummaryItem>
+            );
+          })}
+          <SummaryTotal>
+            <div>Tax 21%:</div>
+            <div>{formatTotal(cartTotal.amount * 0.21, currencyObj)}</div>
+            <div>To pay:</div>
+            <div>{formatTotal(cartTotal.amount * 1.21, currencyObj)}</div>
+          </SummaryTotal>
         </Collapse>
       </SummaryWrapper>
     );
@@ -54,6 +70,34 @@ export default class OrderSummary extends React.Component {
 
 const SummaryWrapper = styled.div({
   paddingBlock: "1rem",
+});
+
+const SummaryItem = styled.div({
+  display: "flex",
+  gap: "0.5rem",
+  marginBottom: "1.5rem",
+});
+const ItemQuantity = styled.div({ flexShrink: 0 });
+const ItemDetails = styled.div({
+  flexGrow: 1,
+  display: "flex",
+  flexDirection: "column",
+  gap: "0.3rem",
+});
+const ItemImage = styled.img({
+  borderRadius: (props) => props.theme.size.borderRadius,
+  maxHeight: "100px",
+  maxWidth: "160px",
+});
+
+const SummaryTotal = styled.div({
+  display: "grid",
+  gridTemplateColumns: "max-content auto",
+  rowGap: "1rem",
+  columnGap: "1.5rem",
+
+  "& :nth-child(2)": { fontWeight: 500 },
+  "& :nth-child(3), & :nth-child(4)": { fontSize: "1.2rem", fontWeight: 700 },
 });
 
 class Collapse extends React.Component {
@@ -90,13 +134,13 @@ class Collapse extends React.Component {
 const CollapseContainer = styled.div({
   border: (props) => `2px solid ${props.theme.color.accent}`,
   borderRadius: (props) => props.theme.size.borderRadius,
+  overflow: "hidden",
 });
 
 const CollapseTitle = styled.h3({
   display: "block",
   margin: 0,
   padding: "0.8rem 1rem",
-  borderRadius: (props) => props.theme.size.borderRadius,
   backgroundColor: (props) => props.theme.color.bg,
   color: (props) => props.theme.color.text,
   display: "flex",
@@ -113,6 +157,7 @@ const Chevron = styled.img({
   height: "1rem",
   filter: (props) => props.theme.img.filter,
   rotate: (props) => (props.up ? "-180deg" : ""),
+  transition: (props) => props.theme.transition.default,
 });
 
 const CollapseContentWrapper = styled.div({
