@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { ListingItem } from "./ListingItem";
@@ -18,6 +19,19 @@ import {
   ListingsGrid,
 } from "./ProductListing.ui";
 import chevronIcon from "../../assets/chevron.svg";
+
+const ITEMS_ON_PAGE = 8;
+
+function getPage(s) {
+  let start = s.search("p=");
+  if (start < 0) return 0;
+  start += 2;
+  let end = s.indexOf(";", start);
+  if (end < 0) end = s.length;
+  let page = s.slice(start, end);
+  if (!page) return 0;
+  return parseInt(page);
+}
 
 export class ProductListing extends React.Component {
   constructor(props) {
@@ -212,25 +226,66 @@ export class ProductListing extends React.Component {
     </CategoryHeader>
   );
 
+  scrollToTop = () => window.scrollTo(0, 0);
+
   renderListingsGrid = () => {
-    const items = [...(this.props.categoryItems || [])];
+    let items = [...(this.props.categoryItems || [])];
 
     if (this.state.sortBy) items.sort(this.sortByFunctions[this.state.sortBy]);
 
     if (!this.state.sortAsc) items.reverse();
 
+    const needPagination = items.length > ITEMS_ON_PAGE;
+
+    const page = getPage(this.props.location.search);
+    const currentPage = page > 0 ? page : 1;
+    const hasPrev = currentPage > 1;
+    const hasNext = currentPage < Math.ceil(items.length / ITEMS_ON_PAGE);
+
+    if (needPagination) {
+      const p = page > 0 ? page - 1 : page;
+      const start = p * ITEMS_ON_PAGE;
+      const end = start + ITEMS_ON_PAGE;
+      items = items.slice(start, end);
+    }
+
     return (
-      <ListingsGrid>
-        {items.map((id) => (
-          <ListingItem
-            key={id}
-            item={this.props.products[id]}
-            currency={this.props.currency}
-            navigate={this.props.navigate}
-            addToCart={this.addToCart}
-          />
-        ))}
-      </ListingsGrid>
+      <>
+        <ListingsGrid>
+          {items.map((id) => (
+            <ListingItem
+              key={id}
+              item={this.props.products[id]}
+              currency={this.props.currency}
+              navigate={this.props.navigate}
+              addToCart={this.addToCart}
+            />
+          ))}
+        </ListingsGrid>
+        {needPagination && (
+          <Pagination>
+            {hasPrev && (
+              <div onClick={this.scrollToTop}>
+                <PaginationBtn to={`?p=${currentPage - 1}`}>
+                  <PageArrow src={chevronIcon} />
+                </PaginationBtn>
+              </div>
+            )}
+            <div onClick={this.scrollToTop}>
+              <PaginationBtn to={"?p=" + currentPage}>
+                {currentPage}
+              </PaginationBtn>
+            </div>
+            {hasNext && (
+              <div onClick={this.scrollToTop}>
+                <PaginationBtn to={`?p=${currentPage + 1}`}>
+                  <PageArrow src={chevronIcon} right={true} />
+                </PaginationBtn>
+              </div>
+            )}
+          </Pagination>
+        )}
+      </>
     );
   };
 
@@ -239,10 +294,43 @@ export class ProductListing extends React.Component {
     if (this.state.loading) return this.renderLoading();
 
     return (
-      <PageContainer>
+      <PageContainer id="listings">
         {this.renderCategoryHeader()}
         {this.renderListingsGrid()}
       </PageContainer>
     );
   }
 }
+
+import styled from "styled-components";
+const Pagination = styled.div({
+  paddingBottom: "4rem",
+  display: "flex",
+  justifyContent: "center",
+  gap: "0.5rem",
+});
+const PaginationBtn = styled(Link)({
+  padding: 0,
+  height: "2rem",
+  aspectRatio: "1",
+  backgroundColor: (props) => props.theme.color.bgButton,
+  borderRadius: (props) => props.theme.size.borderRadius,
+  border: "none",
+  display: "grid",
+  placeContent: "center",
+  fontFamily: "inherit",
+  fontSize: "1rem",
+  fontWeight: 400,
+  textDecoration: "none",
+  color: (props) => props.theme.color.text,
+  cursor: "pointer",
+  transition: (props) => props.theme.transition.default,
+  "&:hover": {
+    backgroundColor: (props) => props.theme.color.bgHover,
+  },
+});
+const PageArrow = styled.img({
+  height: "1rem",
+  filter: (props) => props.theme.img.filter,
+  rotate: (props) => (props.right ? "-90deg" : "90deg"),
+});
