@@ -5,7 +5,7 @@
   gap: 3rem;
 
   @media (max-width: 799px) {
-    grid-template-columns: 1fr;
+    grid-template-columns: 100%;
   }
 }
 
@@ -49,13 +49,13 @@
   }
 
   @media (max-width: 799px) {
-    grid-template-columns: 1fr;
+    grid-template-columns: 100%;
     max-width: calc(100vw - 2rem);
     max-height: none;
 
     .previews-section {
       flex-direction: row;
-      max-width: inherit;
+      max-width: 100%;
 
       .previews-container {
         flex-direction: row;
