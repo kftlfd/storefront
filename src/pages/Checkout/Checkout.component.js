@@ -94,6 +94,7 @@ const CheckoutContainer = styled(PageContainer)({
 
   "@media (min-width: 800px)": {
     gridTemplateColumns: "3fr 2fr",
+    gridTemplateRows: "max-content max-content",
     columnGap: "3rem",
 
     "& :nth-child(1)": { gridColumnStart: 1, gridColumnEnd: "span 2" },
