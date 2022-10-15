@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { SortDropdown } from "./SortDropdown";
@@ -14,6 +13,9 @@ import {
   Button,
   ButtonIcon,
   ListingsGrid,
+  Pagination,
+  PaginationBtn,
+  PageArrow,
 } from "./ProductListing.ui";
 import chevronIcon from "../../assets/chevron.svg";
 
@@ -198,6 +200,30 @@ export class ProductListing extends React.Component {
 
   scrollToTop = () => window.scrollTo(0, 0);
 
+  renderPagination = (currentPage, hasPrev, hasNext) => (
+    <Pagination>
+      {hasPrev && (
+        <div onClick={this.scrollToTop}>
+          <PaginationBtn to={`?p=${currentPage - 1}`}>
+            <PageArrow src={chevronIcon} />
+          </PaginationBtn>
+        </div>
+      )}
+
+      <div onClick={this.scrollToTop}>
+        <PaginationBtn to={"?p=" + currentPage}>{currentPage}</PaginationBtn>
+      </div>
+
+      {hasNext && (
+        <div onClick={this.scrollToTop}>
+          <PaginationBtn to={`?p=${currentPage + 1}`}>
+            <PageArrow src={chevronIcon} right={true} />
+          </PaginationBtn>
+        </div>
+      )}
+    </Pagination>
+  );
+
   renderListingsGrid = () => {
     let items = [...(this.props.categoryItems || [])];
 
@@ -233,29 +259,7 @@ export class ProductListing extends React.Component {
           ))}
         </ListingsGrid>
 
-        {needPagination && (
-          <Pagination>
-            {hasPrev && (
-              <div onClick={this.scrollToTop}>
-                <PaginationBtn to={`?p=${currentPage - 1}`}>
-                  <PageArrow src={chevronIcon} />
-                </PaginationBtn>
-              </div>
-            )}
-            <div onClick={this.scrollToTop}>
-              <PaginationBtn to={"?p=" + currentPage}>
-                {currentPage}
-              </PaginationBtn>
-            </div>
-            {hasNext && (
-              <div onClick={this.scrollToTop}>
-                <PaginationBtn to={`?p=${currentPage + 1}`}>
-                  <PageArrow src={chevronIcon} right={true} />
-                </PaginationBtn>
-              </div>
-            )}
-          </Pagination>
-        )}
+        {needPagination && this.renderPagination(currentPage, hasPrev, hasNext)}
       </>
     );
   };
@@ -272,36 +276,3 @@ export class ProductListing extends React.Component {
     );
   }
 }
-
-import styled from "styled-components";
-const Pagination = styled.div({
-  paddingBottom: "4rem",
-  display: "flex",
-  justifyContent: "center",
-  gap: "0.5rem",
-});
-const PaginationBtn = styled(Link)({
-  padding: 0,
-  height: "2rem",
-  aspectRatio: "1",
-  backgroundColor: (props) => props.theme.color.bgButton,
-  borderRadius: (props) => props.theme.size.borderRadius,
-  border: "none",
-  display: "grid",
-  placeContent: "center",
-  fontFamily: "inherit",
-  fontSize: "1rem",
-  fontWeight: 400,
-  textDecoration: "none",
-  color: (props) => props.theme.color.text,
-  cursor: "pointer",
-  transition: (props) => props.theme.transition.default,
-  "&:hover": {
-    backgroundColor: (props) => props.theme.color.bgHover,
-  },
-});
-const PageArrow = styled.img({
-  height: "1rem",
-  filter: (props) => props.theme.img.filter,
-  rotate: (props) => (props.right ? "-90deg" : "90deg"),
-});

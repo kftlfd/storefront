@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { hide } from "../../layout/header";
 
@@ -127,6 +128,40 @@ const ListingsGrid = styled.div({
   },
 });
 
+const Pagination = styled.div({
+  paddingBottom: "4rem",
+  display: "flex",
+  justifyContent: "center",
+  gap: "0.5rem",
+});
+
+const PaginationBtn = styled(Link)({
+  padding: 0,
+  height: "2rem",
+  aspectRatio: "1",
+  backgroundColor: (props) => props.theme.color.bgButton,
+  borderRadius: (props) => props.theme.size.borderRadius,
+  border: "none",
+  display: "grid",
+  placeContent: "center",
+  fontFamily: "inherit",
+  fontSize: "1rem",
+  fontWeight: 400,
+  textDecoration: "none",
+  color: (props) => props.theme.color.text,
+  cursor: "pointer",
+  transition: (props) => props.theme.transition.default,
+  "&:hover": {
+    backgroundColor: (props) => props.theme.color.bgHover,
+  },
+});
+
+const PageArrow = styled.img({
+  height: "1rem",
+  filter: (props) => props.theme.img.filter,
+  rotate: (props) => (props.right ? "-90deg" : "90deg"),
+});
+
 export {
   CategoryHeader,
   CategoryTitle,
@@ -139,4 +174,7 @@ export {
   Button,
   ButtonIcon,
   ListingsGrid,
+  Pagination,
+  PaginationBtn,
+  PageArrow,
 };
