@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { LoadingSpinner } from "../../components/LoadingSpinner";
+import { SortDropdown } from "./SortDropdown";
 import { ListingItem } from "./ListingItem";
 
 import { PageContainer, PageMainText } from "../../layout/page";
@@ -10,10 +11,6 @@ import {
   CategoryTitle,
   CategorySorting,
   SortingLabel,
-  DropdownContainer,
-  DropdownMenu,
-  DropdownMenuButton,
-  DropdownMenuBackdrop,
   Button,
   ButtonIcon,
   ListingsGrid,
@@ -39,8 +36,6 @@ export class ProductListing extends React.Component {
     this.state = {
       loading: true,
       error: null,
-
-      sortDropdownOpen: false,
       sortBy: null,
       sortAsc: true,
     };
@@ -107,14 +102,6 @@ export class ProductListing extends React.Component {
     this.props.toggleMiniCart(true);
   };
 
-  toggleSortDropdown = () => {
-    this.setState((prev) => ({ sortDropdownOpen: !prev.sortDropdownOpen }));
-  };
-
-  closeSortDropdown = () => {
-    this.setState({ sortDropdownOpen: false });
-  };
-
   toggleSortOrder = () => {
     this.setState((prev) => ({ sortAsc: !prev.sortAsc }));
   };
@@ -122,23 +109,23 @@ export class ProductListing extends React.Component {
   sortOptions = [
     {
       id: "category",
-      f: () => this.setState({ sortBy: "category", sortDropdownOpen: false }),
+      f: () => this.setState({ sortBy: "category" }),
     },
     {
       id: "name",
-      f: () => this.setState({ sortBy: "name", sortDropdownOpen: false }),
+      f: () => this.setState({ sortBy: "name" }),
     },
     {
       id: "brand",
-      f: () => this.setState({ sortBy: "brand", sortDropdownOpen: false }),
+      f: () => this.setState({ sortBy: "brand" }),
     },
     {
       id: "price",
-      f: () => this.setState({ sortBy: "price", sortDropdownOpen: false }),
+      f: () => this.setState({ sortBy: "price" }),
     },
     {
       id: "inStock",
-      f: () => this.setState({ sortBy: "inStock", sortDropdownOpen: false }),
+      f: () => this.setState({ sortBy: "inStock" }),
     },
   ];
 
@@ -194,34 +181,14 @@ export class ProductListing extends React.Component {
         {this.props.categoryId.charAt(0).toUpperCase() +
           this.props.categoryId.slice(1)}
       </CategoryTitle>
+
       <CategorySorting>
         <SortingLabel>Sort by</SortingLabel>
-
-        <DropdownContainer>
-          <Button onClick={this.toggleSortDropdown}>
-            {this.state.sortBy
-              ? this.sortOptionsTitles[this.state.sortBy]
-              : "None"}
-          </Button>
-
-          <DropdownMenu className={this.state.sortDropdownOpen ? "show" : ""}>
-            {this.sortOptions.map(({ id, f }) => (
-              <DropdownMenuButton
-                key={id}
-                onClick={f}
-                className={this.state.sortBy === id ? "selected" : ""}
-              >
-                {this.sortOptionsTitles[id]}
-              </DropdownMenuButton>
-            ))}
-          </DropdownMenu>
-
-          <DropdownMenuBackdrop
-            show={this.state.sortDropdownOpen}
-            onClick={this.closeSortDropdown}
-          />
-        </DropdownContainer>
-
+        <SortDropdown
+          sortBy={this.state.sortBy}
+          sortOptions={this.sortOptions}
+          sortTitles={this.sortOptionsTitles}
+        />
         <Button onClick={this.toggleSortOrder}>
           <ButtonIcon src={chevronIcon} up={this.state.sortAsc} />
         </Button>
@@ -265,6 +232,7 @@ export class ProductListing extends React.Component {
             />
           ))}
         </ListingsGrid>
+
         {needPagination && (
           <Pagination>
             {hasPrev && (
