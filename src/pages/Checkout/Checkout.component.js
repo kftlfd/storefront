@@ -104,8 +104,8 @@ const CheckoutContainer = styled(PageContainer)({
     gridTemplateRows: "max-content max-content",
     columnGap: "3rem",
 
-    "& :nth-child(1)": { gridColumnStart: 1, gridColumnEnd: "span 2" },
-    "& :nth-child(2)": { gridRow: 2, gridColumn: 2 },
-    "& :nth-child(3)": { gridRow: 2, gridColumn: 1 },
+    "& > :nth-child(1)": { gridColumnStart: 1, gridColumnEnd: "span 2" },
+    "& > :nth-child(2)": { gridRow: 2, gridColumn: 2 },
+    "& > :nth-child(3)": { gridRow: 2, gridColumn: 1 },
   },
 });

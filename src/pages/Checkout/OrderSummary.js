@@ -94,8 +94,11 @@ const SummaryTotal = styled.div({
   rowGap: "1rem",
   columnGap: "1.5rem",
 
-  "& :nth-child(2)": { fontWeight: 500 },
-  "& :nth-child(3), & :nth-child(4)": { fontSize: "1.2rem", fontWeight: 700 },
+  "& > :nth-child(2)": { fontWeight: 500 },
+  "& > :nth-child(3), & > :nth-child(4)": {
+    fontSize: "1.2rem",
+    fontWeight: 700,
+  },
 });
 
 class Collapse extends React.Component {
