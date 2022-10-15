@@ -4,6 +4,8 @@ Build with React (class components), Redux, React-Router-DOM and styled-componen
 
 ExpressJS server is used to serve the app and the fake data.
 
+Video showcase: https://www.youtube.com/watch?v=r8tBN6XFiRk
+
 # Setup
 
 ## Development
