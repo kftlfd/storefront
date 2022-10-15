@@ -62,10 +62,20 @@ const cartSlice = createSlice({
         state.miniCartOpen = !state.miniCartOpen;
       }
     },
+
+    emptyCart: (state) => {
+      state.items = [];
+      LocalStorage.set(ls.cart, state.items);
+    },
   },
 });
 
 export default cartSlice.reducer;
 
-export const { addToCart, increaseQuantity, decreaseQuantity, toggleMiniCart } =
-  cartSlice.actions;
+export const {
+  addToCart,
+  increaseQuantity,
+  decreaseQuantity,
+  toggleMiniCart,
+  emptyCart,
+} = cartSlice.actions;

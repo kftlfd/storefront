@@ -36,7 +36,7 @@ export default class Router extends React.Component {
     },
     {
       path: "/checkout/",
-      render: () => <Checkout />,
+      render: (props) => <Checkout {...props} />,
     },
     {
       path: "*",

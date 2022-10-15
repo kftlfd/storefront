@@ -1,4 +1,5 @@
 import { connect } from "react-redux";
+import { emptyCart } from "../../store/cart";
 import Checkout from "./Checkout.component";
 
 const mapStateToProps = (state) => ({
@@ -8,6 +9,8 @@ const mapStateToProps = (state) => ({
   currencySelected: state.currency.selected,
 });
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = (dispatch) => ({
+  emptyCart: () => dispatch(emptyCart()),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Checkout);

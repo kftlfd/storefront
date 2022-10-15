@@ -53,6 +53,12 @@ export default class Checkout extends React.Component {
     }));
   };
 
+  onConfirm = () => {
+    window.alert("Thanks for shopping at eStore!");
+    this.props.emptyCart();
+    this.props.history.push("/");
+  };
+
   renderEmpty() {
     return (
       <PageContainer>
@@ -81,6 +87,7 @@ export default class Checkout extends React.Component {
           current={this.state.currentStepIndex}
           prevStep={this.prevStep}
           nextStep={this.nextStep}
+          onConfirm={this.onConfirm}
         />
       </CheckoutContainer>
     );

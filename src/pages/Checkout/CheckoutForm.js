@@ -35,7 +35,7 @@ export default class CheckoutForm extends React.Component {
       el: <h3>Click Confirm to send the order!</h3>,
       f: (e) => {
         e.preventDefault();
-        window.alert("Thanks for shoping at eStore!");
+        this.props.onConfirm();
       },
     },
   };
