@@ -30,4 +30,5 @@ export type Product = {
   prices: Price[];
   attributes?: Attribute[];
   description?: string;
+  loaded?: boolean;
 };

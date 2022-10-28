@@ -29,7 +29,7 @@ async function query<T>(url: string, body: QueryBody) {
 }
 
 export async function getCategoriesAndCurrencies() {
-  const res = await query<{ currencies: Category[]; categories: Currency[] }>(
+  const res = await query<{ currencies: Currency[]; categories: Category[] }>(
     apiUrl,
     { currencies: "", categories: "" }
   );

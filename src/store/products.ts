@@ -35,11 +35,9 @@ const productsLS = {
   },
 };
 
-interface ProductsState {
-  items: Product[];
-}
+type Products = { [id: string]: Product };
 
-const initialState: ProductsState = {
+const initialState: { items: Products } = {
   items: productsLS.load(),
 };
 
@@ -58,7 +56,7 @@ const productsSlice = createSlice({
       productsLS.add(product);
     },
 
-    loadProductsBasics: (state, action: PayloadAction<Product[]>) => {
+    loadProductsBasics: (state, action: PayloadAction<Products>) => {
       const productItems = action.payload;
       state.items = {
         ...productItems,
