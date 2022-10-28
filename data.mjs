@@ -526,8 +526,8 @@ function getCategories() {
  * @returns {{}}
  */
 function getCategoryProducts() {
-  let categoryProducts = {};
-  categoryProducts.all = [];
+  /** @type {{[index: string]: any[]}} */
+  let categoryProducts = {all: []};
   for (let c of Object.values(categories)) {
     categoryProducts[c] = [];
   }
@@ -568,7 +568,7 @@ function getProducts() {
 // exports
 //
 
-module.exports = {
+export const data = {
   currencies: getCurrencies(),
   categories: getCategories(),
   categoryproducts: getCategoryProducts(),

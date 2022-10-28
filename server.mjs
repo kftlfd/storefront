@@ -1,12 +1,17 @@
-const express = require("express");
-const cors = require("cors");
-const path = require("path");
-const data = require("./data");
+// @ts-check
+
+import express from "express";
+import cors from "cors";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
+import { data } from "./data.mjs";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 const port = process.env.PORT || 8000;
-const staticDir = path.join(__dirname, "build");
-const indexFile = path.join(__dirname, "build", "index.html");
+const staticDir = join(__dirname, "build");
+const indexFile = join(__dirname, "build", "index.html");
 const delay = () => Math.floor(Math.random() * 400);
 
 app.use(express.static(staticDir));
@@ -20,6 +25,10 @@ app.listen(port, () =>
   console.log(`Started server at:\thttp://localhost:${port}`)
 );
 
+/**
+ * @param {{ body: any; }} req
+ * @param {{ status: (arg0: number) => void; send: (arg0: {}) => void; }} res
+ */
 function parseAPIrequest(req, res) {
   /*
   expect POST request with json body:
@@ -49,16 +58,31 @@ function parseAPIrequest(req, res) {
   setTimeout(() => res.send(resp), delay());
 }
 
+/**
+ * @param {{ hasOwnProperty: (arg0: string) => any; }} request
+ * @param {{ currencies?: any; }} response
+ * @param {{}} errors
+ */
 function checkCurrencies(request, response, errors) {
   if (!request.hasOwnProperty("currencies")) return;
   response.currencies = data.currencies;
 }
 
+/**
+ * @param {{ hasOwnProperty: (arg0: string) => any; }} request
+ * @param {{ categories?: any; }} response
+ * @param {{}} errors
+ */
 function checkCategories(request, response, errors) {
   if (!request.hasOwnProperty("categories")) return;
   response.categories = data.categories;
 }
 
+/**
+ * @param {{ hasOwnProperty: (arg0: string) => any; category: any; }} request
+ * @param {{ category?: any; }} response
+ * @param {{ category?: any; }} errors
+ */
 function checkCategory(request, response, errors) {
   if (!request.hasOwnProperty("category")) return;
 
@@ -92,6 +116,11 @@ function checkCategory(request, response, errors) {
   response.category = productItems;
 }
 
+/**
+ * @param {{ hasOwnProperty: (arg0: string) => any; product: any; }} request
+ * @param {{ product?: any; }} response
+ * @param {{ category?: any; product?: any; }} errors
+ */
 function checkProduct(request, response, errors) {
   if (!request.hasOwnProperty("product")) return;
 
@@ -110,6 +139,11 @@ function checkProduct(request, response, errors) {
   response.product = data.products[productId];
 }
 
+/**
+ * @param {{ hasOwnProperty: (arg0: string) => any; products: any; }} request
+ * @param {{ products?: any; }} response
+ * @param {{ products?: any; }} errors
+ */
 function checkProducts(request, response, errors) {
   if (!request.hasOwnProperty("products")) return;
 
