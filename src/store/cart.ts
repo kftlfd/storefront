@@ -1,19 +1,40 @@
 import { createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
 import { ls, LocalStorage } from "./localStorage";
+
+type CartItem = {
+  id: string;
+  attributes: {
+    [attrId: string]: string;
+  };
+  quantity: number;
+};
+
+const initialState: {
+  items: CartItem[];
+  miniCartOpen: boolean;
+} = {
+  items: LocalStorage.get(ls.cart, []),
+  miniCartOpen: false,
+};
 
 const cartSlice = createSlice({
   name: "cart",
 
-  initialState: {
-    items: LocalStorage.get(ls.cart, []),
-    miniCartOpen: false,
-  },
+  initialState,
 
   reducers: {
-    addToCart: (state, action) => {
+    addToCart: (
+      state,
+      action: PayloadAction<{
+        id: string;
+        attributes: {
+          [attrId: string]: string;
+        };
+      }>
+    ) => {
       const item = action.payload;
-      // item = {id: Str, attributes: {attrId: valId}, data: {full product info}}
 
       let found = false;
       state.items.find((inCart) => {
@@ -39,13 +60,13 @@ const cartSlice = createSlice({
       LocalStorage.set(ls.cart, state.items);
     },
 
-    increaseQuantity: (state, action) => {
+    increaseQuantity: (state, action: PayloadAction<number>) => {
       const index = action.payload;
       state.items[index].quantity++;
       LocalStorage.set(ls.cart, state.items);
     },
 
-    decreaseQuantity: (state, action) => {
+    decreaseQuantity: (state, action: PayloadAction<number>) => {
       const index = action.payload;
       if (state.items[index].quantity <= 1) {
         state.items.splice(index, 1);
@@ -55,7 +76,7 @@ const cartSlice = createSlice({
       LocalStorage.set(ls.cart, state.items);
     },
 
-    toggleMiniCart: (state, action) => {
+    toggleMiniCart: (state, action: PayloadAction<boolean | undefined>) => {
       if (action.payload !== undefined) {
         state.miniCartOpen = action.payload;
       } else {

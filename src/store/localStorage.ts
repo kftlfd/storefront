@@ -9,16 +9,18 @@ export const ls = {
 };
 
 export const exp = {
-  seconds: (n) => n * 1000,
-  minutes: (n) => n * 60000, // 1000 * 60
-  hours: (n) => n * 3600000, // 1000 * 60 * 60
-  days: (n) => n * 86400000, // 1000 * 60 * 60 * 24
+  seconds: (n: number) => n * 1000,
+  minutes: (n: number) => n * 60000, // 1000 * 60
+  hours: (n: number) => n * 3600000, // 1000 * 60 * 60
+  days: (n: number) => n * 86400000, // 1000 * 60 * 60 * 24
 };
 
 export const LocalStorage = {
-  get(key, defaultVal) {
+  get(key: string, defaultVal: any) {
     try {
-      const { data, expire } = JSON.parse(window.localStorage.getItem(key));
+      const { data, expire } = JSON.parse(
+        window.localStorage.getItem(key) || ""
+      );
       const currentTime = new Date().getTime();
       if ((expire && expire < currentTime) || !data) {
         window.localStorage.removeItem(key);
@@ -31,7 +33,7 @@ export const LocalStorage = {
     }
   },
 
-  set(key, data, duration = null) {
+  set(key: string, data: any, duration: number | null = null) {
     try {
       const currentTime = new Date().getTime();
       const expire = duration ? currentTime + duration : null;

@@ -1,4 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
+
+import type { Product } from "../api/types";
 
 import { LocalStorage, ls, exp } from "./localStorage";
 
@@ -22,7 +25,7 @@ const productsLS = {
     return data;
   },
 
-  add(item) {
+  add(item: Product) {
     const products = LocalStorage.get(ls.products, {});
     products[item.id] = {
       ...item,
@@ -32,15 +35,21 @@ const productsLS = {
   },
 };
 
+interface ProductsState {
+  items: Product[];
+}
+
+const initialState: ProductsState = {
+  items: productsLS.load(),
+};
+
 const productsSlice = createSlice({
   name: "products",
 
-  initialState: {
-    items: productsLS.load(),
-  },
+  initialState,
 
   reducers: {
-    loadProduct: (state, action) => {
+    loadProduct: (state, action: PayloadAction<Product>) => {
       const product = action.payload;
       state.items = {
         ...state.items,
@@ -48,7 +57,8 @@ const productsSlice = createSlice({
       };
       productsLS.add(product);
     },
-    loadProductsBasics: (state, action) => {
+
+    loadProductsBasics: (state, action: PayloadAction<Product[]>) => {
       const productItems = action.payload;
       state.items = {
         ...productItems,

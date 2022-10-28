@@ -6,7 +6,7 @@ import products from "./products";
 import cart from "./cart";
 import settings from "./settings";
 
-export default configureStore({
+const store = configureStore({
   reducer: {
     currency,
     category,
@@ -15,3 +15,7 @@ export default configureStore({
     settings,
   },
 });
+
+export default store;
+export type StoreState = ReturnType<typeof store.getState>;
+export type StoreDispatch = typeof store.dispatch;

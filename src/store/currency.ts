@@ -1,19 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
+import type { Currency } from "../api/types";
 import { LocalStorage, ls, exp } from "./localStorage";
 
-const expire = exp.seconds(1);
+const expire: number = exp.seconds(1);
+
+const initialState: { list: Currency[]; selected: string } = {
+  list: LocalStorage.get(ls.currencyList, []),
+  selected: LocalStorage.get(ls.currency, null),
+};
 
 const currencySlice = createSlice({
   name: "currency",
 
-  initialState: {
-    list: LocalStorage.get(ls.currencyList, []),
-    selected: LocalStorage.get(ls.currency, null),
-  },
+  initialState,
 
   reducers: {
-    loadCurrencies: (state, action) => {
+    loadCurrencies: (state, action: PayloadAction<Currency[]>) => {
       const currencies = action.payload;
 
       const curr = state.selected;
@@ -27,7 +31,8 @@ const currencySlice = createSlice({
       LocalStorage.set(ls.currencyList, currencies, expire);
       LocalStorage.set(ls.currency, label);
     },
-    selectCurrency: (state, action) => {
+
+    selectCurrency: (state, action: PayloadAction<string>) => {
       const label = action.payload;
       state.selected = label;
       LocalStorage.set(ls.currency, label);

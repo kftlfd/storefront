@@ -2,12 +2,14 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import { LocalStorage, ls } from "./localStorage";
 
+const initialState: { theme: "light" | "dark" } = {
+  theme: LocalStorage.get(ls.theme, "light"),
+};
+
 const settingsSlice = createSlice({
   name: "settings",
 
-  initialState: {
-    theme: LocalStorage.get(ls.theme, "light"),
-  },
+  initialState,
 
   reducers: {
     switchTheme: (state) => {
