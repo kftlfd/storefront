@@ -8,8 +8,13 @@ import store from "./store";
 import ThemeProvider from "./components/ThemeContext";
 import App from "./components/App";
 
-const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
-root.render(
+const rootEl = document.getElementById("root");
+
+if (!rootEl) {
+  throw new Error("No root element found");
+}
+
+ReactDOM.createRoot(rootEl).render(
   // <React.StrictMode>
   <StoreProvider store={store}>
     <ThemeProvider>

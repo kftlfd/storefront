@@ -139,7 +139,6 @@ const CollapseContainer = styled.div({
 });
 
 const CollapseTitle = styled.h3({
-  display: "block",
   margin: 0,
   padding: "0.8rem 1rem",
   backgroundColor: (props) => props.theme.color.bg,
