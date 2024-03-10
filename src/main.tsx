@@ -4,9 +4,9 @@ import { Provider as StoreProvider } from "react-redux";
 
 import "./assets/index.scss";
 
-import store from "./store";
-import ThemeProvider from "./components/ThemeContext";
-import App from "./components/App";
+import store from "@/store";
+import ThemeProvider from "@/components/ThemeContext";
+import App from "@/components/App";
 
 const rootEl = document.getElementById("root");
 
