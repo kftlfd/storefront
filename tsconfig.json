@@ -1,5 +1,5 @@
 {
-  "include": ["src", "vite.config.js"],
+  "include": ["src", "vite.config.js", ".eslintrc.cjs", ".prettierrc.js"],
 
   "compilerOptions": {
     "target": "ES2022",
