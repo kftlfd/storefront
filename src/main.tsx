@@ -3,8 +3,8 @@ import { Provider as StoreProvider } from 'react-redux';
 import './assets/index.scss';
 
 import App from '@/components/App';
-import ThemeProvider from '@/components/ThemeContext';
 import store from '@/store';
+import ThemeProvider from '@/theme/ThemeProvider';
 
 const rootEl = document.getElementById('root');
 

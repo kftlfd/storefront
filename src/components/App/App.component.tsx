@@ -1,19 +1,19 @@
-import React from "react";
+import React from 'react';
 
-import { getCategoriesAndCurrencies, getProductsByIds } from "../../api";
-import type { StoreProps } from "./App.container";
-import { PageWrapper } from "../../layout/page";
-import Header from "../Header";
-import Footer from "../Footer";
-import Router, { links } from "../Router";
-import { SplashScreen } from "../SplashScreen";
+import { getCategoriesAndCurrencies, getProductsByIds } from '../../api';
+import { PageWrapper } from '../../layout/page';
+import Footer from '../Footer';
+import Header from '../Header';
+import Router, { links } from '../Router';
+import { SplashScreen } from '../SplashScreen';
+import type { StoreProps } from './App.container';
 
 type AppProps = {} & StoreProps;
 
 type AppState = {
-  loading: boolean,
-  error: null | string,
-}
+  loading: boolean;
+  error: null | string;
+};
 
 export class App extends React.Component<AppProps, AppState> {
   constructor(props: AppProps) {
@@ -31,8 +31,7 @@ export class App extends React.Component<AppProps, AppState> {
   setupApp = async () => {
     // fetch list of categories and currencies if none/expired
     if (this.props.categories.length < 1 || this.props.currencies.length < 1) {
-      const { categories, currencies } =
-        await getCategoriesAndCurrencies();
+      const { categories, currencies } = await getCategoriesAndCurrencies();
       this.props.loadCategoriesList(categories);
       this.props.loadCurrencies(currencies);
     }
@@ -49,7 +48,7 @@ export class App extends React.Component<AppProps, AppState> {
     });
     if (idsToFetch.length > 0) {
       const products = await getProductsByIds(idsToFetch);
-      for (let p of products) {
+      for (const p of products) {
         this.props.loadProduct(p);
       }
     }
@@ -66,7 +65,7 @@ export class App extends React.Component<AppProps, AppState> {
       );
     }
 
-    if (this.state.loading) {
+    if (this.state.loading || true) {
       return (
         <PageWrapper>
           <SplashScreen />
