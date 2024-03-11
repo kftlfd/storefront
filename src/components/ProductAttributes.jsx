@@ -40,11 +40,11 @@ export class ProductAttributes extends React.Component {
   }
 }
 
-const AttributesList = styled.div({
+const AttributesList = styled.div(() => ({
   display: "flex",
   flexDirection: "column",
   gap: (props) => (props.mini ? "0.5rem" : "1rem"),
-});
+}));
 
 const AttributeHeading = styled.div({
   textTransform: (props) => (props.mini ? "none" : "none"),

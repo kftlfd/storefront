@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { links } from "../../components/Router";
+import { links } from "../Router";
 
 import plusIcon from "../../assets/plus.svg";
 import minusIcon from "../../assets/minus.svg";

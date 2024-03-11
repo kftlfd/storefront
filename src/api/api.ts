@@ -1,10 +1,7 @@
 import type { Category, Currency, Product } from "./types";
+import env from "../env";
 
-const devenv = process.env.NODE_ENV === "development";
-const port = process.env.PORT || 8000;
-const apiUrl = devenv
-  ? `${window.location.protocol}//localhost:${port}/api/`
-  : `${window.location.origin}/api/`;
+const apiUrl = env.apiUrl;
 
 type QueryBody = {
   categories?: "";

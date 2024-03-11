@@ -1,13 +1,17 @@
-FROM node:latest
-
+FROM node:18.17-alpine as frontend
 WORKDIR /app
-
-COPY package.json yarn.lock ./
+COPY package.json yarn.lock  ./
 RUN yarn install
-
 COPY . .
 RUN yarn build
 
+FROM node:18.17-alpine
+WORKDIR /app
+COPY backend/package.json backend/yarn.lock ./
+RUN yarn install
+COPY backend .
+COPY --from=frontend /app/dist build/
+
 EXPOSE 8000
 
-CMD ["yarn", "serve"]
+CMD ["yarn", "start"]

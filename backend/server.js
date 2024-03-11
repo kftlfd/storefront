@@ -2,9 +2,10 @@
 
 import express from "express";
 import cors from "cors";
-import { fileURLToPath } from "url";
-import { dirname, join } from "path";
-import { data } from "./data.mjs";
+import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
+
+import { data } from "./data.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
