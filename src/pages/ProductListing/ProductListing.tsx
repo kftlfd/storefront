@@ -1,39 +1,85 @@
-import React from "react";
+import { Component } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { LoadingSpinner } from "../../components/LoadingSpinner";
-import { SortDropdown } from "./SortDropdown";
-import { ListingItem } from "./ListingItem";
+import { getProductById, getProductsByCategory } from '@/api';
+import chevronIcon from '@/assets/chevron.svg';
+import { LoadingSpinner } from '@/components/LoadingSpinner';
+import { PageContainer, PageMainText } from '@/layout/page';
+import { StoreState } from '@/store';
+import { addToCart, toggleMiniCart } from '@/store/cart';
+import { loadCategory } from '@/store/category';
+import { loadProduct, loadProductsBasics } from '@/store/products';
 
-import { PageContainer, PageMainText } from "../../layout/page";
+import ListingItem from './ListingItem';
 import {
-  CategoryHeader,
-  CategoryTitle,
-  CategorySorting,
-  SortingLabel,
   Button,
   ButtonIcon,
+  CategoryHeader,
+  CategorySorting,
+  CategoryTitle,
   ListingsGrid,
+  PageArrow,
   Pagination,
   PaginationBtn,
-  PageArrow,
-} from "./ProductListing.ui";
-import chevronIcon from "../../assets/chevron.svg";
+  SortingLabel,
+} from './ProductListing.ui';
+import { SortDropdown } from './SortDropdown';
+
+type RouterProps = RouteComponentProps<{ categoryId: string }>;
+
+const withStore = connect(
+  (state: StoreState, ownProps: RouterProps) => ({
+    currency: state.currency.selected,
+    categoryId: ownProps.match.params.categoryId,
+    categoryItems: state.category.items[ownProps.match.params.categoryId],
+    products: state.products.items,
+    getProductsByCategory,
+    getProductById,
+  }),
+  {
+    loadCategory,
+    loadProductsBasics,
+    loadProduct,
+    addToCart,
+    toggleMiniCart,
+  },
+);
+
+type StoreProps = ConnectedProps<typeof withStore>;
 
 const ITEMS_ON_PAGE = 8;
 
-function getPage(s) {
-  let start = s.search("p=");
+function getPage(s: string) {
+  let start = s.search('p=');
   if (start < 0) return 0;
   start += 2;
-  let end = s.indexOf(";", start);
+  let end = s.indexOf(';', start);
   if (end < 0) end = s.length;
-  let page = s.slice(start, end);
+  const page = s.slice(start, end);
   if (!page) return 0;
   return parseInt(page);
 }
 
-export class ProductListing extends React.Component {
-  constructor(props) {
+enum Sort {
+  Category = 'category',
+  Name = 'name',
+  Brand = 'brand',
+  Price = 'price',
+  InStock = 'inStock',
+}
+
+interface Props extends RouterProps, StoreProps {}
+
+interface State {
+  loading: boolean;
+  error: string | null;
+  sortBy: Sort | null;
+  sortAsc: boolean;
+}
+
+class ProductListing extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       loading: true,
@@ -47,7 +93,7 @@ export class ProductListing extends React.Component {
     this.loadCategoryProducts();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Props) {
     if (prevProps.categoryId !== this.props.categoryId) {
       this.setState({
         error: null,
@@ -59,9 +105,7 @@ export class ProductListing extends React.Component {
   }
 
   loadCategoryProducts = () => {
-    const title =
-      this.props.categoryId.charAt(0).toUpperCase() +
-      this.props.categoryId.slice(1);
+    const title = this.props.categoryId.charAt(0).toUpperCase() + this.props.categoryId.slice(1);
 
     if (this.props.categoryItems) {
       this.setState({ loading: false });
@@ -79,28 +123,37 @@ export class ProductListing extends React.Component {
         document.title = title;
       })
       .catch((err) => {
-        this.setState({ error: err.message });
-        document.title = "Not found";
+        console.error(err);
+        this.setState({ error: err instanceof Error ? err.message : 'error' });
+        document.title = 'Not found';
       });
   };
 
-  loadProduct = async (id) => {
+  loadProduct = async (id: string) => {
     const product = await this.props.getProductById(id);
     this.props.loadProduct(product);
     return product;
   };
 
-  addToCart = async (id) => {
-    const product = this.props.products[id].loaded
+  addToCart = async (id: string) => {
+    const product = this.props.products[id]?.loaded
       ? this.props.products[id]
       : await this.loadProduct(id);
 
-    const attributes = {};
-    product.attributes.forEach((attr) => {
-      attributes[attr.id] = attr.items[0].id;
+    if (!product) {
+      console.warn('No product');
+      return;
+    }
+
+    const attributes: Record<string, string> = {};
+    product.attributes?.forEach((attr) => {
+      const itemId = attr.items[0]?.id;
+      if (itemId) {
+        attributes[attr.id] = itemId;
+      }
     });
 
-    this.props.addToCart({ id, attributes, data: this.props.products[id] });
+    this.props.addToCart({ id, attributes });
     this.props.toggleMiniCart(true);
   };
 
@@ -110,49 +163,56 @@ export class ProductListing extends React.Component {
 
   sortOptions = [
     {
-      id: "category",
-      f: () => this.setState({ sortBy: "category" }),
+      id: Sort.Category,
+      f: () => this.setState({ sortBy: Sort.Category }),
     },
     {
-      id: "name",
-      f: () => this.setState({ sortBy: "name" }),
+      id: Sort.Name,
+      f: () => this.setState({ sortBy: Sort.Name }),
     },
     {
-      id: "brand",
-      f: () => this.setState({ sortBy: "brand" }),
+      id: Sort.Brand,
+      f: () => this.setState({ sortBy: Sort.Brand }),
     },
     {
-      id: "price",
-      f: () => this.setState({ sortBy: "price" }),
+      id: Sort.Price,
+      f: () => this.setState({ sortBy: Sort.Price }),
     },
     {
-      id: "inStock",
-      f: () => this.setState({ sortBy: "inStock" }),
+      id: Sort.InStock,
+      f: () => this.setState({ sortBy: Sort.InStock }),
     },
   ];
 
   sortOptionsTitles = {
-    category: "Category",
-    name: "Name",
-    brand: "Brand",
-    price: "Price",
-    inStock: "In Stock",
+    [Sort.Category]: 'Category',
+    [Sort.Name]: 'Name',
+    [Sort.Brand]: 'Brand',
+    [Sort.Price]: 'Price',
+    [Sort.InStock]: 'In Stock',
   };
 
-  sortingFunctions = {
+  sortingFunctions: Record<'string' | 'price' | 'inStock', (a: string, b: string) => number> = {
     string: (a, b) => {
-      let s1 = this.props.products[a][this.state.sortBy].toLowerCase();
-      let s2 = this.props.products[b][this.state.sortBy].toLowerCase();
+      if (
+        !this.state.sortBy ||
+        this.state.sortBy === Sort.Price ||
+        this.state.sortBy === Sort.InStock
+      ) {
+        return 0;
+      }
+      const s1 = this.props.products[a]?.[this.state.sortBy].toLowerCase() ?? '';
+      const s2 = this.props.products[b]?.[this.state.sortBy].toLowerCase() ?? '';
       if (s1 === s2) return 0;
       return s1 > s2 ? 1 : -1;
     },
 
     price: (a, b) =>
-      this.props.products[a].prices[0].amount -
-      this.props.products[b].prices[0].amount,
+      (this.props.products[a]?.prices[0]?.amount ?? 0) -
+      (this.props.products[b]?.prices[0]?.amount ?? 0),
 
     inStock: (a, b) =>
-      this.props.products[a].inStock - this.props.products[b].inStock,
+      Number(this.props.products[a]?.inStock) - Number(this.props.products[b]?.inStock),
   };
 
   sortByFunctions = {
@@ -180,8 +240,7 @@ export class ProductListing extends React.Component {
   renderCategoryHeader = () => (
     <CategoryHeader>
       <CategoryTitle>
-        {this.props.categoryId.charAt(0).toUpperCase() +
-          this.props.categoryId.slice(1)}
+        {this.props.categoryId.charAt(0).toUpperCase() + this.props.categoryId.slice(1)}
       </CategoryTitle>
 
       <CategorySorting>
@@ -200,7 +259,7 @@ export class ProductListing extends React.Component {
 
   scrollToTop = () => window.scrollTo(0, 0);
 
-  renderPagination = (currentPage, hasPrev, hasNext) => (
+  renderPagination = (currentPage: number, hasPrev: boolean, hasNext: boolean) => (
     <Pagination>
       {hasPrev && (
         <div onClick={this.scrollToTop}>
@@ -211,7 +270,7 @@ export class ProductListing extends React.Component {
       )}
 
       <div onClick={this.scrollToTop}>
-        <PaginationBtn to={"?p=" + currentPage}>{currentPage}</PaginationBtn>
+        <PaginationBtn to={'?p=' + currentPage}>{currentPage}</PaginationBtn>
       </div>
 
       {hasNext && (
@@ -248,15 +307,17 @@ export class ProductListing extends React.Component {
     return (
       <>
         <ListingsGrid>
-          {items.map((id) => (
-            <ListingItem
-              key={id}
-              item={this.props.products[id]}
-              currency={this.props.currency}
-              navigate={this.props.navigate}
-              addToCart={this.addToCart}
-            />
-          ))}
+          {items.map((id) => {
+            const product = this.props.products[id];
+            return product ? (
+              <ListingItem
+                key={id}
+                item={product}
+                currency={this.props.currency}
+                addToCart={(id) => void this.addToCart(id)}
+              />
+            ) : null;
+          })}
         </ListingsGrid>
 
         {needPagination && this.renderPagination(currentPage, hasPrev, hasNext)}
@@ -276,3 +337,5 @@ export class ProductListing extends React.Component {
     );
   }
 }
+
+export default withStore(withRouter(ProductListing));

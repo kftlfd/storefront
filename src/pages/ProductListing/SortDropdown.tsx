@@ -1,14 +1,25 @@
-import React from "react";
+import { PureComponent } from 'react';
+
 import {
+  Button,
   DropdownContainer,
   DropdownMenu,
-  DropdownMenuButton,
   DropdownMenuBackdrop,
-  Button,
-} from "./ProductListing.ui";
+  DropdownMenuButton,
+} from './ProductListing.ui';
 
-export class SortDropdown extends React.PureComponent {
-  constructor(props) {
+interface Props<SortValue extends string = string> {
+  sortTitles: Record<SortValue, string>;
+  sortBy: SortValue | null;
+  sortOptions: { id: SortValue; f: () => void }[];
+}
+
+interface State {
+  dropdownOpen: boolean;
+}
+
+export class SortDropdown extends PureComponent<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       dropdownOpen: false,
@@ -27,30 +38,25 @@ export class SortDropdown extends React.PureComponent {
     return (
       <DropdownContainer>
         <Button onClick={this.toggleDropdown}>
-          {this.props.sortBy
-            ? this.props.sortTitles[this.props.sortBy]
-            : "None"}
+          {this.props.sortBy ? this.props.sortTitles[this.props.sortBy] : 'None'}
         </Button>
 
         <DropdownMenu
-          className={this.state.dropdownOpen ? "show" : ""}
+          className={this.state.dropdownOpen ? 'show' : ''}
           onClick={this.closeDropdown}
         >
           {this.props.sortOptions.map(({ id, f }) => (
             <DropdownMenuButton
               key={id}
               onClick={f}
-              className={this.state.sortBy === id ? "selected" : ""}
+              className={this.props.sortBy === id ? 'selected' : ''}
             >
               {this.props.sortTitles[id]}
             </DropdownMenuButton>
           ))}
         </DropdownMenu>
 
-        <DropdownMenuBackdrop
-          show={this.state.dropdownOpen}
-          onClick={this.closeDropdown}
-        />
+        <DropdownMenuBackdrop show={this.state.dropdownOpen} onClick={this.closeDropdown} />
       </DropdownContainer>
     );
   }
