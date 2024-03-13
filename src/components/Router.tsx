@@ -37,7 +37,7 @@ export default class Router extends Component<Props> {
     },
     {
       path: '/cart/',
-      render: (props) => <Cart {...props} />,
+      component: Cart,
     },
     {
       path: '/checkout/',
@@ -45,7 +45,7 @@ export default class Router extends Component<Props> {
     },
     {
       path: '*',
-      render: () => <Error />,
+      component: Error,
     },
   ];
 

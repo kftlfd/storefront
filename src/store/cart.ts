@@ -1,9 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
-import { ls, LocalStorage } from "./localStorage";
+import { LocalStorage, ls } from './localStorage';
 
-type CartItem = {
+export type CartItem = {
   id: string;
   attributes: {
     [attrId: string]: string;
@@ -20,7 +20,7 @@ const initialState: {
 };
 
 const cartSlice = createSlice({
-  name: "cart",
+  name: 'cart',
 
   initialState,
 
@@ -32,7 +32,7 @@ const cartSlice = createSlice({
         attributes: {
           [attrId: string]: string;
         };
-      }>
+      }>,
     ) => {
       const item = action.payload;
 
@@ -40,7 +40,7 @@ const cartSlice = createSlice({
       state.items.find((inCart) => {
         if (inCart.id !== item.id) return false;
         const sameAttrs = Object.keys(item.attributes).every(
-          (attr) => inCart.attributes[attr] === item.attributes[attr]
+          (attr) => inCart.attributes[attr] === item.attributes[attr],
         );
         if (!sameAttrs) return false;
 
@@ -62,16 +62,18 @@ const cartSlice = createSlice({
 
     increaseQuantity: (state, action: PayloadAction<number>) => {
       const index = action.payload;
-      state.items[index].quantity++;
+      const item = state.items[index];
+      if (item) item.quantity++;
       LocalStorage.set(ls.cart, state.items);
     },
 
     decreaseQuantity: (state, action: PayloadAction<number>) => {
       const index = action.payload;
-      if (state.items[index].quantity <= 1) {
+      const item = state.items[index];
+      if (item && item.quantity <= 1) {
         state.items.splice(index, 1);
-      } else {
-        state.items[index].quantity--;
+      } else if (item) {
+        item.quantity--;
       }
       LocalStorage.set(ls.cart, state.items);
     },
@@ -93,10 +95,5 @@ const cartSlice = createSlice({
 
 export default cartSlice.reducer;
 
-export const {
-  addToCart,
-  increaseQuantity,
-  decreaseQuantity,
-  toggleMiniCart,
-  emptyCart,
-} = cartSlice.actions;
+export const { addToCart, increaseQuantity, decreaseQuantity, toggleMiniCart, emptyCart } =
+  cartSlice.actions;

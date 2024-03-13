@@ -1,11 +1,11 @@
-import React from "react";
+import { Component } from 'react';
 
-import { PageContainer, PageMainText } from "../../layout/page";
+import { PageContainer, PageMainText } from '@/layout/page';
 
-export default class ErrorPage extends React.Component {
+class ErrorPage extends Component {
   componentDidMount() {
     window.scroll(0, 0);
-    document.title = "Cart";
+    document.title = 'Cart';
   }
 
   render() {
@@ -16,3 +16,5 @@ export default class ErrorPage extends React.Component {
     );
   }
 }
+
+export default ErrorPage;
