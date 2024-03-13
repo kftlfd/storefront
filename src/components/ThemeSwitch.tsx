@@ -24,8 +24,8 @@ export default class ThemeSwitch extends Component {
   }
 }
 
-const ThemeButton = styled.img(({ theme }) => ({
-  height: '1rem',
-  width: '1rem',
-  filter: theme.img.filter,
-}));
+const ThemeButton = styled.img`
+  height: 1rem;
+  width: 1rem;
+  filter: ${({ theme }) => theme.img.filter};
+`;
