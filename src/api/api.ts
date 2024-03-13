@@ -1,11 +1,11 @@
-import type { Category, Currency, Product } from "./types";
-import env from "../env";
+import env from '../env';
+import type { Category, Currency, Product } from './types';
 
 const apiUrl = env.apiUrl;
 
 type QueryBody = {
-  categories?: "";
-  currencies?: "";
+  categories?: '';
+  currencies?: '';
   category?: string;
   product?: string;
   products?: string[];
@@ -13,28 +13,28 @@ type QueryBody = {
 
 async function query<T>(url: string, body: QueryBody) {
   const response = await fetch(url, {
-    method: "POST",
-    headers: { "content-type": "application/json" },
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
     body: JSON.stringify(body),
   });
+
   if (response.ok) {
-    const res: T = await response.json();
-    return res;
+    return (await response.json()) as T;
   } else {
     throw new Error(await response.text());
   }
 }
 
 export async function getCategoriesAndCurrencies() {
-  const res = await query<{ currencies: Currency[]; categories: Category[] }>(
-    apiUrl,
-    { currencies: "", categories: "" }
-  );
+  const res = await query<{ currencies: Currency[]; categories: Category[] }>(apiUrl, {
+    currencies: '',
+    categories: '',
+  });
   return res;
 }
 
 export async function getProductsByCategory(categoryId: Category) {
-  const { category } = await query<{ category: Product[] }>(apiUrl, {
+  const { category } = await query<{ category: { [id: Product['id']]: Product } }>(apiUrl, {
     category: categoryId,
   });
   const productIds = Object.keys(category);

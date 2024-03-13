@@ -5,7 +5,7 @@ export type Currency = {
   symbol: string;
 };
 
-type Attribute = {
+export type Attribute = {
   id: string;
   name: string;
   type: string;
@@ -15,7 +15,7 @@ type Attribute = {
   }[];
 };
 
-type Price = {
+export type Price = {
   currency: Currency;
   amount: number;
 };
