@@ -4,7 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { Product } from '../api/types';
 import { exp, LocalStorage, ls } from './localStorage';
 
-type Products = { [id: Product['id']]: Product };
+export type Products = { [id: Product['id']]: Product };
 
 const productsLS = {
   filterExpired() {
