@@ -313,7 +313,7 @@ class ProductListing extends Component<Props, State> {
               <ListingItem
                 key={id}
                 item={product}
-                currency={this.props.currency}
+                currency={this.props.currency ?? ''}
                 addToCart={(id) => void this.addToCart(id)}
               />
             ) : null;

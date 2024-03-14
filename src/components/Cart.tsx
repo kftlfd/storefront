@@ -105,7 +105,7 @@ class Cart extends Component<Props> {
           <div className="MiniCartInfo">
             <div className="total">
               <div className="text">Total:</div>
-              <div className="amount">{formatTotal(cartTotal.amount, currencyObj)}</div>
+              <div className="amount">{formatTotal(cartTotal.amount, currencyObj!)}</div>
             </div>
           </div>
         ) : (
@@ -114,10 +114,10 @@ class Cart extends Component<Props> {
             <div className="bold">{cartTotal.quantity}</div>
 
             <div className="semibold">Total:</div>
-            <div className="bold">{formatTotal(cartTotal.amount, currencyObj)}</div>
+            <div className="bold">{formatTotal(cartTotal.amount, currencyObj!)}</div>
 
             <div className="normal">Tax 21%:</div>
-            <div className="bold">{formatTotal(cartTotal.amount * 0.21, currencyObj)}</div>
+            <div className="bold">{formatTotal(cartTotal.amount * 0.21, currencyObj!)}</div>
           </div>
         )}
 
