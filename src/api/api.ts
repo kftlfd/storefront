@@ -35,11 +35,15 @@ export async function getCategoriesAndCurrencies() {
 }
 
 export async function getProductsByCategory(categoryId: Category) {
-  const { category } = await query<{ category: { [id: Product['id']]: Product } }>(apiUrl, {
+  const { category } = await query<{ category: Product[] }>(apiUrl, {
     category: categoryId,
   });
-  const productIds = Object.keys(category);
-  return { productIds, productItems: category };
+  const productIds = category.map((p) => p.id);
+  const productItems = category.reduce(
+    (acc, p) => ({ ...acc, [p.id]: p }),
+    {} as Record<Product['id'], Product>,
+  );
+  return { productIds, productItems };
 }
 
 export async function getProductById(productId: string) {

@@ -10,6 +10,7 @@ WORKDIR /app
 COPY backend/package.json backend/yarn.lock ./
 RUN yarn install
 COPY backend .
+RUN yarn build
 COPY --from=frontend /app/dist build/
 
 EXPOSE 8000
