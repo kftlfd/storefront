@@ -33,7 +33,7 @@ export default class Router extends Component<Props> {
     },
     {
       path: '/product/:productId',
-      render: (props) => <ProductDisplay {...props} />,
+      component: ProductDisplay,
     },
     {
       path: '/cart/',
@@ -41,7 +41,7 @@ export default class Router extends Component<Props> {
     },
     {
       path: '/checkout/',
-      render: (props) => <Checkout {...props} />,
+      component: Checkout,
     },
     {
       path: '*',
