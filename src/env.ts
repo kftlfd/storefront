@@ -1,3 +1,3 @@
 export default {
-  apiUrl: "http://localhost:8000/api/",
+  apiUrl: import.meta.env.VITE_API_URL,
 };

@@ -1,19 +1,19 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
-import { LocalStorage, ls } from "./localStorage";
+import { LocalStorage, ls } from './localStorage';
 
-const initialState: { theme: "light" | "dark" } = {
-  theme: LocalStorage.get(ls.theme, "light"),
+const initialState: { theme: 'light' | 'dark' } = {
+  theme: LocalStorage.get(ls.theme, 'light'),
 };
 
 const settingsSlice = createSlice({
-  name: "settings",
+  name: 'settings',
 
   initialState,
 
   reducers: {
     switchTheme: (state) => {
-      const newTheme = state.theme === "light" ? "dark" : "light";
+      const newTheme = state.theme === 'light' ? 'dark' : 'light';
       state.theme = newTheme;
       LocalStorage.set(ls.theme, newTheme);
     },

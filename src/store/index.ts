@@ -1,10 +1,10 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore } from '@reduxjs/toolkit';
 
-import currency from "./currency";
-import category from "./category";
-import products from "./products";
-import cart from "./cart";
-import settings from "./settings";
+import cart from './cart';
+import category from './category';
+import currency from './currency';
+import products from './products';
+import settings from './settings';
 
 const store = configureStore({
   reducer: {

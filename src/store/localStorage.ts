@@ -1,11 +1,11 @@
 export const ls = {
-  currency: "currency",
-  currencyList: "currencyList",
-  category: "category",
-  categoryList: "categoryList",
-  products: "products",
-  cart: "cart",
-  theme: "settings",
+  currency: 'currency',
+  currencyList: 'currencyList',
+  category: 'category',
+  categoryList: 'categoryList',
+  products: 'products',
+  cart: 'cart',
+  theme: 'settings',
 };
 
 export const exp = {
@@ -16,24 +16,27 @@ export const exp = {
 };
 
 export const LocalStorage = {
-  get(key: string, defaultVal: any) {
+  get<T>(key: string, defaultVal: T) {
     try {
-      const { data, expire } = JSON.parse(
-        window.localStorage.getItem(key) || ""
-      );
+      const { data, expire } = JSON.parse(window.localStorage.getItem(key) ?? '') as {
+        data: T;
+        expire: number;
+      };
+
       const currentTime = new Date().getTime();
       if ((expire && expire < currentTime) || !data) {
         window.localStorage.removeItem(key);
         return defaultVal;
       }
-      return data;
+
+      return data as T;
     } catch (e) {
       // console.error(e.message);
       return defaultVal;
     }
   },
 
-  set(key: string, data: any, duration: number | null = null) {
+  set(key: string, data: unknown, duration: number | null = null) {
     try {
       const currentTime = new Date().getTime();
       const expire = duration ? currentTime + duration : null;
