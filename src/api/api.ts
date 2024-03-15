@@ -1,4 +1,5 @@
-import env from '../env';
+import env from '@/env';
+
 import type { Category, Currency, Product } from './types';
 
 const apiUrl = env.apiUrl;
