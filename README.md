@@ -46,3 +46,16 @@ $ docker compose up [-d] [--build]
 
 go to http://localhost:8000
 ```
+
+# Changelog
+
+## v.0.2.0
+
+- fully migrate frontend to typescript
+- add eslint + prettier
+- separate backend into separate project
+- migrate backend to typescript also
+
+## v.0.1.1
+
+- started migration to typescript
