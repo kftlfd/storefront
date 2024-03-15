@@ -5,9 +5,10 @@
   "private": true,
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build",
-    "lint": "tsc; eslint . --report-unused-disable-directives --max-warnings 0",
-    "prettier": "prettier . --check"
+    "build": "tsc && vite build",
+    "lint": "tsc && eslint . --report-unused-disable-directives --max-warnings 0",
+    "prettier:check": "prettier . --check",
+    "prettier:write": "prettier . --check"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.5",

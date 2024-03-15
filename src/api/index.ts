@@ -3,4 +3,4 @@ export {
   getProductsByCategory,
   getProductById,
   getProductsByIds,
-} from "./api";
+} from './api';
