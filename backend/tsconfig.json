@@ -1,0 +1,28 @@
+{
+  "include": ["src", ".eslintrc.cjs", ".prettierrc.js"],
+
+  "compilerOptions": {
+    "target": "ES6",
+    "allowSyntheticDefaultImports": true,
+    "module": "Node16",
+    "outDir": "dist",
+
+    /* Interop Constraints */
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+
+    /* Type Checking */
+    "strict": true,
+    "allowUnusedLabels": true,
+    "allowUnreachableCode": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
+  }
+}
