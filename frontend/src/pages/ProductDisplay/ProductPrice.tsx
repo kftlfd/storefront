@@ -1,8 +1,8 @@
 import { Component } from 'react';
+import styled from 'styled-components';
 
 import { Price } from '@/api/types';
-
-import { formatPrice } from '../../utils/price';
+import { formatPrice } from '@/utils/price';
 
 interface Props {
   currency: string;
@@ -15,8 +15,14 @@ class ProductPrice extends Component<Props> {
 
     const price = formatPrice(prices, currency);
 
-    return <div className="price">{price}</div>;
+    return <ProductInfoPrice>{price}</ProductInfoPrice>;
   }
 }
 
 export default ProductPrice;
+
+const ProductInfoPrice = styled.div`
+  margin-block: 2rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+`;

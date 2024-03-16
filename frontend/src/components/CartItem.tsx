@@ -60,12 +60,12 @@ class CartItem extends Component<Props, State> {
     const price = formatPrice(product.prices, this.props.currency, item.quantity);
 
     return (
-      <CartItemDiv className={mini ? 'CartItem MiniCart' : 'CartItem'}>
-        <div className="CartItemInfo">
-          <div className="brand">{product.brand}</div>
-          <div className="name" onClick={this.props.closeCart}>
+      <CartItemDiv className={mini ? 'mini' : ''}>
+        <CartItemInfo.Container>
+          <CartItemInfo.Brand>{product.brand}</CartItemInfo.Brand>
+          <CartItemInfo.Name onClick={this.props.closeCart}>
             <ProductLink to={links.product(product.id)}>{product.name}</ProductLink>
-          </div>
+          </CartItemInfo.Name>
           {Object.keys(item.attributes).length > 0 && (
             <ProductAttributes
               attributes={product.attributes ?? []}
@@ -74,33 +74,30 @@ class CartItem extends Component<Props, State> {
               displayOnly={true}
             />
           )}
-          <div className="quantity-label">Quantity:</div>
-          <div className="CartItemQuantity">
+          <CartItemInfo.QuantityLabel>Quantity:</CartItemInfo.QuantityLabel>
+          <CartItemQuantity>
             <QuantityBtn onClick={this.decreaseQuantity}>
               <QuantityBtnIcon src={minusIcon} $mini={mini} />
             </QuantityBtn>
-            <div className="count">{item.quantity}</div>
+            <QuantityCount>{item.quantity}</QuantityCount>
             <QuantityBtn onClick={this.increaseQuantity}>
               <QuantityBtnIcon src={plusIcon} $mini={mini} />
             </QuantityBtn>
-          </div>
-          <div className="price">{price}</div>
-        </div>
+          </CartItemQuantity>
+          <CartItemInfo.Price>{price}</CartItemInfo.Price>
+        </CartItemInfo.Container>
 
-        <CartItemImage
-          className="CartItemImage"
-          $img={mini ? undefined : product.gallery[this.state.imgIndex]}
-        >
+        <CartItemImage $img={mini ? undefined : product.gallery[this.state.imgIndex]}>
           {mini && <ProductImage src={product.gallery[this.state.imgIndex]} />}
           {!mini && this.galleryCount > 1 && (
-            <div className="gallery-buttons">
-              <button className="gallery-button" onClick={this.prevImage}>
-                <img className="gallery-button-img left" src={chevronIcon} alt="Previous" />
-              </button>
-              <button className="gallery-button" onClick={this.nextImage}>
-                <img className="gallery-button-img right" src={chevronIcon} alt="Next" />
-              </button>
-            </div>
+            <GalleryButtons>
+              <GalleryBtn onClick={this.prevImage}>
+                <GalleryBtnImg className="left" src={chevronIcon} alt="Previous" />
+              </GalleryBtn>
+              <GalleryBtn onClick={this.nextImage}>
+                <GalleryBtnImg className="right" src={chevronIcon} alt="Next" />
+              </GalleryBtn>
+            </GalleryButtons>
           )}
         </CartItemImage>
       </CartItemDiv>
@@ -111,13 +108,89 @@ class CartItem extends Component<Props, State> {
 export default CartItem;
 
 const CartItemDiv = styled.div`
+  display: flex;
+  gap: 1rem;
+  padding-block: 1.5rem;
+  padding-inline: 0;
+
   transition: ${({ theme }) => theme.transition.default};
   border-bottom: 1px solid ${({ theme }) => theme.color.bgHover};
 
   &:first-of-type {
     border-top: 1px solid ${({ theme }) => theme.color.bgHover};
   }
+  &:not(:first-of-type) {
+    margin-top: 0;
+  }
+
+  &.mini {
+    padding-block: 1rem;
+    margin-inline: 1rem;
+
+    &:first-of-type {
+      border-top: none;
+    }
+
+    &:last-of-type {
+      border-bottom: none;
+    }
+
+    &:first-of-type {
+      padding-top: 0;
+    }
+
+    &:last-of-type {
+      padding-bottom: 0;
+    }
+  }
 `;
+
+const CartItemInfo = {
+  Container: styled.div`
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  `,
+  Brand: styled.div`
+    font-size: 1rem;
+
+    .mini & {
+      font-size: 1rem;
+    }
+  `,
+  Name: styled.div`
+    align-self: flex-start;
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+
+    .mini & {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+  `,
+  QuantityLabel: styled.div`
+    margin-top: 1rem;
+    margin-bottom: 4px;
+    font-weight: 500;
+
+    .mini & {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      font-weight: 400;
+    }
+  `,
+  Price: styled.div`
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 1rem;
+
+    .mini & {
+      font-size: 16px;
+      margin-top: 0.5rem;
+    }
+  `,
+};
 
 const ProductLink = styled(Link)`
   color: ${({ theme }) => theme.color.text};
@@ -129,6 +202,35 @@ const ProductLink = styled(Link)`
   :hover {
     text-decoration: underline;
   }
+`;
+
+const CartItemQuantity = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  height: 2rem;
+  font-size: 1rem;
+
+  .mini & {
+    gap: 1rem;
+    height: 1.5rem;
+  }
+
+  .button {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    border: none;
+    border-radius: 0;
+    width: 100%;
+    aspect-ratio: 1/1;
+    padding: 0;
+    cursor: pointer;
+  }
+`;
+
+const QuantityCount = styled.div`
+  font-weight: 500;
 `;
 
 const QuantityBtn = styled.button`
@@ -153,12 +255,63 @@ const QuantityBtnIcon = styled.img<{ $mini?: boolean }>`
 `;
 
 const CartItemImage = styled.div<{ $img?: string }>`
+  width: 200px;
+  flex: 0 0 auto;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+
   background-image: url(${({ $img }) => $img ?? ''});
   border-radius: ${({ theme }) => theme.size.borderRadius};
+
+  .mini & {
+    width: 120px;
+  }
 `;
 
 const ProductImage = styled.img`
   max-width: 100%;
   max-height: 250px;
   border-radius: ${({ theme }) => theme.size.borderRadius};
+`;
+
+const GalleryButtons = styled.div`
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  display: flex;
+  gap: 8px;
+`;
+
+const GalleryBtn = styled.button`
+  padding: 0;
+  border: none;
+  border-radius: 3px;
+  display: grid;
+  place-content: center;
+  height: 24px;
+  width: 24px;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.73);
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.53);
+  }
+`;
+
+const GalleryBtnImg = styled.img`
+  width: 12px;
+  filter: invert(100%);
+
+  &.left {
+    rotate: 90deg;
+  }
+
+  &.right {
+    rotate: -90deg;
+  }
 `;

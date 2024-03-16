@@ -40,9 +40,9 @@ class ProductGallery extends Component<Props, State> {
 
   render() {
     return (
-      <div className="ProductGallery">
-        <div className="previews-section">
-          <PreviewContainer className="previews-container">
+      <StyledProductGallery>
+        <PreviewSection>
+          <PreviewContainer>
             {this.props.gallery.map((img, i) => {
               const status = i === this.state.imgIndexSelected ? 'selected' : '';
               return (
@@ -56,32 +56,61 @@ class ProductGallery extends Component<Props, State> {
             })}
           </PreviewContainer>
           {this.state.galleryLen > 1 && (
-            <div className="previews-controlls">
+            <PreviewsControlls>
               <PreviewControllBtn onClick={this.prevImage}>
                 <Chevron src={chevronIcon} $direction="left" />
               </PreviewControllBtn>
               <PreviewControllBtn onClick={this.nextImage}>
                 <Chevron src={chevronIcon} $direction="right" />
               </PreviewControllBtn>
-            </div>
+            </PreviewsControlls>
           )}
-        </div>
+        </PreviewSection>
 
-        <div className="image-container">
-          <ImageMain
-            className="image-main"
-            src={this.props.gallery[this.state.imgIndexSelected]}
-            alt={this.props.name}
-          />
-        </div>
-      </div>
+        <ImageContainer>
+          <ImageMain src={this.props.gallery[this.state.imgIndexSelected]} alt={this.props.name} />
+        </ImageContainer>
+      </StyledProductGallery>
     );
   }
 }
 
 export default ProductGallery;
 
+const StyledProductGallery = styled.div`
+  max-height: min(75vh, 600px);
+  display: grid;
+  grid-template-columns: min-content auto;
+  align-items: flex-start;
+  justify-items: flex-start;
+  gap: 2rem;
+
+  @media (max-width: 799px) {
+    grid-template-columns: 100%;
+    max-width: calc(100vw - 2rem);
+    max-height: none;
+  }
+`;
+
+const PreviewSection = styled.div`
+  max-height: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  @media (max-width: 799px) {
+    flex-direction: row;
+    max-width: 100%;
+  }
+`;
+
 const PreviewContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+
   &::-webkit-scrollbar {
     height: 8px;
   }
@@ -90,6 +119,22 @@ const PreviewContainer = styled.div`
   }
   &::-webkit-scrollbar-thumb:hover {
     background: #777;
+  }
+
+  @media (max-width: 799px) {
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+`;
+
+const PreviewsControlls = styled.div`
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+
+  @media (max-width: 799px) {
+    flex-direction: column-reverse;
   }
 `;
 
@@ -140,6 +185,23 @@ const Chevron = styled.img<{ $direction: 'left' | 'right' }>`
   rotate: ${({ $direction }) => ($direction === 'left' ? '90deg' : '-90deg')};
 `;
 
+const ImageContainer = styled.div`
+  max-height: inherit;
+
+  @media (max-width: 799px) {
+    grid-row: 1;
+    justify-self: center;
+  }
+`;
+
 const ImageMain = styled.img`
+  display: block;
+  max-height: inherit;
+  max-width: 100%;
   border-radius: ${({ theme }) => theme.size.borderRadius};
+
+  @media (max-width: 799px) {
+    max-height: 66vh;
+    max-width: calc(100vw - 2rem);
+  }
 `;

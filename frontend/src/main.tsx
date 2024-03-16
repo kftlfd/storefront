@@ -1,9 +1,8 @@
+import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { Provider as StoreProvider } from 'react-redux';
-import './assets/index.scss';
 
 import App from '@/components/App';
-import store from '@/store';
+import StoreProvider from '@/store/StoreProvider';
 import ThemeProvider from '@/theme/ThemeProvider';
 
 const rootEl = document.getElementById('root');
@@ -13,11 +12,11 @@ if (!rootEl) {
 }
 
 ReactDOM.createRoot(rootEl).render(
-  // <React.StrictMode>
-  <StoreProvider store={store}>
-    <ThemeProvider>
-      <App />
-    </ThemeProvider>
-  </StoreProvider>,
-  // </React.StrictMode>
+  <React.StrictMode>
+    <StoreProvider>
+      <ThemeProvider>
+        <App />
+      </ThemeProvider>
+    </StoreProvider>
+  </React.StrictMode>,
 );

@@ -2,23 +2,24 @@ import { Component, ReactNode } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { ThemeProvider as StyledProvider } from 'styled-components';
 
-import { StoreDispatch, StoreState } from '@/store';
+import { StoreState } from '@/store';
 import { switchTheme } from '@/store/settings';
 
 import { ThemeContext, type ThemeContextValue } from './context';
 import { getTheme, ThemeVariant } from './theme';
 
-const mapStateToProps = (state: StoreState) => ({
-  theme: state.settings.theme,
-});
+const withStore = connect(
+  (state: StoreState) => ({
+    theme: state.settings.theme,
+  }),
+  {
+    switchTheme,
+  },
+);
 
-const mapDispatchToProps = (dispatch: StoreDispatch) => ({
-  switchTheme: () => dispatch(switchTheme()),
-});
+type StoreProps = ConnectedProps<typeof withStore>;
 
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-interface Props extends ConnectedProps<typeof connector> {
+interface Props extends StoreProps {
   children?: ReactNode;
 }
 
@@ -58,4 +59,4 @@ class ThemeProvider extends Component<Props, State> {
   }
 }
 
-export default connector(ThemeProvider);
+export default withStore(ThemeProvider);

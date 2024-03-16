@@ -1,7 +1,8 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
-import type { Product } from '../api/types';
+import type { Product } from '@/api/types';
+
 import { exp, LocalStorage, ls } from './localStorage';
 
 export type Products = { [id: Product['id']]: Product };

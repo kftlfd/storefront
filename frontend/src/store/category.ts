@@ -1,7 +1,8 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
-import type { Category } from '../api/types';
+import type { Category } from '@/api/types';
+
 import { exp, LocalStorage, ls } from './localStorage';
 
 const expire = exp.seconds(1);

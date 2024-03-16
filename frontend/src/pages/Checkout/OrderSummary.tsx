@@ -2,11 +2,10 @@ import { Component, createRef, ReactNode, RefObject } from 'react';
 import styled from 'styled-components';
 
 import { Currency } from '@/api/types';
+import chevronIcon from '@/assets/chevron.svg';
 import { CartItem } from '@/store/cart';
 import { Products } from '@/store/products';
-
-import chevronIcon from '../../assets/chevron.svg';
-import { formatTotal } from '../../utils/price';
+import { formatTotal } from '@/utils/price';
 
 interface Props {
   currencies: Currency[];

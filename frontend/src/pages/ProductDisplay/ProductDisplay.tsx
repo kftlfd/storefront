@@ -1,7 +1,6 @@
 import { PureComponent } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
-import './ProductDisplay.scss';
 import styled from 'styled-components';
 
 import { getProductById } from '@/api';
@@ -125,18 +124,18 @@ class ProductDisplay extends PureComponent<Props, State> {
 
     return (
       <PageContainer>
-        <div className="ProductDisplayContainer">
+        <ProductDisplayContainer>
           <ProductGallery gallery={product.gallery} name={product.name} />
 
-          <div className="ProductInfo">
-            <div className="category">
+          <div>
+            <ProductInfo.Category>
               Category:{' '}
               <CategoryLink to={links.category(product.category)}>
                 {product.category[0]?.toUpperCase() + product.category.slice(1)}
               </CategoryLink>
-            </div>
-            <div className="brand">{product.brand}</div>
-            <div className="name">{product.name}</div>
+            </ProductInfo.Category>
+            <ProductInfo.Brand>{product.brand}</ProductInfo.Brand>
+            <ProductInfo.Name className="name">{product.name}</ProductInfo.Name>
             {attributes.length > 0 && (
               <ProductAttributes
                 attributes={attributes}
@@ -152,13 +151,40 @@ class ProductDisplay extends PureComponent<Props, State> {
             )}
             <ProductDescription html={product.description ?? ''} />
           </div>
-        </div>
+        </ProductDisplayContainer>
       </PageContainer>
     );
   }
 }
 
 export default withStore(withRouter(ProductDisplay));
+
+const ProductDisplayContainer = styled.div`
+  padding-block: min(4rem, 8vh);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+
+  @media (max-width: 799px) {
+    grid-template-columns: 100%;
+  }
+`;
+
+const ProductInfo = {
+  Category: styled.div`
+    margin-bottom: 1rem;
+  `,
+
+  Brand: styled.div`
+    font-size: 1.5rem;
+  `,
+
+  Name: styled.div`
+    font-size: 2rem;
+    font-weight: 500;
+    margin-bottom: 2rem;
+  `,
+};
 
 const CategoryLink = styled(Link)`
   font-weight: 500;

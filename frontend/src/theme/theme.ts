@@ -29,18 +29,75 @@ export type Theme = {
   };
 };
 
+type ThemeDef = {
+  colors: {
+    text: string;
+    bg: string;
+    bgButton: string;
+    bgHover: string;
+    accentHover: string;
+    backdrop: string;
+  };
+  shadow: {
+    lighter: string;
+    normal: string;
+    darker: string;
+  };
+  img: {
+    filter: string;
+  };
+};
+
+const lightTheme: ThemeDef = {
+  colors: {
+    text: '#333333',
+    bg: '#FFFFFF',
+    bgButton: '#F5F5F5',
+    bgHover: '#EEEEEE',
+    accentHover: '#5D7CE9',
+    backdrop: 'hsla(247, 13%, 25%, 0.22)',
+  },
+  shadow: {
+    lighter: '0 0 20px 5px hsla(0, 0%, 50%, 0.1)',
+    normal: '0 0 20px 5px hsla(0, 0%, 50%, 0.2)',
+    darker: '0 0 20px 5px hsla(0, 0%, 50%, 0.3)',
+  },
+  img: {
+    filter: 'invert(20%)',
+  },
+};
+
+const darkTheme: ThemeDef = {
+  colors: {
+    text: '#CCCCCC',
+    bg: '#1D1F22',
+    bgButton: '#2F3237',
+    bgHover: '#42464D',
+    accentHover: '#A5B6F3',
+    backdrop: 'hsla(0, 0%, 0%, 0.4)',
+  },
+  shadow: {
+    lighter: '0 0 20px 10px hsla(0, 0%, 60%, 0.1)',
+    normal: '0 0 20px 10px hsla(0, 0%, 90%, 0.15)',
+    darker: '0 0 35px 5px hsla(0, 0%, 60%, 0.2)',
+  },
+  img: {
+    filter: 'invert(80%)',
+  },
+};
+
 export const getTheme = (variant: ThemeVariant): Theme => {
-  const light = variant === 'light';
+  const themeDef = variant === 'light' ? lightTheme : darkTheme;
 
   return {
     color: {
-      text: light ? '#333333' : '#CCCCCC',
-      bg: light ? '#FFFFFF' : '#1D1F22',
-      bgButton: light ? '#F5F5F5' : '#2F3237',
-      bgHover: light ? '#EEEEEE' : '#42464D',
+      text: themeDef.colors.text,
+      bg: themeDef.colors.bg,
+      bgButton: themeDef.colors.bgButton,
+      bgHover: themeDef.colors.bgHover,
       accent: '#8199EE',
-      accentHover: light ? '#5D7CE9' : '#A5B6F3',
-      backdrop: light ? 'hsla(247, 13%, 25%, 0.22)' : 'hsla(0, 0%, 0%, 0.4)',
+      accentHover: themeDef.colors.accentHover,
+      backdrop: themeDef.colors.backdrop,
     },
     transition: {
       default: 'all 0.2s ease',
@@ -52,12 +109,12 @@ export const getTheme = (variant: ThemeVariant): Theme => {
       borderRadius: '4px',
     },
     shadow: {
-      lighter: light ? '0 0 20px 5px hsla(0, 0%, 50%, 0.1)' : '0 0 20px 10px hsla(0, 0%, 60%, 0.1)',
-      normal: light ? '0 0 20px 5px hsla(0, 0%, 50%, 0.2)' : '0 0 20px 10px hsla(0, 0%, 90%, 0.15)',
-      darker: light ? '0 0 20px 5px hsla(0, 0%, 50%, 0.3)' : '0 0 35px 5px hsla(0, 0%, 60%, 0.2)',
+      lighter: themeDef.shadow.lighter,
+      normal: themeDef.shadow.normal,
+      darker: themeDef.shadow.darker,
     },
     img: {
-      filter: light ? 'invert(20%)' : 'invert(80%)',
+      filter: themeDef.img.filter,
     },
   };
 };

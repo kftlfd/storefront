@@ -1,7 +1,8 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
-import type { Currency } from '../api/types';
+import type { Currency } from '@/api/types';
+
 import { exp, LocalStorage, ls } from './localStorage';
 
 const expire: number = exp.seconds(1);

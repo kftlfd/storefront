@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 
-import brandLogo from '../assets/brand.png';
+import brandLogo from '@/assets/brand.png';
 
 interface Props {
   error?: string;

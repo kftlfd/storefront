@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import './Cart.scss';
+import styled from 'styled-components';
 
 import { StoreState } from '@/store';
 import { decreaseQuantity, increaseQuantity, toggleMiniCart } from '@/store/cart';
@@ -47,7 +47,7 @@ class Cart extends Component<Props> {
 
   render() {
     if (this.props.cart.length < 1) {
-      return <div className="EmptyCart">Cart is empty</div>;
+      return <EmptyCart>Cart is empty</EmptyCart>;
     }
 
     const currencyObj = this.props.currencyList.find((x) => x.label === this.props.currencyLabel);
@@ -67,14 +67,14 @@ class Cart extends Component<Props> {
     return (
       <>
         {this.props.mini ? (
-          <div className="MiniCartInfo">
-            <span className="header-text">My cart, </span>
-            <span className="header-count">
+          <MiniCartInfo.Container>
+            <MiniCartInfo.HeaderText>My cart, </MiniCartInfo.HeaderText>
+            <MiniCartInfo.HeaderCount>
               {cartTotal.quantity} item{cartTotal.quantity > 1 && 's'}
-            </span>
-          </div>
+            </MiniCartInfo.HeaderCount>
+          </MiniCartInfo.Container>
         ) : (
-          <h1 className="FullCartTitle">Cart</h1>
+          <FullCartTitle>Cart</FullCartTitle>
         )}
 
         <CartContent mini={this.props.mini}>
@@ -102,36 +102,38 @@ class Cart extends Component<Props> {
         </CartContent>
 
         {this.props.mini ? (
-          <div className="MiniCartInfo">
-            <div className="total">
-              <div className="text">Total:</div>
-              <div className="amount">{formatTotal(cartTotal.amount, currencyObj!)}</div>
-            </div>
-          </div>
+          <MiniCartInfo.Container>
+            <MiniCartInfo.Total>
+              <MiniCartInfo.TotalText>Total:</MiniCartInfo.TotalText>
+              <MiniCartInfo.TotalAmount>
+                {formatTotal(cartTotal.amount, currencyObj!)}
+              </MiniCartInfo.TotalAmount>
+            </MiniCartInfo.Total>
+          </MiniCartInfo.Container>
         ) : (
-          <div className="FullCartTotal">
-            <div className="normal">Quantity:</div>
-            <div className="bold">{cartTotal.quantity}</div>
+          <FullCartTotal>
+            <TextNormal>Quantity:</TextNormal>
+            <TextBold>{cartTotal.quantity}</TextBold>
 
-            <div className="semibold">Total:</div>
-            <div className="bold">{formatTotal(cartTotal.amount, currencyObj!)}</div>
+            <TextSemibold>Total:</TextSemibold>
+            <TextBold>{formatTotal(cartTotal.amount, currencyObj!)}</TextBold>
 
-            <div className="normal">Tax 21%:</div>
-            <div className="bold">{formatTotal(cartTotal.amount * 0.21, currencyObj!)}</div>
-          </div>
+            <TextNormal>Tax 21%:</TextNormal>
+            <TextBold>{formatTotal(cartTotal.amount * 0.21, currencyObj!)}</TextBold>
+          </FullCartTotal>
         )}
 
         {this.props.mini ? (
-          <div className="MiniCartButtons">
+          <MiniCartButtons>
             <Button onClick={this.openCartPage}>View cart</Button>
             <AccentButton onClick={this.openCheckOut}>Checkout</AccentButton>
-          </div>
+          </MiniCartButtons>
         ) : (
-          <div className="FullCartButtons">
+          <FullCartButtons>
             <AccentButton big={true} onClick={this.openCheckOut}>
               Checkout
             </AccentButton>
-          </div>
+          </FullCartButtons>
         )}
       </>
     );
@@ -139,3 +141,68 @@ class Cart extends Component<Props> {
 }
 
 export default withStore(withRouter(Cart));
+
+const EmptyCart = styled.div`
+  text-align: center;
+  font-size: 1.5rem;
+  padding-block: 3rem;
+`;
+
+const MiniCartInfo = {
+  Container: styled.div`
+    font-size: 16px;
+    padding-inline: 1rem;
+  `,
+  HeaderText: styled.span`
+    font-weight: 700;
+  `,
+  HeaderCount: styled.span`
+    font-weight: 500;
+  `,
+  Total: styled.div`
+    display: flex;
+    justify-content: space-between;
+  `,
+  TotalText: styled.div`
+    font-weight: 500;
+  `,
+  TotalAmount: styled.div`
+    font-weight: 700;
+  `,
+};
+
+const FullCartTitle = styled.h1`
+  margin: 0;
+  padding-block: 3rem;
+  font-size: 42px;
+  font-weight: 400;
+`;
+
+const FullCartTotal = styled.div`
+  padding-block: 2rem;
+  display: grid;
+  grid-template-columns: max-content auto;
+  column-gap: 1rem;
+  row-gap: 0.5rem;
+  font-size: 1.2rem;
+`;
+
+const TextNormal = styled.div`
+  font-weight: 400;
+`;
+const TextSemibold = styled.div`
+  font-weight: 500;
+`;
+const TextBold = styled.div`
+  font-weight: 700;
+`;
+
+const MiniCartButtons = styled.div`
+  padding-inline: 1rem;
+  display: flex;
+  gap: 0.5rem;
+`;
+
+const FullCartButtons = styled.div`
+  margin-bottom: 3rem;
+`;

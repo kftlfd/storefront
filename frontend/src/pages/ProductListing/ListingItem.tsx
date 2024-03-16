@@ -1,6 +1,5 @@
 import { Component, MouseEvent } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import './ListingItem.scss';
 import styled from 'styled-components';
 
 import { Product } from '@/api/types';
@@ -30,22 +29,19 @@ class ListingItem extends Component<Props> {
     const price = formatPrice(item.prices, currency);
 
     return (
-      <Card
-        className={`ListingItemCard ${!available && 'out-of-stock'}`}
-        onClick={this.handleClick}
-      >
-        <div className="product-image-container">
+      <Card className={available ? '' : 'out-of-stock'} onClick={this.handleClick}>
+        <ProductImageContainer>
           <ProductImage src={item.gallery[0]} alt={item.name} />
-          <QuickAddBtnContainer className="quick-add-btn" onClick={this.handleQuickAdd}>
-            <QuickAddBtn src={cartIcon} alt={`buy ${item.name}`} />
-          </QuickAddBtnContainer>
-          {!available && <div className="out-of-stock-overlay">Out of stock</div>}
-        </div>
+          <QuickAddBtn onClick={this.handleQuickAdd}>
+            <QuickAddIcon src={cartIcon} alt={`buy ${item.name}`} />
+          </QuickAddBtn>
+          {!available && <OutOfStockOverlay>Out of stock</OutOfStockOverlay>}
+        </ProductImageContainer>
 
-        <div className="product-info">
-          <div className="brand">{item.brand}</div>
-          <div className="name">{item.name}</div>
-          <div className="price">{price}</div>
+        <div>
+          <ProductInfo.Brand>{item.brand}</ProductInfo.Brand>
+          <ProductInfo.Name>{item.name}</ProductInfo.Name>
+          <ProductInfo.Price>{price}</ProductInfo.Price>
         </div>
       </Card>
     );
@@ -55,12 +51,28 @@ class ListingItem extends Component<Props> {
 export default withRouter(ListingItem);
 
 const Card = styled.div`
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  cursor: pointer;
   transition: ${(props) => props.theme.transition.default};
   border-radius: ${(props) => props.theme.size.borderRadius};
+
+  &.out-of-stock {
+    opacity: 0.5;
+  }
 
   &:hover {
     box-shadow: ${(props) => props.theme.shadow.normal};
   }
+`;
+
+const ProductImageContainer = styled.div`
+  position: relative;
+  max-height: 350px;
+  display: flex;
+  justify-content: center;
 `;
 
 const ProductImage = styled.img`
@@ -73,16 +85,61 @@ const ProductImage = styled.img`
   color: ${(props) => props.theme.color.text};
 `;
 
-const QuickAddBtnContainer = styled.button`
+const QuickAddBtn = styled.button`
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  translate: -30% 50%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  height: 3rem;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
   transition: ${(props) => props.theme.transition.default};
   background-color: ${(props) => props.theme.color.accent};
+  visibility: hidden;
+  opacity: 0;
 
   &:hover {
     background-color: ${(props) => props.theme.color.accentHover};
   }
+
+  ${Card}:not(.out-of-stock):hover & {
+    visibility: visible;
+    opacity: 1;
+  }
 `;
 
-const QuickAddBtn = styled.img`
+const QuickAddIcon = styled.img`
   height: 1.2rem;
   filter: invert(100%);
 `;
+
+const OutOfStockOverlay = styled.div`
+  position: absolute;
+  inset-block: 0;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+`;
+
+const ProductInfo = {
+  Brand: styled.div`
+    font-weight: 400;
+  `,
+  Name: styled.div`
+    margin-block: 4px;
+    font-size: 1.2rem;
+    font-weight: 300;
+  `,
+  Price: styled.div`
+    font-weight: 500;
+  `,
+};
