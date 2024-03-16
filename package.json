@@ -4,38 +4,12 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "vite dev",
-    "build": "tsc && vite build",
-    "lint": "tsc && eslint . --report-unused-disable-directives --max-warnings 0",
-    "prettier:check": "prettier . --check",
-    "prettier:write": "prettier . --check"
+    "build": "yarn workspaces run build",
+    "lint": "yarn workspaces run lint",
+    "prettier": "yarn workspaces run prettier"
   },
-  "dependencies": {
-    "@reduxjs/toolkit": "^1.8.5",
-    "html-react-parser": "^3.0.4",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-redux": "^8.0.4",
-    "react-router-dom": "^5.3.4",
-    "styled-components": "^5.3.6"
-  },
-  "devDependencies": {
-    "@types/eslint": "^8.56.5",
-    "@types/react-dom": "^18.0.6",
-    "@types/react-router-dom": "^5.3.3",
-    "@types/styled-components": "^5.1.34",
-    "@typescript-eslint/eslint-plugin": "^7.1.1",
-    "@typescript-eslint/parser": "^7.1.1",
-    "@vitejs/plugin-react": "^4.2.1",
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-react": "^7.34.0",
-    "eslint-plugin-simple-import-sort": "^12.0.0",
-    "prettier": "^3.2.5",
-    "sass": "^1.55.0",
-    "typescript": "=5.3.3",
-    "vite": "^5.1.5",
-    "vite-tsconfig-paths": "^4.3.1"
-  }
+  "workspaces": [
+    "backend",
+    "frontend"
+  ]
 }

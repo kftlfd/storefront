@@ -6,7 +6,7 @@ module.exports = {
   parserOptions: {
     project: ['./tsconfig.json'],
   },
-  ignorePatterns: ['node_modules', 'dist', '!.prettierrc.js', 'backend'],
+  ignorePatterns: ['node_modules', 'dist', '!.prettierrc.js'],
 
   extends: [
     'eslint:recommended',
