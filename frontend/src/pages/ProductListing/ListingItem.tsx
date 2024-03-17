@@ -3,7 +3,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Product } from '@/api/types';
-import cartIcon from '@/assets/cart.svg';
+import CartIcon from '@/assets/cart.svg?react';
 import { links } from '@/components/Router';
 import { formatPrice } from '@/utils/price';
 
@@ -33,7 +33,7 @@ class ListingItem extends Component<Props> {
         <ProductImageContainer>
           <ProductImage src={item.gallery[0]} alt={item.name} />
           <QuickAddBtn onClick={this.handleQuickAdd}>
-            <QuickAddIcon src={cartIcon} alt={`buy ${item.name}`} />
+            <QuickAddIcon />
           </QuickAddBtn>
           {!available && <OutOfStockOverlay>Out of stock</OutOfStockOverlay>}
         </ProductImageContainer>
@@ -79,7 +79,6 @@ const ProductImage = styled.img`
   max-width: 100%;
   min-height: 6rem;
   max-height: inherit;
-  display: block;
   border-radius: ${(props) => props.theme.size.borderRadius};
   text-align: center;
   color: ${(props) => props.theme.color.text};
@@ -115,9 +114,9 @@ const QuickAddBtn = styled.button`
   }
 `;
 
-const QuickAddIcon = styled.img`
+const QuickAddIcon = styled(CartIcon)`
   height: 1.2rem;
-  filter: invert(100%);
+  fill: white;
 `;
 
 const OutOfStockOverlay = styled.div`

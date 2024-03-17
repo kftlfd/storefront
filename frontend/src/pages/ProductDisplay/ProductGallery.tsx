@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import styled from 'styled-components';
 
-import chevronIcon from '@/assets/chevron.svg';
+import ChevronIcon from '@/assets/chevron.svg?react';
 
 interface Props {
   gallery: string[];
@@ -58,10 +58,10 @@ class ProductGallery extends Component<Props, State> {
           {this.state.galleryLen > 1 && (
             <PreviewsControlls>
               <PreviewControllBtn onClick={this.prevImage}>
-                <Chevron src={chevronIcon} $direction="left" />
+                <Chevron $direction="left" />
               </PreviewControllBtn>
               <PreviewControllBtn onClick={this.nextImage}>
-                <Chevron src={chevronIcon} $direction="right" />
+                <Chevron $direction="right" />
               </PreviewControllBtn>
             </PreviewsControlls>
           )}
@@ -178,10 +178,9 @@ const PreviewControllBtn = styled.button`
   }
 `;
 
-const Chevron = styled.img<{ $direction: 'left' | 'right' }>`
-  display: block;
+const Chevron = styled(ChevronIcon)<{ $direction: 'left' | 'right' }>`
   height: 1rem;
-  filter: ${({ theme }) => theme.img.filter};
+  fill: ${({ theme }) => theme.color.text};
   rotate: ${({ $direction }) => ($direction === 'left' ? '90deg' : '-90deg')};
 `;
 
@@ -195,7 +194,6 @@ const ImageContainer = styled.div`
 `;
 
 const ImageMain = styled.img`
-  display: block;
   max-height: inherit;
   max-width: 100%;
   border-radius: ${({ theme }) => theme.size.borderRadius};

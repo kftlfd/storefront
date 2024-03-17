@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Product } from '@/api/types';
-import chevronIcon from '@/assets/chevron.svg';
-import minusIcon from '@/assets/minus.svg';
-import plusIcon from '@/assets/plus.svg';
+import ChevronIcon from '@/assets/chevron.svg?react';
+import MinusIcon from '@/assets/minus.svg?react';
+import PlusIcon from '@/assets/plus.svg?react';
 import { CartItem as CartItemType } from '@/store/cart';
 import { formatPrice } from '@/utils/price';
 
@@ -77,11 +77,11 @@ class CartItem extends Component<Props, State> {
           <CartItemInfo.QuantityLabel>Quantity:</CartItemInfo.QuantityLabel>
           <CartItemQuantity>
             <QuantityBtn onClick={this.decreaseQuantity}>
-              <QuantityBtnIcon src={minusIcon} $mini={mini} />
+              <QuantityMinusIcon $mini={mini} />
             </QuantityBtn>
             <QuantityCount>{item.quantity}</QuantityCount>
             <QuantityBtn onClick={this.increaseQuantity}>
-              <QuantityBtnIcon src={plusIcon} $mini={mini} />
+              <QuantityPlusIcon $mini={mini} />
             </QuantityBtn>
           </CartItemQuantity>
           <CartItemInfo.Price>{price}</CartItemInfo.Price>
@@ -92,10 +92,10 @@ class CartItem extends Component<Props, State> {
           {!mini && this.galleryCount > 1 && (
             <GalleryButtons>
               <GalleryBtn onClick={this.prevImage}>
-                <GalleryBtnImg className="left" src={chevronIcon} alt="Previous" />
+                <Chevron $dir="left" />
               </GalleryBtn>
               <GalleryBtn onClick={this.nextImage}>
-                <GalleryBtnImg className="right" src={chevronIcon} alt="Next" />
+                <Chevron $dir="right" />
               </GalleryBtn>
             </GalleryButtons>
           )}
@@ -249,10 +249,13 @@ const QuantityBtn = styled.button`
   }
 `;
 
-const QuantityBtnIcon = styled.img<{ $mini?: boolean }>`
-  filter: ${({ theme }) => theme.img.filter};
+const QuantityIcon = styled.div<{ $mini?: boolean }>`
+  fill: ${({ theme }) => theme.color.text};
   width: ${({ $mini }) => ($mini ? '0.8rem' : '1rem')};
 `;
+
+const QuantityMinusIcon = QuantityIcon.withComponent(MinusIcon);
+const QuantityPlusIcon = QuantityIcon.withComponent(PlusIcon);
 
 const CartItemImage = styled.div<{ $img?: string }>`
   width: 200px;
@@ -303,15 +306,8 @@ const GalleryBtn = styled.button`
   }
 `;
 
-const GalleryBtnImg = styled.img`
+const Chevron = styled(ChevronIcon)<{ $dir: 'left' | 'right' }>`
   width: 12px;
-  filter: invert(100%);
-
-  &.left {
-    rotate: 90deg;
-  }
-
-  &.right {
-    rotate: -90deg;
-  }
+  fill: white;
+  rotate: ${({ $dir }) => ($dir === 'left' ? '90deg' : '-90deg')};
 `;

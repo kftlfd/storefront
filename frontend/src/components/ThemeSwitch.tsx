@@ -1,8 +1,8 @@
 import { Component, ContextType } from 'react';
 import styled from 'styled-components';
 
-import themeDarkIcon from '@/assets/theme-dark.svg';
-import themeLightIcon from '@/assets/theme-light.svg';
+import ThemeDarkIcon from '@/assets/theme-dark.svg?react';
+import ThemeLightIcon from '@/assets/theme-light.svg?react';
 import { HeaderButton, HeaderButtonContainer } from '@/layout/header';
 import { ThemeContext } from '@/theme/context';
 
@@ -17,15 +17,18 @@ export default class ThemeSwitch extends Component {
     return (
       <HeaderButtonContainer zIndex={71}>
         <HeaderButton onClick={this.context.switchTheme}>
-          <ThemeButton src={light ? themeLightIcon : themeDarkIcon} alt={`${variant} theme`} />
+          {light ? <Light /> : <Dark />}
         </HeaderButton>
       </HeaderButtonContainer>
     );
   }
 }
 
-const ThemeButton = styled.img`
+const ThemeIcon = styled.div`
   height: 1rem;
   width: 1rem;
-  filter: ${({ theme }) => theme.img.filter};
+  fill: ${({ theme }) => theme.color.text};
 `;
+
+const Light = ThemeIcon.withComponent(ThemeLightIcon);
+const Dark = ThemeIcon.withComponent(ThemeDarkIcon);

@@ -1,9 +1,10 @@
 import { Component } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+import styled from 'styled-components';
 
 import { getProductById, getProductsByCategory } from '@/api';
-import chevronIcon from '@/assets/chevron.svg';
+import ChevronIcon from '@/assets/chevron.svg?react';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { PageContainer, PageMainText } from '@/layout/page';
 import { StoreState } from '@/store';
@@ -14,12 +15,10 @@ import { loadProduct, loadProductsBasics } from '@/store/products';
 import ListingItem from './ListingItem';
 import {
   Button,
-  ButtonIcon,
   CategoryHeader,
   CategorySorting,
   CategoryTitle,
   ListingsGrid,
-  PageArrow,
   Pagination,
   PaginationBtn,
   SortingLabel,
@@ -251,7 +250,7 @@ class ProductListing extends Component<Props, State> {
           sortTitles={this.sortOptionsTitles}
         />
         <Button onClick={this.toggleSortOrder}>
-          <ButtonIcon src={chevronIcon} up={this.state.sortAsc} />
+          <Chevron $dir={this.state.sortAsc ? 'up' : 'down'} />
         </Button>
       </CategorySorting>
     </CategoryHeader>
@@ -264,7 +263,7 @@ class ProductListing extends Component<Props, State> {
       {hasPrev && (
         <div onClick={this.scrollToTop}>
           <PaginationBtn to={`?p=${currentPage - 1}`}>
-            <PageArrow src={chevronIcon} />
+            <Chevron $dir="left" />
           </PaginationBtn>
         </div>
       )}
@@ -276,7 +275,7 @@ class ProductListing extends Component<Props, State> {
       {hasNext && (
         <div onClick={this.scrollToTop}>
           <PaginationBtn to={`?p=${currentPage + 1}`}>
-            <PageArrow src={chevronIcon} right={true} />
+            <Chevron $dir="right" />
           </PaginationBtn>
         </div>
       )}
@@ -339,3 +338,22 @@ class ProductListing extends Component<Props, State> {
 }
 
 export default withStore(withRouter(ProductListing));
+
+const Chevron = styled(ChevronIcon)<{ $dir?: 'left' | 'right' | 'up' | 'down' }>`
+  height: 1rem;
+  fill: ${({ theme }) => theme.color.text};
+  transition: ${({ theme }) => theme.transition.default};
+  rotate: ${({ $dir }) => {
+    switch ($dir) {
+      case 'left':
+        return '90deg';
+      case 'right':
+        return '-90deg';
+      case 'up':
+        return '-180deg';
+      case 'down':
+      default:
+        return '0';
+    }
+  }};
+`;

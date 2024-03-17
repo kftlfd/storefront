@@ -57,7 +57,7 @@ const Line = styled.div`
     `linear-gradient(to right, ${theme.color.accent} 50%, ${theme.color.bgHover} 50%)`};
   background-size: 220% 100%;
   background-position: right;
-  transition: 0.8s all ease;
+  transition: ${({ theme }) => theme.transition.default};
 
   &.complete {
     background-position: left;
@@ -93,7 +93,7 @@ const Indicators = styled.div`
   position: absolute;
   left: 0;
   display: flex;
-  transition: 0.5s all ease;
+  transition: ${({ theme }) => theme.transition.default};
 
   .complete & {
     left: -100%;
@@ -114,7 +114,7 @@ const Title = styled.div`
   top: 100%;
   left: 50%;
   translate: -50% 0.5rem;
-  transition: all 0.5s ease;
+  transition: ${({ theme }) => theme.transition.default};
   opacity: 0.5;
 
   .current &,

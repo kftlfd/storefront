@@ -210,7 +210,6 @@ const BrandLink = styled(Link)`
 `;
 
 const BrandLogo = styled.img`
-  display: block;
   height: 2rem;
 `;
 

@@ -107,13 +107,6 @@ const Button = styled.button`
   }
 `;
 
-const ButtonIcon = styled.img<{ up?: boolean }>`
-  filter: ${({ theme }) => theme.img.filter};
-  height: 1rem;
-  rotate: ${({ up }) => (up ? '-180deg' : 'none')};
-  transition: ${({ theme }) => theme.transition.default};
-`;
-
 const ListingsGrid = styled.div`
   padding-bottom: 4rem;
   display: grid;
@@ -164,12 +157,6 @@ const PaginationBtn = styled(Link)`
   }
 `;
 
-const PageArrow = styled.img<{ right?: boolean }>`
-  height: 1rem;
-  filter: ${({ theme }) => theme.img.filter};
-  rotate: ${({ right }) => (right ? '-90deg' : '90deg')};
-`;
-
 export {
   CategoryHeader,
   CategoryTitle,
@@ -180,9 +167,7 @@ export {
   DropdownMenuButton,
   DropdownMenuBackdrop,
   Button,
-  ButtonIcon,
   ListingsGrid,
   Pagination,
   PaginationBtn,
-  PageArrow,
 };

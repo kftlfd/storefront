@@ -2,7 +2,7 @@ import { Component } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import styled, { css } from 'styled-components';
 
-import cartIcon from '@/assets/cart.svg';
+import CartIcon from '@/assets/cart.svg?react';
 import { HeaderButton, HeaderButtonBackdrop, HeaderButtonContainer } from '@/layout/header';
 import { hideable } from '@/layout/hideable';
 import { StoreState } from '@/store';
@@ -40,8 +40,8 @@ class MiniCart extends Component<StoreProps> {
             className={this.props.miniCartOpen ? 'active' : ''}
           >
             <IconContainer>
-              <CartIcon src={cartIcon} alt={'Mini Cart'} />
-              {cartCount > 0 && <Badge className="show">{cartCount}</Badge>}
+              <StyledCartIcon />
+              {cartCount > 0 && <Badge>{cartCount}</Badge>}
             </IconContainer>
           </HeaderButton>
 
@@ -69,21 +69,22 @@ const IconContainer = styled.div({
   position: 'relative',
 });
 
-const CartIcon = styled.img`
+const StyledCartIcon = styled(CartIcon)`
   height: 1rem;
-  display: block;
-  filter: ${({ theme }) => theme.img.filter};
+  fill: ${({ theme }) => theme.color.text};
+  transition: ${({ theme }) => theme.transition.default};
 `;
 
 const Badge = styled.div`
   position: absolute;
-  top: -50%;
-  left: 50%;
+  bottom: 60%;
+  left: 60%;
   height: 1rem;
   min-width: 1rem;
   border-radius: 1rem;
   background-color: ${({ theme }) => theme.color.text};
   color: ${({ theme }) => theme.color.bg};
+  transition: ${({ theme }) => theme.transition.default};
 
   padding-inline: 0.2rem;
   font-family: Arial, sans-serif;
@@ -91,8 +92,6 @@ const Badge = styled.div`
   font-weight: 600;
   display: grid;
   place-content: center;
-
-  ${hideable}
 `;
 
 const MiniCartMenu = styled.div(

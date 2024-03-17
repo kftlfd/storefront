@@ -24,9 +24,6 @@ export type Theme = {
     normal: string;
     darker: string;
   };
-  img: {
-    filter: string;
-  };
 };
 
 type ThemeDef = {
@@ -42,9 +39,6 @@ type ThemeDef = {
     lighter: string;
     normal: string;
     darker: string;
-  };
-  img: {
-    filter: string;
   };
 };
 
@@ -62,9 +56,6 @@ const lightTheme: ThemeDef = {
     normal: '0 0 20px 5px hsla(0, 0%, 50%, 0.2)',
     darker: '0 0 20px 5px hsla(0, 0%, 50%, 0.3)',
   },
-  img: {
-    filter: 'invert(20%)',
-  },
 };
 
 const darkTheme: ThemeDef = {
@@ -80,9 +71,6 @@ const darkTheme: ThemeDef = {
     lighter: '0 0 20px 10px hsla(0, 0%, 60%, 0.1)',
     normal: '0 0 20px 10px hsla(0, 0%, 90%, 0.15)',
     darker: '0 0 35px 5px hsla(0, 0%, 60%, 0.2)',
-  },
-  img: {
-    filter: 'invert(80%)',
   },
 };
 
@@ -112,9 +100,6 @@ export const getTheme = (variant: ThemeVariant): Theme => {
       lighter: themeDef.shadow.lighter,
       normal: themeDef.shadow.normal,
       darker: themeDef.shadow.darker,
-    },
-    img: {
-      filter: themeDef.img.filter,
     },
   };
 };

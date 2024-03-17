@@ -2,7 +2,7 @@ import { Component, createRef, ReactNode, RefObject } from 'react';
 import styled from 'styled-components';
 
 import { Currency } from '@/api/types';
-import chevronIcon from '@/assets/chevron.svg';
+import ChevronIcon from '@/assets/chevron.svg?react';
 import { CartItem } from '@/store/cart';
 import { Products } from '@/store/products';
 import { formatTotal } from '@/utils/price';
@@ -149,7 +149,7 @@ class Collapse extends Component<CollapseProps, CollapseState> {
       <CollapseContainer>
         <CollapseTitle onClick={this.props.onClick} className={this.props.open ? 'open' : ''}>
           {this.props.title}
-          <Chevron src={chevronIcon} $up={this.props.open} />
+          <Chevron $up={this.props.open} />
         </CollapseTitle>
         <CollapseContentWrapper ref={this.el} style={{ height: elHeight }}>
           <CollapseContent>{this.props.children}</CollapseContent>
@@ -181,15 +181,15 @@ const CollapseTitle = styled.h3`
   }
 `;
 
-const Chevron = styled.img<{ $up?: boolean }>`
+const Chevron = styled(ChevronIcon)<{ $up?: boolean }>`
   height: 1rem;
-  filter: ${({ theme }) => theme.img.filter};
-  rotate: ${({ $up }) => ($up ? '-180deg' : '')};
+  fill: ${({ theme }) => theme.color.text};
+  rotate: ${({ $up }) => ($up ? '-180deg' : 0)};
   transition: ${({ theme }) => theme.transition.default};
 `;
 
 const CollapseContentWrapper = styled.div`
-  transition: all 0.6s ease;
+  transition: ${({ theme }) => theme.transition.default};
   overflow: hidden;
 `;
 

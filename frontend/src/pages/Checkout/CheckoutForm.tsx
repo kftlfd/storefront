@@ -19,7 +19,7 @@ export default class CheckoutForm extends Component<Props> {
     [CheckoutStep.Shipping]: {
       el: (
         <>
-          <label htmlFor={'Shipping'}>Shipping info</label>
+          <label htmlFor={'shipping'}>Shipping info</label>
           <FormInput name="shipping" type="text" placeholder="Shipping info" />
         </>
       ),
@@ -200,7 +200,7 @@ const CollapseTitle = styled.div`
   color: ${({ theme }) => theme.color.text};
   background-color: ${({ theme }) => theme.color.bgHover};
   border-radius: ${({ theme }) => theme.size.borderRadius};
-  transition: all 0.6s ease;
+  transition: ${({ theme }) => theme.transition.default};
 
   &.open {
     color: ${({ theme }) => theme.color.bg};
@@ -209,7 +209,7 @@ const CollapseTitle = styled.div`
 `;
 
 const CollapseContentWrapper = styled.div`
-  transition: all 0.6s ease;
+  transition: ${({ theme }) => theme.transition.default};
   overflow: hidden;
 `;
 

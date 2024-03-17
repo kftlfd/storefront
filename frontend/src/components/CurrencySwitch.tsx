@@ -98,17 +98,6 @@ const CurrencyButton = styled.div`
   gap: 0.5rem;
 `;
 
-// const Chevron = styled.img`
-//   width: 0.5rem;
-//   aspect-ratio: 1/1;
-//   transition: ${(props) => props.theme.transition.default};
-
-//   &.open {
-//     transform: rotate(-180deg);
-//   }
-//   filter: ${(props) => props.theme.img.filter};
-// `;
-
 const CurrencyMenu = styled.div(
   ({ theme }) => css`
     position: absolute;
