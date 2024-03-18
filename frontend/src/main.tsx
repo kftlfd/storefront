@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 import App from '@/components/App';
+import RouterProvider from '@/pages/RouterProvider';
 import StoreProvider from '@/store/StoreProvider';
 import ThemeProvider from '@/theme/ThemeProvider';
 
@@ -15,7 +16,9 @@ ReactDOM.createRoot(rootEl).render(
   <React.StrictMode>
     <StoreProvider>
       <ThemeProvider>
-        <App />
+        <RouterProvider>
+          <App />
+        </RouterProvider>
       </ThemeProvider>
     </StoreProvider>
   </React.StrictMode>,

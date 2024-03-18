@@ -5,11 +5,11 @@ import styled from 'styled-components';
 
 import brandLogo from '@/assets/brand.png';
 import { HeaderButtons, MainHeader, MainNav } from '@/layout/header';
+import { links } from '@/pages/Router';
 import { StoreState } from '@/store';
 
 import CurrencySwitch from './CurrencySwitch';
 import MiniCart from './MiniCart';
-import { links } from './Router';
 import ThemeSwitch from './ThemeSwitch';
 
 const withStore = connect((state: StoreState) => ({

@@ -4,6 +4,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { getCategoriesAndCurrencies, getProductsByIds } from '@/api';
 import type { Category, Currency, Product } from '@/api/types';
 import { PageWrapper } from '@/layout/page';
+import Router, { links } from '@/pages/Router';
 import type { StoreDispatch, StoreState } from '@/store';
 import { loadCategoriesList } from '@/store/category';
 import { loadCurrencies } from '@/store/currency';
@@ -11,7 +12,6 @@ import { loadProduct } from '@/store/products';
 
 import Footer from './Footer';
 import Header from './Header';
-import Router, { links } from './Router';
 import { SplashScreen } from './SplashScreen';
 
 const mapStateToProps = (state: StoreState) => ({
@@ -99,11 +99,9 @@ export class App extends React.Component<AppProps, AppState> {
 
     return (
       <PageWrapper>
-        <Router
-          def={defCategory ? links.category(defCategory) : 'error'}
-          header={<Header />}
-          footer={<Footer />}
-        />
+        <Header />
+        <Router def={defCategory ? links.category(defCategory) : 'error'} />
+        <Footer />
       </PageWrapper>
     );
   }

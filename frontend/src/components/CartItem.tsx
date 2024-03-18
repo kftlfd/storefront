@@ -6,11 +6,11 @@ import { Product } from '@/api/types';
 import ChevronIcon from '@/assets/chevron.svg?react';
 import MinusIcon from '@/assets/minus.svg?react';
 import PlusIcon from '@/assets/plus.svg?react';
+import { links } from '@/pages/Router';
 import { CartItem as CartItemType } from '@/store/cart';
 import { formatPrice } from '@/utils/price';
 
 import { ProductAttributes } from './ProductAttributes';
-import { links } from './Router';
 
 interface Props {
   product: Product;

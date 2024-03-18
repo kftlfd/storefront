@@ -337,7 +337,7 @@ class ProductListing extends Component<Props, State> {
   }
 }
 
-export default withStore(withRouter(ProductListing));
+export default withRouter(withStore(ProductListing));
 
 const Chevron = styled(ChevronIcon)<{ $dir?: 'left' | 'right' | 'up' | 'down' }>`
   height: 1rem;

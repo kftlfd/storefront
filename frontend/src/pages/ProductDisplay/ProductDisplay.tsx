@@ -1,4 +1,4 @@
-import { PureComponent } from 'react';
+import { Component } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
@@ -7,8 +7,8 @@ import { getProductById } from '@/api';
 import { AccentButton } from '@/components/Button';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { ProductAttributes } from '@/components/ProductAttributes';
-import { links } from '@/components/Router';
 import { PageContainer, PageMainText } from '@/layout/page';
+import { links } from '@/pages/Router';
 import { StoreState } from '@/store';
 import { addToCart, toggleMiniCart } from '@/store/cart';
 import { loadProduct } from '@/store/products';
@@ -43,7 +43,7 @@ interface State {
   selectedAttrs: Record<string, string>;
 }
 
-class ProductDisplay extends PureComponent<Props, State> {
+class ProductDisplay extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -157,7 +157,7 @@ class ProductDisplay extends PureComponent<Props, State> {
   }
 }
 
-export default withStore(withRouter(ProductDisplay));
+export default withRouter(withStore(ProductDisplay));
 
 const ProductDisplayContainer = styled.div`
   padding-block: min(4rem, 8vh);

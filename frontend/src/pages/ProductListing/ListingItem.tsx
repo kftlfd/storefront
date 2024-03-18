@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { Product } from '@/api/types';
 import CartIcon from '@/assets/cart.svg?react';
-import { links } from '@/components/Router';
+import { links } from '@/pages/Router';
 import { formatPrice } from '@/utils/price';
 
 interface Props extends RouteComponentProps {

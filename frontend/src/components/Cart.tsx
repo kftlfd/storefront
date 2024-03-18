@@ -3,6 +3,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { links } from '@/pages/Router';
 import { StoreState } from '@/store';
 import { decreaseQuantity, increaseQuantity, toggleMiniCart } from '@/store/cart';
 import { formatTotal } from '@/utils/price';
@@ -10,7 +11,6 @@ import { formatTotal } from '@/utils/price';
 import { AccentButton, Button } from './Button';
 import CartContent from './CartContent';
 import CartItem from './CartItem';
-import { links } from './Router';
 
 const withStore = connect(
   (state: StoreState) => ({
@@ -140,7 +140,7 @@ class Cart extends Component<Props> {
   }
 }
 
-export default withStore(withRouter(Cart));
+export default withRouter(withStore(Cart));
 
 const EmptyCart = styled.div`
   text-align: center;

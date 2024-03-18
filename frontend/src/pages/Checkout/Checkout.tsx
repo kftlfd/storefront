@@ -112,7 +112,7 @@ class Checkout extends Component<Props, State> {
   }
 }
 
-export default withStore(withRouter(Checkout));
+export default withRouter(withStore(Checkout));
 
 const CheckoutContainer = styled(PageContainer)({
   paddingBottom: '3rem',
