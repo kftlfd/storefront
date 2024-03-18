@@ -6,13 +6,7 @@ import styled from 'styled-components';
 import { getProductById, getProductsByCategory } from '@/api';
 import ChevronIcon from '@/assets/chevron.svg?react';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
-import { PageContainer, PageMainText } from '@/layout/page';
-import { StoreState } from '@/store';
-import { addToCart, toggleMiniCart } from '@/store/cart';
-import { loadCategory } from '@/store/category';
-import { loadProduct, loadProductsBasics } from '@/store/products';
-
-import ListingItem from './ListingItem';
+import ListingItem from '@/features/product/ListingItem';
 import {
   Button,
   CategoryHeader,
@@ -22,8 +16,13 @@ import {
   Pagination,
   PaginationBtn,
   SortingLabel,
-} from './ProductListing.ui';
-import { SortDropdown } from './SortDropdown';
+} from '@/features/product/ProductListing.ui';
+import { SortDropdown } from '@/features/product/SortDropdown';
+import { PageContainer, PageMainText } from '@/layout/page';
+import { StoreState } from '@/store';
+import { addToCart, toggleMiniCart } from '@/store/cart';
+import { loadCategory } from '@/store/category';
+import { loadProduct, loadProductsBasics } from '@/store/products';
 
 type RouterProps = RouteComponentProps<{ categoryId: string }>;
 
@@ -77,7 +76,7 @@ interface State {
   sortAsc: boolean;
 }
 
-class ProductListing extends Component<Props, State> {
+class CategoryPage extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -337,7 +336,7 @@ class ProductListing extends Component<Props, State> {
   }
 }
 
-export default withRouter(withStore(ProductListing));
+export default withRouter(withStore(CategoryPage));
 
 const Chevron = styled(ChevronIcon)<{ $dir?: 'left' | 'right' | 'up' | 'down' }>`
   height: 1rem;

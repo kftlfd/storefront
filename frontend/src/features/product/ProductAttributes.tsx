@@ -11,7 +11,7 @@ interface Props {
   displayOnly?: boolean;
 }
 
-export class ProductAttributes extends Component<Props> {
+class ProductAttributes extends Component<Props> {
   render() {
     const { attributes, selected, selectAttr, small, displayOnly } = this.props;
     // attributes = {id: Str, items: {id: Str, value: Str}}
@@ -49,6 +49,8 @@ export class ProductAttributes extends Component<Props> {
     );
   }
 }
+
+export default ProductAttributes;
 
 const AttributesList = styled.div<{ $mini?: boolean }>`
   display: flex;

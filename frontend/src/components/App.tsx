@@ -3,6 +3,7 @@ import { connect, ConnectedProps } from 'react-redux';
 
 import { getCategoriesAndCurrencies, getProductsByIds } from '@/api';
 import type { Category, Currency, Product } from '@/api/types';
+import Header from '@/features/header/Header';
 import { PageWrapper } from '@/layout/page';
 import Router, { links } from '@/pages/Router';
 import type { StoreDispatch, StoreState } from '@/store';
@@ -11,7 +12,6 @@ import { loadCurrencies } from '@/store/currency';
 import { loadProduct } from '@/store/products';
 
 import Footer from './Footer';
-import Header from './Header';
 import { SplashScreen } from './SplashScreen';
 
 const mapStateToProps = (state: StoreState) => ({

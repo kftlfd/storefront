@@ -5,7 +5,7 @@ import { PageContainer, PageMainText } from '@/layout/page';
 class ErrorPage extends Component {
   componentDidMount() {
     window.scroll(0, 0);
-    document.title = 'Cart';
+    document.title = 'Error';
   }
 
   render() {

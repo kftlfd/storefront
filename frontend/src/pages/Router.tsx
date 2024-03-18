@@ -4,10 +4,10 @@ import { Redirect, Route, RouteProps, Switch } from 'react-router-dom';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 
 const Cart = lazy(() => import('@/pages/Cart'));
+const Category = lazy(() => import('@/pages/Category'));
 const Checkout = lazy(() => import('@/pages/Checkout'));
 const Error = lazy(() => import('@/pages/Error'));
-const ProductDisplay = lazy(() => import('@/pages/ProductDisplay'));
-const ProductListing = lazy(() => import('@/pages/ProductListing'));
+const Product = lazy(() => import('@/pages/Product'));
 
 export const links = {
   category: (id: string) => `/category/${id}`,
@@ -38,11 +38,11 @@ class Router extends Component<Props> {
     },
     {
       path: '/category/:categoryId',
-      component: suspended(ProductListing),
+      component: suspended(Category),
     },
     {
       path: '/product/:productId',
-      component: suspended(ProductDisplay),
+      component: suspended(Product),
     },
     {
       path: '/cart',

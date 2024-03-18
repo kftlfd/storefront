@@ -1,6 +1,6 @@
 import { Component } from 'react';
 
-import Cart from '@/components/Cart';
+import Cart from '@/features/cart/Cart';
 import { PageContainer } from '@/layout/page';
 
 class CartPage extends Component {

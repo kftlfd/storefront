@@ -6,16 +6,15 @@ import styled from 'styled-components';
 import { getProductById } from '@/api';
 import { AccentButton } from '@/components/Button';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
-import { ProductAttributes } from '@/components/ProductAttributes';
+import ProductDescription from '@/features/category/ProductDescription';
+import ProductGallery from '@/features/category/ProductGallery';
+import ProductPrice from '@/features/category/ProductPrice';
+import ProductAttributes from '@/features/product/ProductAttributes';
 import { PageContainer, PageMainText } from '@/layout/page';
 import { links } from '@/pages/Router';
 import { StoreState } from '@/store';
 import { addToCart, toggleMiniCart } from '@/store/cart';
 import { loadProduct } from '@/store/products';
-
-import ProductDescription from './ProductDescription';
-import ProductGallery from './ProductGallery';
-import ProductPrice from './ProductPrice';
 
 type RouterProps = RouteComponentProps<{ productId: string }>;
 
@@ -43,7 +42,7 @@ interface State {
   selectedAttrs: Record<string, string>;
 }
 
-class ProductDisplay extends Component<Props, State> {
+class ProductPage extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -157,7 +156,7 @@ class ProductDisplay extends Component<Props, State> {
   }
 }
 
-export default withRouter(withStore(ProductDisplay));
+export default withRouter(withStore(ProductPage));
 
 const ProductDisplayContainer = styled.div`
   padding-block: min(4rem, 8vh);

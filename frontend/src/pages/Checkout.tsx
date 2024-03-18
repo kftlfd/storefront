@@ -3,14 +3,13 @@ import { connect, ConnectedProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
+import CheckoutForm from '@/features/checkout/CheckoutForm';
+import CheckoutProgressBar from '@/features/checkout/CheckoutProgressBar';
+import { CheckoutStep } from '@/features/checkout/config';
+import OrderSummary from '@/features/checkout/OrderSummary';
 import { PageContainer, PageMainText } from '@/layout/page';
 import { StoreState } from '@/store';
 import { emptyCart } from '@/store/cart';
-
-import CheckoutForm from './CheckoutForm';
-import CheckoutProgressBar from './CheckoutProgressBar';
-import { CheckoutStep } from './config';
-import OrderSummary from './OrderSummary';
 
 const withStore = connect(
   (state: StoreState) => ({
@@ -32,7 +31,7 @@ interface State {
   currentStepIndex: number;
 }
 
-class Checkout extends Component<Props, State> {
+class CheckoutPage extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -112,7 +111,7 @@ class Checkout extends Component<Props, State> {
   }
 }
 
-export default withRouter(withStore(Checkout));
+export default withRouter(withStore(CheckoutPage));
 
 const CheckoutContainer = styled(PageContainer)({
   paddingBottom: '3rem',

@@ -1,10 +1,10 @@
-import { Component } from 'react';
+import { Component, ReactNode } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 
 import brandLogo from '@/assets/brand.png';
 
 interface Props {
-  error?: string;
+  error?: ReactNode;
 }
 
 export class SplashScreen extends Component<Props> {

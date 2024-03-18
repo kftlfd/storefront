@@ -8,8 +8,8 @@ import { HeaderButtons, MainHeader, MainNav } from '@/layout/header';
 import { links } from '@/pages/Router';
 import { StoreState } from '@/store';
 
+import MiniCart from '../cart/MiniCart';
 import CurrencySwitch from './CurrencySwitch';
-import MiniCart from './MiniCart';
 import ThemeSwitch from './ThemeSwitch';
 
 const withStore = connect((state: StoreState) => ({

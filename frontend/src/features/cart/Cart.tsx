@@ -8,7 +8,7 @@ import { StoreState } from '@/store';
 import { decreaseQuantity, increaseQuantity, toggleMiniCart } from '@/store/cart';
 import { formatTotal } from '@/utils/price';
 
-import { AccentButton, Button } from './Button';
+import { AccentButton, Button } from '../../components/Button';
 import CartContent from './CartContent';
 import CartItem from './CartItem';
 
