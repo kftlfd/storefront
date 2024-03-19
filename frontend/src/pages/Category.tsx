@@ -5,10 +5,10 @@ import styled from 'styled-components';
 
 import { getProductById, getProductsByCategory } from '@/api';
 import ChevronIcon from '@/assets/chevron.svg?react';
+import Dropdown, { DropdownMenuItem } from '@/components/Dropdown';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import ListingItem from '@/features/product/ListingItem';
 import {
-  Button,
   CategoryHeader,
   CategorySorting,
   CategoryTitle,
@@ -17,7 +17,6 @@ import {
   PaginationBtn,
   SortingLabel,
 } from '@/features/product/ProductListing.ui';
-import { SortDropdown } from '@/features/product/SortDropdown';
 import { PageContainer, PageMainText } from '@/layout/page';
 import { StoreState } from '@/store';
 import { addToCart, toggleMiniCart } from '@/store/cart';
@@ -243,11 +242,22 @@ class CategoryPage extends Component<Props, State> {
 
       <CategorySorting>
         <SortingLabel>Sort by</SortingLabel>
-        <SortDropdown
-          sortBy={this.state.sortBy}
-          sortOptions={this.sortOptions}
-          sortTitles={this.sortOptionsTitles}
-        />
+
+        <Dropdown
+          target={
+            <Button>
+              {this.state.sortBy ? this.sortOptionsTitles[this.state.sortBy] : 'None'}
+            </Button>
+          }
+        >
+          <DropdownMenuItem onClick={() => this.setState({ sortBy: null })}>None</DropdownMenuItem>
+          {Object.values(Sort).map((sortValue) => (
+            <DropdownMenuItem key={sortValue} onClick={() => this.setState({ sortBy: sortValue })}>
+              {this.sortOptionsTitles[sortValue]}
+            </DropdownMenuItem>
+          ))}
+        </Dropdown>
+
         <Button onClick={this.toggleSortOrder}>
           <Chevron $dir={this.state.sortAsc ? 'up' : 'down'} />
         </Button>
@@ -337,6 +347,25 @@ class CategoryPage extends Component<Props, State> {
 }
 
 export default withRouter(withStore(CategoryPage));
+
+const Button = styled.button`
+  padding: 0.5rem 1rem;
+  display: grid;
+  place-content: center;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: normal;
+  border-radius: ${(props) => props.theme.size.borderRadius};
+  color: ${(props) => props.theme.color.text};
+  background-color: ${(props) => props.theme.color.bgButton};
+  transition: ${(props) => props.theme.transition.default};
+
+  &:hover {
+    background-color: ${(props) => props.theme.color.bgHover};
+  }
+`;
 
 const Chevron = styled(ChevronIcon)<{ $dir?: 'left' | 'right' | 'up' | 'down' }>`
   height: 1rem;
