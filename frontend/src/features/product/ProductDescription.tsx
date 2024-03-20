@@ -1,6 +1,5 @@
 import { Component } from 'react';
 import parse from 'html-react-parser';
-import styled from 'styled-components';
 
 interface Props {
   html: string;
@@ -8,12 +7,8 @@ interface Props {
 
 class ProductDescription extends Component<Props> {
   render() {
-    return <ProductInfoDescription>{parse(this.props.html)}</ProductInfoDescription>;
+    return <div>{parse(this.props.html)}</div>;
   }
 }
 
 export default ProductDescription;
-
-const ProductInfoDescription = styled.div`
-  margin-top: 2rem;
-`;

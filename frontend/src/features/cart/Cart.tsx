@@ -130,7 +130,7 @@ class Cart extends Component<Props> {
           </MiniCartButtons>
         ) : (
           <FullCartButtons>
-            <AccentButton big={true} onClick={this.openCheckOut}>
+            <AccentButton $big onClick={this.openCheckOut}>
               Checkout
             </AccentButton>
           </FullCartButtons>

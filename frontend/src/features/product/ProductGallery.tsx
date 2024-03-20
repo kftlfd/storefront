@@ -9,66 +9,69 @@ interface Props {
 }
 
 interface State {
-  imgIndexSelected: number;
-  galleryLen: number;
+  imgIndex: number;
 }
 
 class ProductGallery extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      imgIndexSelected: 0,
-      galleryLen: this.props.gallery.length,
+      imgIndex: 0,
     };
   }
 
-  selectImg = (index: number) => () => this.setState({ imgIndexSelected: index });
+  select = (val: 'prev' | 'next' | number) => {
+    const mod = this.props.gallery.length;
 
-  prevImage = () => {
-    const mod = this.state.galleryLen;
-    this.setState((prev) => ({
-      imgIndexSelected: (prev.imgIndexSelected - 1 + mod) % mod,
-    }));
-  };
+    this.setState((prev) => {
+      let index = prev.imgIndex;
 
-  nextImage = () => {
-    const mod = this.state.galleryLen;
-    this.setState((prev) => ({
-      imgIndexSelected: (prev.imgIndexSelected + 1 + mod) % mod,
-    }));
+      switch (val) {
+        case 'prev':
+          index = (index - 1 + mod) % mod;
+          break;
+        case 'next':
+          index = (index + 1) % mod;
+          break;
+        default:
+          index = val;
+      }
+
+      return { imgIndex: index };
+    });
   };
 
   render() {
+    const { gallery, name } = this.props;
+    const { imgIndex } = this.state;
+
     return (
       <StyledProductGallery>
         <PreviewSection>
           <PreviewContainer>
-            {this.props.gallery.map((img, i) => {
-              const status = i === this.state.imgIndexSelected ? 'selected' : '';
-              return (
-                <PreviewImgBtn
-                  key={img}
-                  $img={img}
-                  onClick={this.selectImg(i)}
-                  className={status}
-                />
-              );
-            })}
+            {this.props.gallery.map((img, i) => (
+              <PreviewImgBtn
+                key={img}
+                $img={img}
+                onClick={() => this.select(i)}
+                className={i === imgIndex ? 'selected' : ''}
+              />
+            ))}
           </PreviewContainer>
-          {this.state.galleryLen > 1 && (
+          {gallery.length > 1 && (
             <PreviewsControlls>
-              <PreviewControllBtn onClick={this.prevImage}>
-                <Chevron $direction="left" />
+              <PreviewControllBtn onClick={() => this.select('prev')}>
+                <Chevron style={{ rotate: '90deg' }} />
               </PreviewControllBtn>
-              <PreviewControllBtn onClick={this.nextImage}>
-                <Chevron $direction="right" />
+              <PreviewControllBtn onClick={() => this.select('next')}>
+                <Chevron style={{ rotate: '-90deg' }} />
               </PreviewControllBtn>
             </PreviewsControlls>
           )}
         </PreviewSection>
 
         <ImageContainer>
-          <ImageMain src={this.props.gallery[this.state.imgIndexSelected]} alt={this.props.name} />
+          <ImageMain src={gallery[imgIndex]} alt={name} />
         </ImageContainer>
       </StyledProductGallery>
     );
@@ -178,10 +181,9 @@ const PreviewControllBtn = styled.button`
   }
 `;
 
-const Chevron = styled(ChevronIcon)<{ $direction: 'left' | 'right' }>`
+const Chevron = styled(ChevronIcon)`
   height: 1rem;
   fill: ${({ theme }) => theme.color.text};
-  rotate: ${({ $direction }) => ($direction === 'left' ? '90deg' : '-90deg')};
 `;
 
 const ImageContainer = styled.div`

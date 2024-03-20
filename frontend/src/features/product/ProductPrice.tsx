@@ -22,7 +22,6 @@ class ProductPrice extends Component<Props> {
 export default ProductPrice;
 
 const ProductInfoPrice = styled.div`
-  margin-block: 2rem;
   font-size: 1.5rem;
   font-weight: 700;
 `;

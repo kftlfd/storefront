@@ -13,12 +13,7 @@ interface Props {
 
 class ProductAttributes extends Component<Props> {
   render() {
-    const { attributes, selected, selectAttr, small, displayOnly } = this.props;
-    // attributes = {id: Str, items: {id: Str, value: Str}}
-    // selected = {attrId: valId}
-    // selectAttr = function(attrId, valId) {...}
-    // small = true | false | undefined
-    const mini = small;
+    const { attributes, selected, selectAttr, small: mini, displayOnly } = this.props;
 
     return (
       <AttributesList $mini={mini}>

@@ -6,15 +6,16 @@ import styled from 'styled-components';
 import { getProductById } from '@/api';
 import { AccentButton } from '@/components/Button';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
-import ProductDescription from '@/features/category/ProductDescription';
-import ProductGallery from '@/features/category/ProductGallery';
-import ProductPrice from '@/features/category/ProductPrice';
 import ProductAttributes from '@/features/product/ProductAttributes';
+import ProductDescription from '@/features/product/ProductDescription';
+import ProductGallery from '@/features/product/ProductGallery';
+import ProductPrice from '@/features/product/ProductPrice';
 import { PageContainer, PageMainText } from '@/layout/page';
 import { links } from '@/pages/Router';
 import { StoreState } from '@/store';
 import { addToCart, toggleMiniCart } from '@/store/cart';
 import { loadProduct } from '@/store/products';
+import { capitalizeFirst } from '@/utils/capitalize';
 
 type RouterProps = RouteComponentProps<{ productId: string }>;
 
@@ -22,8 +23,7 @@ const withStore = connect(
   (state: StoreState, ownProps: RouterProps) => ({
     currency: state.currency.selected,
     productId: ownProps.match.params.productId,
-    product: state.products.items[ownProps.match.params.productId]!,
-    getProductById,
+    product: state.products.items[ownProps.match.params.productId],
   }),
   {
     loadProduct,
@@ -62,7 +62,7 @@ class ProductPage extends Component<Props, State> {
       return this.props.product;
     }
     try {
-      const product = await this.props.getProductById(this.props.match.params.productId);
+      const product = await getProductById(this.props.match.params.productId);
       this.props.loadProduct(product);
       return product;
     } catch (err) {
@@ -92,6 +92,11 @@ class ProductPage extends Component<Props, State> {
   };
 
   addToCart = () => {
+    if (!this.props.product) {
+      console.warn('No product');
+      return;
+    }
+
     this.props.addToCart({
       id: this.props.product.id,
       attributes: this.state.selectedAttrs,
@@ -100,57 +105,57 @@ class ProductPage extends Component<Props, State> {
   };
 
   render() {
-    if (this.state.error) {
-      return (
-        <PageContainer>
-          <PageMainText>{/*this.state.error*/}Page not found</PageMainText>
-        </PageContainer>
-      );
-    }
+    const { product } = this.props;
+    const { error, loading } = this.state;
+    const attributes = product?.attributes ?? [];
 
-    if (this.state.loading) {
-      return (
-        <PageContainer>
-          <PageMainText>
-            <LoadingSpinner size={60} />
-          </PageMainText>
-        </PageContainer>
-      );
-    }
-
-    const product = this.props.product;
-    const { attributes = [] } = product;
+    const spacer = <div style={{ display: 'inline-block', height: '2rem' }}></div>;
 
     return (
       <PageContainer>
-        <ProductDisplayContainer>
-          <ProductGallery gallery={product.gallery} name={product.name} />
+        {loading ? (
+          <PageMainText>
+            <LoadingSpinner size={60} />
+          </PageMainText>
+        ) : error || !product ? (
+          <PageMainText>Page not found</PageMainText>
+        ) : (
+          <ProductDisplayContainer>
+            <ProductGallery gallery={product.gallery} name={product.name} />
 
-          <div>
-            <ProductInfo.Category>
-              Category:{' '}
-              <CategoryLink to={links.category(product.category)}>
-                {product.category[0]?.toUpperCase() + product.category.slice(1)}
-              </CategoryLink>
-            </ProductInfo.Category>
-            <ProductInfo.Brand>{product.brand}</ProductInfo.Brand>
-            <ProductInfo.Name className="name">{product.name}</ProductInfo.Name>
-            {attributes.length > 0 && (
-              <ProductAttributes
-                attributes={attributes}
-                selected={this.state.selectedAttrs}
-                selectAttr={this.selectAttr}
-              />
-            )}
-            <ProductPrice currency={this.props.currency ?? ''} prices={product.prices} />
-            {product.inStock && (
-              <AccentButton big={true} biggerFont={true} onClick={this.addToCart}>
-                Add to cart
-              </AccentButton>
-            )}
-            <ProductDescription html={product.description ?? ''} />
-          </div>
-        </ProductDisplayContainer>
+            <div>
+              <ProductInfo.Category>
+                Category:{' '}
+                <CategoryLink to={links.category(product.category)}>
+                  {capitalizeFirst(product.category)}
+                </CategoryLink>
+              </ProductInfo.Category>
+              <ProductInfo.Brand>{product.brand}</ProductInfo.Brand>
+              <ProductInfo.Name className="name">{product.name}</ProductInfo.Name>
+
+              {attributes.length > 0 && (
+                <ProductAttributes
+                  attributes={attributes}
+                  selected={this.state.selectedAttrs}
+                  selectAttr={this.selectAttr}
+                />
+              )}
+
+              {spacer}
+              <ProductPrice currency={this.props.currency ?? ''} prices={product.prices} />
+              {spacer}
+
+              {product.inStock && (
+                <AccentButton $big $biggerFont onClick={this.addToCart}>
+                  Add to cart
+                </AccentButton>
+              )}
+
+              {spacer}
+              <ProductDescription html={product.description ?? ''} />
+            </div>
+          </ProductDisplayContainer>
+        )}
       </PageContainer>
     );
   }
