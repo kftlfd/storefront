@@ -1,78 +1,38 @@
-import { Component } from 'react';
+import { Component, ReactNode } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import styled from 'styled-components';
 
-import { getProductById, getProductsByCategory } from '@/api';
-import ChevronIcon from '@/assets/chevron.svg?react';
-import Dropdown, { DropdownMenuItem } from '@/components/Dropdown';
+import { getProductsByCategory } from '@/api';
+import { Product } from '@/api/types';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
-import ListingItem from '@/features/product/ListingItem';
-import {
-  CategoryHeader,
-  CategorySorting,
-  CategoryTitle,
-  ListingsGrid,
-  Pagination,
-  PaginationBtn,
-  SortingLabel,
-} from '@/features/product/ProductListing.ui';
+import CategoryView from '@/features/category/CategoryView';
 import { PageContainer, PageMainText } from '@/layout/page';
 import { StoreState } from '@/store';
-import { addToCart, toggleMiniCart } from '@/store/cart';
 import { loadCategory } from '@/store/category';
-import { loadProduct, loadProductsBasics } from '@/store/products';
+import { loadProductsBasics } from '@/store/products';
+import { capitalizeFirst } from '@/utils/capitalize';
 
 type RouterProps = RouteComponentProps<{ categoryId: string }>;
 
 const withStore = connect(
   (state: StoreState, ownProps: RouterProps) => ({
-    currency: state.currency.selected,
     categoryId: ownProps.match.params.categoryId,
     categoryItems: state.category.items[ownProps.match.params.categoryId],
     products: state.products.items,
-    getProductsByCategory,
-    getProductById,
   }),
   {
     loadCategory,
     loadProductsBasics,
-    loadProduct,
-    addToCart,
-    toggleMiniCart,
   },
 );
 
 type StoreProps = ConnectedProps<typeof withStore>;
-
-const ITEMS_ON_PAGE = 8;
-
-function getPage(s: string) {
-  let start = s.search('p=');
-  if (start < 0) return 0;
-  start += 2;
-  let end = s.indexOf(';', start);
-  if (end < 0) end = s.length;
-  const page = s.slice(start, end);
-  if (!page) return 0;
-  return parseInt(page);
-}
-
-enum Sort {
-  Category = 'category',
-  Name = 'name',
-  Brand = 'brand',
-  Price = 'price',
-  InStock = 'inStock',
-}
 
 interface Props extends RouterProps, StoreProps {}
 
 interface State {
   loading: boolean;
   error: string | null;
-  sortBy: Sort | null;
-  sortAsc: boolean;
 }
 
 class CategoryPage extends Component<Props, State> {
@@ -81,8 +41,6 @@ class CategoryPage extends Component<Props, State> {
     this.state = {
       loading: true,
       error: null,
-      sortBy: null,
-      sortAsc: true,
     };
   }
 
@@ -102,7 +60,7 @@ class CategoryPage extends Component<Props, State> {
   }
 
   loadCategoryProducts = () => {
-    const title = this.props.categoryId.charAt(0).toUpperCase() + this.props.categoryId.slice(1);
+    const title = capitalizeFirst(this.props.categoryId);
 
     if (this.props.categoryItems) {
       this.setState({ loading: false });
@@ -110,8 +68,7 @@ class CategoryPage extends Component<Props, State> {
       return;
     }
 
-    this.props
-      .getProductsByCategory(this.props.categoryId)
+    getProductsByCategory(this.props.categoryId)
       .then(({ productIds, productItems }) => {
         const id = this.props.categoryId;
         this.props.loadCategory({ id, productIds });
@@ -126,262 +83,27 @@ class CategoryPage extends Component<Props, State> {
       });
   };
 
-  loadProduct = async (id: string) => {
-    const product = await this.props.getProductById(id);
-    this.props.loadProduct(product);
-    return product;
-  };
+  render(): ReactNode {
+    const { categoryId, categoryItems } = this.props;
 
-  addToCart = async (id: string) => {
-    const product = this.props.products[id]?.loaded
-      ? this.props.products[id]
-      : await this.loadProduct(id);
-
-    if (!product) {
-      console.warn('No product');
-      return;
-    }
-
-    const attributes: Record<string, string> = {};
-    product.attributes?.forEach((attr) => {
-      const itemId = attr.items[0]?.id;
-      if (itemId) {
-        attributes[attr.id] = itemId;
-      }
-    });
-
-    this.props.addToCart({ id, attributes });
-    this.props.toggleMiniCart(true);
-  };
-
-  toggleSortOrder = () => {
-    this.setState((prev) => ({ sortAsc: !prev.sortAsc }));
-  };
-
-  sortOptions = [
-    {
-      id: Sort.Category,
-      f: () => this.setState({ sortBy: Sort.Category }),
-    },
-    {
-      id: Sort.Name,
-      f: () => this.setState({ sortBy: Sort.Name }),
-    },
-    {
-      id: Sort.Brand,
-      f: () => this.setState({ sortBy: Sort.Brand }),
-    },
-    {
-      id: Sort.Price,
-      f: () => this.setState({ sortBy: Sort.Price }),
-    },
-    {
-      id: Sort.InStock,
-      f: () => this.setState({ sortBy: Sort.InStock }),
-    },
-  ];
-
-  sortOptionsTitles = {
-    [Sort.Category]: 'Category',
-    [Sort.Name]: 'Name',
-    [Sort.Brand]: 'Brand',
-    [Sort.Price]: 'Price',
-    [Sort.InStock]: 'In Stock',
-  };
-
-  sortingFunctions: Record<'string' | 'price' | 'inStock', (a: string, b: string) => number> = {
-    string: (a, b) => {
-      if (
-        !this.state.sortBy ||
-        this.state.sortBy === Sort.Price ||
-        this.state.sortBy === Sort.InStock
-      ) {
-        return 0;
-      }
-      const s1 = this.props.products[a]?.[this.state.sortBy].toLowerCase() ?? '';
-      const s2 = this.props.products[b]?.[this.state.sortBy].toLowerCase() ?? '';
-      if (s1 === s2) return 0;
-      return s1 > s2 ? 1 : -1;
-    },
-
-    price: (a, b) =>
-      (this.props.products[a]?.prices[0]?.amount ?? 0) -
-      (this.props.products[b]?.prices[0]?.amount ?? 0),
-
-    inStock: (a, b) =>
-      Number(this.props.products[a]?.inStock) - Number(this.props.products[b]?.inStock),
-  };
-
-  sortByFunctions = {
-    name: this.sortingFunctions.string,
-    brand: this.sortingFunctions.string,
-    category: this.sortingFunctions.string,
-    price: this.sortingFunctions.price,
-    inStock: this.sortingFunctions.inStock,
-  };
-
-  renderError = () => (
-    <PageContainer>
-      <PageMainText>{/*this.state.error*/}Page not found</PageMainText>
-    </PageContainer>
-  );
-
-  renderLoading = () => (
-    <PageContainer>
-      <PageMainText>
-        <LoadingSpinner size={60} />
-      </PageMainText>
-    </PageContainer>
-  );
-
-  renderCategoryHeader = () => (
-    <CategoryHeader>
-      <CategoryTitle>
-        {this.props.categoryId.charAt(0).toUpperCase() + this.props.categoryId.slice(1)}
-      </CategoryTitle>
-
-      <CategorySorting>
-        <SortingLabel>Sort by</SortingLabel>
-
-        <Dropdown
-          target={
-            <Button>
-              {this.state.sortBy ? this.sortOptionsTitles[this.state.sortBy] : 'None'}
-            </Button>
-          }
-        >
-          <DropdownMenuItem onClick={() => this.setState({ sortBy: null })}>None</DropdownMenuItem>
-          {Object.values(Sort).map((sortValue) => (
-            <DropdownMenuItem key={sortValue} onClick={() => this.setState({ sortBy: sortValue })}>
-              {this.sortOptionsTitles[sortValue]}
-            </DropdownMenuItem>
-          ))}
-        </Dropdown>
-
-        <Button onClick={this.toggleSortOrder}>
-          <Chevron $dir={this.state.sortAsc ? 'up' : 'down'} />
-        </Button>
-      </CategorySorting>
-    </CategoryHeader>
-  );
-
-  scrollToTop = () => window.scrollTo(0, 0);
-
-  renderPagination = (currentPage: number, hasPrev: boolean, hasNext: boolean) => (
-    <Pagination>
-      {hasPrev && (
-        <div onClick={this.scrollToTop}>
-          <PaginationBtn to={`?p=${currentPage - 1}`}>
-            <Chevron $dir="left" />
-          </PaginationBtn>
-        </div>
-      )}
-
-      <div onClick={this.scrollToTop}>
-        <PaginationBtn to={'?p=' + currentPage}>{currentPage}</PaginationBtn>
-      </div>
-
-      {hasNext && (
-        <div onClick={this.scrollToTop}>
-          <PaginationBtn to={`?p=${currentPage + 1}`}>
-            <Chevron $dir="right" />
-          </PaginationBtn>
-        </div>
-      )}
-    </Pagination>
-  );
-
-  renderListingsGrid = () => {
-    let items = [...(this.props.categoryItems || [])];
-
-    if (this.state.sortBy) items.sort(this.sortByFunctions[this.state.sortBy]);
-
-    if (!this.state.sortAsc) items.reverse();
-
-    const needPagination = items.length > ITEMS_ON_PAGE;
-
-    const page = getPage(this.props.location.search);
-    const currentPage = page > 0 ? page : 1;
-    const hasPrev = currentPage > 1;
-    const hasNext = currentPage < Math.ceil(items.length / ITEMS_ON_PAGE);
-
-    if (needPagination) {
-      const p = page > 0 ? page - 1 : page;
-      const start = p * ITEMS_ON_PAGE;
-      const end = start + ITEMS_ON_PAGE;
-      items = items.slice(start, end);
-    }
+    const products = (categoryItems || [])
+      .map((id) => this.props.products[id])
+      .filter((p): p is Product => p !== undefined);
 
     return (
-      <>
-        <ListingsGrid>
-          {items.map((id) => {
-            const product = this.props.products[id];
-            return product ? (
-              <ListingItem
-                key={id}
-                item={product}
-                currency={this.props.currency ?? ''}
-                addToCart={(id) => void this.addToCart(id)}
-              />
-            ) : null;
-          })}
-        </ListingsGrid>
-
-        {needPagination && this.renderPagination(currentPage, hasPrev, hasNext)}
-      </>
-    );
-  };
-
-  render() {
-    if (this.state.error) return this.renderError();
-    if (this.state.loading) return this.renderLoading();
-
-    return (
-      <PageContainer id="listings">
-        {this.renderCategoryHeader()}
-        {this.renderListingsGrid()}
+      <PageContainer>
+        {this.state.loading ? (
+          <PageMainText>
+            <LoadingSpinner size={60} />
+          </PageMainText>
+        ) : this.state.error ? (
+          <PageMainText>Page not found</PageMainText>
+        ) : (
+          <CategoryView categoryTitle={capitalizeFirst(categoryId)} products={products} />
+        )}
       </PageContainer>
     );
   }
 }
 
 export default withRouter(withStore(CategoryPage));
-
-const Button = styled.button`
-  padding: 0.5rem 1rem;
-  display: grid;
-  place-content: center;
-  cursor: pointer;
-  border: none;
-  font-family: inherit;
-  font-size: 1rem;
-  font-weight: normal;
-  border-radius: ${(props) => props.theme.size.borderRadius};
-  color: ${(props) => props.theme.color.text};
-  background-color: ${(props) => props.theme.color.bgButton};
-  transition: ${(props) => props.theme.transition.default};
-
-  &:hover {
-    background-color: ${(props) => props.theme.color.bgHover};
-  }
-`;
-
-const Chevron = styled(ChevronIcon)<{ $dir?: 'left' | 'right' | 'up' | 'down' }>`
-  height: 1rem;
-  fill: ${({ theme }) => theme.color.text};
-  transition: ${({ theme }) => theme.transition.default};
-  rotate: ${({ $dir }) => {
-    switch ($dir) {
-      case 'left':
-        return '90deg';
-      case 'right':
-        return '-90deg';
-      case 'up':
-        return '-180deg';
-      case 'down':
-      default:
-        return '0';
-    }
-  }};
-`;

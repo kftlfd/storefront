@@ -1,32 +1,78 @@
 import { Component, MouseEvent } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { getProductById } from '@/api';
 import { Product } from '@/api/types';
 import CartIcon from '@/assets/cart.svg?react';
 import { links } from '@/pages/Router';
+import { StoreState } from '@/store';
+import { addToCart, toggleMiniCart } from '@/store/cart';
+import { loadProduct } from '@/store/products';
 import { formatPrice } from '@/utils/price';
 
-interface Props extends RouteComponentProps {
+const withStore = connect(
+  (state: StoreState) => ({
+    currency: state.currency.selected,
+    products: state.products.items,
+  }),
+  {
+    addToCart,
+    toggleMiniCart,
+    loadProduct,
+  },
+);
+
+type StoreProps = ConnectedProps<typeof withStore>;
+
+interface Props extends StoreProps, RouteComponentProps {
   item: Product;
-  currency: string;
-  addToCart: (id: string) => void;
 }
 
-class ListingItem extends Component<Props> {
+class ProductCard extends Component<Props> {
+  loadProduct = async (id: string) => {
+    const product = await getProductById(id);
+    this.props.loadProduct(product);
+    return product;
+  };
+
+  addToCart = async () => {
+    const { item, products } = this.props;
+    const { id } = item;
+
+    const product = products[id]?.loaded ? products[id] : await this.loadProduct(id);
+
+    if (!product) {
+      console.warn('No product');
+      return;
+    }
+
+    const attributes: Record<string, string> = {};
+    product.attributes?.forEach((attr) => {
+      const itemId = attr.items[0]?.id;
+      if (itemId) {
+        attributes[attr.id] = itemId;
+      }
+    });
+
+    this.props.addToCart({ id, attributes });
+    this.props.toggleMiniCart(true);
+  };
+
   handleClick = () => {
     this.props.history.push(links.product(this.props.item.id));
   };
 
   handleQuickAdd = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    this.props.addToCart(this.props.item.id);
+    void this.addToCart();
   };
 
   render() {
     const { item, currency } = this.props;
     const available = item.inStock;
-    const price = formatPrice(item.prices, currency);
+    const price = formatPrice(item.prices, currency ?? '');
 
     return (
       <Card className={available ? '' : 'out-of-stock'} onClick={this.handleClick}>
@@ -48,7 +94,7 @@ class ListingItem extends Component<Props> {
   }
 }
 
-export default withRouter(ListingItem);
+export default withRouter(withStore(ProductCard));
 
 const Card = styled.div`
   padding: 1rem;
