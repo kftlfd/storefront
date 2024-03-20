@@ -13,21 +13,27 @@ class Pagination extends Component<{
     const hasPrev = page > 1;
     const hasNext = page < total;
 
+    const pages = (() => {
+      const start = Math.max(page - 2, 1);
+      const end = Math.min(page + 2, total);
+      return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+    })();
+
     return (
       <PaginationContainer>
-        {hasPrev && (
-          <PaginationBtn onClick={() => onSelect(page - 1)}>
-            <Chevron style={{ rotate: '90deg' }} />
-          </PaginationBtn>
-        )}
+        <PaginationBtn disabled={!hasPrev} onClick={() => onSelect(page - 1)}>
+          <Chevron style={{ rotate: '90deg' }} />
+        </PaginationBtn>
 
-        <PaginationBtn onClick={() => onSelect(page)}>{page}</PaginationBtn>
-
-        {hasNext && (
-          <PaginationBtn onClick={() => onSelect(page + 1)}>
-            <Chevron style={{ rotate: '-90deg' }} />
+        {pages.map((p) => (
+          <PaginationBtn key={p} className={p === page ? 'active' : ''} onClick={() => onSelect(p)}>
+            {p}
           </PaginationBtn>
-        )}
+        ))}
+
+        <PaginationBtn disabled={!hasNext} onClick={() => onSelect(page + 1)}>
+          <Chevron style={{ rotate: '-90deg' }} />
+        </PaginationBtn>
       </PaginationContainer>
     );
   }
@@ -61,6 +67,20 @@ const PaginationBtn = styled.button`
 
   &:hover {
     background-color: ${(props) => props.theme.color.bgHover};
+  }
+
+  &.active {
+    background-color: ${({ theme }) => theme.color.accent};
+    color: white;
+
+    &:hover {
+      background-color: ${({ theme }) => theme.color.accentHover};
+    }
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
   }
 `;
 
