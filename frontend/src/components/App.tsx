@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 
-import { getCategoriesAndCurrencies, getProductsByIds } from '@/api';
+import { getCategoriesCurrenciesCartProducts } from '@/api';
 import Header from '@/features/header/Header';
 import { PageWrapper } from '@/layout/page';
 import Router, { links } from '@/pages/Router';
@@ -15,7 +15,6 @@ import { SplashScreen } from './SplashScreen';
 const withStore = connect(
   (state: StoreState) => ({
     categories: state.products.categories,
-    products: state.products.products,
     cart: state.cart.items,
   }),
   {
@@ -27,15 +26,13 @@ const withStore = connect(
 
 export type StoreProps = ConnectedProps<typeof withStore>;
 
-interface AppProps extends StoreProps {}
-
-interface AppState {
+interface State {
   loading: boolean;
   error: null | string;
 }
 
-export class App extends React.Component<AppProps, AppState> {
-  constructor(props: AppProps) {
+export class App extends React.Component<StoreProps, State> {
+  constructor(props: StoreProps) {
     super(props);
     this.state = {
       loading: true,
@@ -54,15 +51,13 @@ export class App extends React.Component<AppProps, AppState> {
   }
 
   setupApp = async () => {
-    // fetch list of categories and currencies
-    const { categories, currencies } = await getCategoriesAndCurrencies();
+    const productIdsInCart = Array.from(new Set(this.props.cart.map((p) => p.id)));
+
+    const { categories, currencies, products } =
+      await getCategoriesCurrenciesCartProducts(productIdsInCart);
+
     this.props.loadCategoriesList(categories);
     this.props.loadCurrencies(currencies);
-
-    // fetch products in cart (saved to local storage)
-    const idsToFetch = Array.from(new Set(this.props.cart.map((p) => p.id)));
-    if (idsToFetch.length < 1) return;
-    const products = await getProductsByIds(idsToFetch);
     this.props.loadProduct(products);
   };
 

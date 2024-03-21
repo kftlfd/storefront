@@ -1,6 +1,1 @@
-export {
-  getCategoriesAndCurrencies,
-  getProductsByCategory,
-  getProductById,
-  getProductsByIds,
-} from './api';
+export { getCategoriesCurrenciesCartProducts, getProductsByCategory, getProductById } from './api';

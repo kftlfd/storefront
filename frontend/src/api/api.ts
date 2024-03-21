@@ -12,8 +12,8 @@ type QueryBody = {
   products?: string[];
 };
 
-async function query<T>(url: string, body: QueryBody) {
-  const response = await fetch(url, {
+async function query<T>(body: QueryBody) {
+  const response = await fetch(apiUrl, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify(body),
@@ -26,16 +26,16 @@ async function query<T>(url: string, body: QueryBody) {
   }
 }
 
-export async function getCategoriesAndCurrencies() {
-  const res = await query<{ currencies: Currency[]; categories: Category[] }>(apiUrl, {
+export async function getCategoriesCurrenciesCartProducts(productIds: Product['id'][]) {
+  return query<{ currencies: Currency[]; categories: Category[]; products: Product[] }>({
     currencies: '',
     categories: '',
+    products: productIds,
   });
-  return res;
 }
 
 export async function getProductsByCategory(categoryId: Category) {
-  const { category } = await query<{ category: Product[] }>(apiUrl, {
+  const { category } = await query<{ category: Product[] }>({
     category: categoryId,
   });
   const productIds = category.map((p) => p.id);
@@ -47,15 +47,8 @@ export async function getProductsByCategory(categoryId: Category) {
 }
 
 export async function getProductById(productId: string) {
-  const { product } = await query<{ product: Product }>(apiUrl, {
+  const { product } = await query<{ product: Product }>({
     product: productId,
   });
   return product;
-}
-
-export async function getProductsByIds(ids: string[]) {
-  const { products } = await query<{ products: Product[] }>(apiUrl, {
-    products: ids,
-  });
-  return products;
 }
