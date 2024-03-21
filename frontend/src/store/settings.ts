@@ -1,9 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { LocalStorage, ls } from './localStorage';
+import { ThemeVariant } from '@/theme/theme';
 
-const initialState: { theme: 'light' | 'dark' } = {
-  theme: LocalStorage.get(ls.theme, 'light'),
+import { LocalStorageValue } from './localStorage';
+
+const lsTheme = new LocalStorageValue<ThemeVariant>('theme', 'light');
+
+const initialState: {
+  theme: ThemeVariant;
+} = {
+  theme: lsTheme.get(),
 };
 
 const settingsSlice = createSlice({
@@ -15,7 +21,7 @@ const settingsSlice = createSlice({
     switchTheme: (state) => {
       const newTheme = state.theme === 'light' ? 'dark' : 'light';
       state.theme = newTheme;
-      LocalStorage.set(ls.theme, newTheme);
+      lsTheme.set(newTheme);
     },
   },
 });

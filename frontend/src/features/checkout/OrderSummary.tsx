@@ -4,14 +4,14 @@ import styled from 'styled-components';
 import { Currency } from '@/api/types';
 import ChevronIcon from '@/assets/chevron.svg?react';
 import { CartItem } from '@/store/cart';
-import { Products } from '@/store/products';
+import { ProductsMap } from '@/store/products';
 import { formatTotal } from '@/utils/price';
 
 interface Props {
   currencies: Currency[];
   currency: string;
   cart: CartItem[];
-  products: Products;
+  products: ProductsMap;
 }
 
 interface State {

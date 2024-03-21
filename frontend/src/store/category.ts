@@ -3,12 +3,11 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import type { Category } from '@/api/types';
 
-import { exp, LocalStorage, ls } from './localStorage';
-
-const expire = exp.seconds(1);
-
-const initialState: { ids: Category[]; items: { [id: Category]: string[] } } = {
-  ids: LocalStorage.get(ls.categoryList, []),
+const initialState: {
+  ids: Category[];
+  items: Record<Category, string[]>;
+} = {
+  ids: [],
   items: {},
 };
 
@@ -20,7 +19,6 @@ const categorySlice = createSlice({
   reducers: {
     loadCategoriesList: (state, action: PayloadAction<Category[]>) => {
       state.ids = action.payload;
-      LocalStorage.set(ls.categoryList, action.payload, expire);
     },
 
     loadCategory: (state, action: PayloadAction<{ id: Category; productIds: string[] }>) => {

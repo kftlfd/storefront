@@ -1,21 +1,23 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
-import { LocalStorage, ls } from './localStorage';
+import { exp, LocalStorageValue } from './localStorage';
 
 export type CartItem = {
   id: string;
-  attributes: {
-    [attrId: string]: string;
-  };
+  attributes: Record<string, string>;
   quantity: number;
 };
+
+type CartItemPayload = Omit<CartItem, 'quantity'>;
+
+const lsCart = new LocalStorageValue<CartItem[]>('cart', [], exp.days(1));
 
 const initialState: {
   items: CartItem[];
   miniCartOpen: boolean;
 } = {
-  items: LocalStorage.get(ls.cart, []),
+  items: lsCart.get(),
   miniCartOpen: false,
 };
 
@@ -25,46 +27,36 @@ const cartSlice = createSlice({
   initialState,
 
   reducers: {
-    addToCart: (
-      state,
-      action: PayloadAction<{
-        id: string;
-        attributes: {
-          [attrId: string]: string;
-        };
-      }>,
-    ) => {
-      const item = action.payload;
+    addToCart: (state, action: PayloadAction<CartItemPayload>) => {
+      const newItem = action.payload;
 
-      let found = false;
-      state.items.find((inCart) => {
-        if (inCart.id !== item.id) return false;
-        const sameAttrs = Object.keys(item.attributes).every(
-          (attr) => inCart.attributes[attr] === item.attributes[attr],
+      const inCart = state.items.find((item) => {
+        return (
+          item.id === newItem.id &&
+          Object.keys(newItem.attributes).every(
+            (attr) => item.attributes[attr] === newItem.attributes[attr],
+          )
         );
-        if (!sameAttrs) return false;
-
-        inCart.quantity++;
-        found = true;
-        return true;
       });
 
-      if (!found) {
+      if (inCart) {
+        inCart.quantity++;
+      } else {
         state.items.push({
-          id: item.id,
-          attributes: item.attributes,
+          id: newItem.id,
+          attributes: newItem.attributes,
           quantity: 1,
         });
       }
 
-      LocalStorage.set(ls.cart, state.items);
+      lsCart.set(state.items);
     },
 
     increaseQuantity: (state, action: PayloadAction<number>) => {
       const index = action.payload;
       const item = state.items[index];
       if (item) item.quantity++;
-      LocalStorage.set(ls.cart, state.items);
+      lsCart.set(state.items);
     },
 
     decreaseQuantity: (state, action: PayloadAction<number>) => {
@@ -75,7 +67,7 @@ const cartSlice = createSlice({
       } else if (item) {
         item.quantity--;
       }
-      LocalStorage.set(ls.cart, state.items);
+      lsCart.set(state.items);
     },
 
     toggleMiniCart: (state, action: PayloadAction<boolean | undefined>) => {
@@ -88,7 +80,7 @@ const cartSlice = createSlice({
 
     emptyCart: (state) => {
       state.items = [];
-      LocalStorage.set(ls.cart, state.items);
+      lsCart.set(state.items);
     },
   },
 });
