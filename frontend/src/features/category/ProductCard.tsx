@@ -14,8 +14,8 @@ import { formatPrice } from '@/utils/price';
 
 const withStore = connect(
   (state: StoreState) => ({
-    currency: state.currency.selected,
-    products: state.products.items,
+    currency: state.settings.selectedCurrency,
+    products: state.products.products,
   }),
   {
     addToCart,

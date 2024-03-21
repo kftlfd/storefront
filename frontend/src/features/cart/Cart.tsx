@@ -14,10 +14,10 @@ import CartItem from './CartItem';
 
 const withStore = connect(
   (state: StoreState) => ({
-    currencyLabel: state.currency.selected,
-    currencyList: state.currency.list,
+    currencyLabel: state.settings.selectedCurrency,
+    currencyList: state.settings.currencies,
     cart: state.cart.items,
-    products: state.products.items,
+    products: state.products.products,
   }),
   {
     increaseQuantity,

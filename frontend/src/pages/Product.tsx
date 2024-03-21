@@ -21,9 +21,9 @@ type RouterProps = RouteComponentProps<{ productId: string }>;
 
 const withStore = connect(
   (state: StoreState, ownProps: RouterProps) => ({
-    currency: state.currency.selected,
+    currency: state.settings.selectedCurrency,
     productId: ownProps.match.params.productId,
-    product: state.products.items[ownProps.match.params.productId],
+    product: state.products.products[ownProps.match.params.productId],
   }),
   {
     loadProduct,

@@ -5,12 +5,12 @@ import styled from 'styled-components';
 import Dropdown, { DropdownMenuItem } from '@/components/Dropdown';
 import { HeaderButton, HeaderButtonContainer } from '@/layout/header';
 import { StoreState } from '@/store';
-import { selectCurrency } from '@/store/currency';
+import { selectCurrency } from '@/store/settings';
 
 const withStore = connect(
   (state: StoreState) => ({
-    currency: state.currency.selected,
-    currencyList: state.currency.list,
+    currency: state.settings.selectedCurrency,
+    currencyList: state.settings.currencies,
   }),
   {
     selectCurrency,

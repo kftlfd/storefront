@@ -8,8 +8,7 @@ import { LoadingSpinner } from '@/components/LoadingSpinner';
 import CategoryView from '@/features/category/CategoryView';
 import { PageContainer, PageMainText } from '@/layout/page';
 import { StoreState } from '@/store';
-import { loadCategory } from '@/store/category';
-import { loadProductsBasics } from '@/store/products';
+import { loadProductIdsByCategory, loadProductsBasics } from '@/store/products';
 import { capitalizeFirst } from '@/utils/capitalize';
 
 type RouterProps = RouteComponentProps<{ categoryId: string }>;
@@ -17,11 +16,11 @@ type RouterProps = RouteComponentProps<{ categoryId: string }>;
 const withStore = connect(
   (state: StoreState, ownProps: RouterProps) => ({
     categoryId: ownProps.match.params.categoryId,
-    categoryItems: state.category.items[ownProps.match.params.categoryId],
-    products: state.products.items,
+    categoryItems: state.products.productIdsByCategory[ownProps.match.params.categoryId],
+    products: state.products.products,
   }),
   {
-    loadCategory,
+    loadProductIdsByCategory,
     loadProductsBasics,
   },
 );
@@ -70,8 +69,8 @@ class CategoryPage extends Component<Props, State> {
 
     getProductsByCategory(this.props.categoryId)
       .then(({ productIds, productItems }) => {
-        const id = this.props.categoryId;
-        this.props.loadCategory({ id, productIds });
+        const { categoryId } = this.props;
+        this.props.loadProductIdsByCategory({ categoryId, productIds });
         this.props.loadProductsBasics(productItems);
         this.setState({ loading: false });
         document.title = title;

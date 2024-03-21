@@ -14,9 +14,9 @@ import { emptyCart } from '@/store/cart';
 const withStore = connect(
   (state: StoreState) => ({
     cart: state.cart.items,
-    products: state.products.items,
-    currencyList: state.currency.list,
-    currencySelected: state.currency.selected,
+    products: state.products.products,
+    currencyList: state.settings.currencies,
+    currencySelected: state.settings.selectedCurrency,
   }),
   {
     emptyCart,

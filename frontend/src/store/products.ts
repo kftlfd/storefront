@@ -1,14 +1,18 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
-import type { Product } from '@/api/types';
+import type { Category, Product } from '@/api/types';
 
 export type ProductsMap = Record<Product['id'], Product>;
 
 const initialState: {
-  items: ProductsMap;
+  products: ProductsMap;
+  categories: Category[];
+  productIdsByCategory: Record<Category, string[]>;
 } = {
-  items: {},
+  products: {},
+  categories: [],
+  productIdsByCategory: {},
 };
 
 const productsSlice = createSlice({
@@ -17,24 +21,43 @@ const productsSlice = createSlice({
   initialState,
 
   reducers: {
-    loadProduct: (state, action: PayloadAction<Product>) => {
-      const product = action.payload;
-      state.items = {
-        ...state.items,
-        [product.id]: { ...product, loaded: true },
+    loadProduct: (state, action: PayloadAction<Product | Product[]>) => {
+      const newProducts = Array.isArray(action.payload) ? action.payload : [action.payload];
+
+      const newProductsMap = newProducts.reduce(
+        (acc, p) => ({ ...acc, [p.id]: { ...p, loaded: true } }),
+        {} as ProductsMap,
+      );
+
+      state.products = {
+        ...state.products,
+        ...newProductsMap,
       };
     },
 
     loadProductsBasics: (state, action: PayloadAction<ProductsMap>) => {
       const productItems = action.payload;
-      state.items = {
+      state.products = {
         ...productItems,
-        ...state.items,
+        ...state.products,
       };
+    },
+
+    loadCategoriesList: (state, action: PayloadAction<Category[]>) => {
+      state.categories = action.payload;
+    },
+
+    loadProductIdsByCategory: (
+      state,
+      action: PayloadAction<{ categoryId: Category; productIds: string[] }>,
+    ) => {
+      const { categoryId, productIds } = action.payload;
+      state.productIdsByCategory[categoryId] = productIds;
     },
   },
 });
 
 export default productsSlice.reducer;
 
-export const { loadProduct, loadProductsBasics } = productsSlice.actions;
+export const { loadProduct, loadProductsBasics, loadCategoriesList, loadProductIdsByCategory } =
+  productsSlice.actions;

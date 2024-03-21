@@ -13,7 +13,7 @@ import CurrencySwitch from './CurrencySwitch';
 import ThemeSwitch from './ThemeSwitch';
 
 const withStore = connect((state: StoreState) => ({
-  categories: state.category.ids,
+  categories: state.products.categories,
 }));
 
 type StoreProps = ConnectedProps<typeof withStore>;
