@@ -11,6 +11,12 @@ import { PageContainer, PageMainText } from '@/layout/page';
 import { StoreState } from '@/store';
 import { emptyCart } from '@/store/cart';
 
+const checkoutSteps: { id: CheckoutStep; title: string }[] = [
+  { id: CheckoutStep.Shipping, title: 'Shipping' },
+  { id: CheckoutStep.Billing, title: 'Billing' },
+  { id: CheckoutStep.Confirm, title: 'Confirm' },
+];
+
 const withStore = connect(
   (state: StoreState) => ({
     cart: state.cart.items,
@@ -43,33 +49,15 @@ class CheckoutPage extends Component<Props, State> {
     window.scrollTo(0, 0);
   }
 
-  checkoutSteps: { id: CheckoutStep; title: string }[] = [
-    {
-      id: CheckoutStep.Shipping,
-      title: 'Shipping',
-    },
-    {
-      id: CheckoutStep.Billing,
-      title: 'Billing',
-    },
-    {
-      id: CheckoutStep.Confirm,
-      title: 'Confirm',
-    },
-  ];
-
   prevStep = () => {
     this.setState((prev) => ({
-      currentStepIndex:
-        prev.currentStepIndex > 0 ? prev.currentStepIndex - 1 : prev.currentStepIndex,
+      currentStepIndex: Math.max(prev.currentStepIndex - 1, 0),
     }));
   };
 
   nextStep = () => {
-    const len = this.checkoutSteps.length;
     this.setState((prev) => ({
-      currentStepIndex:
-        prev.currentStepIndex < len - 1 ? prev.currentStepIndex + 1 : prev.currentStepIndex,
+      currentStepIndex: Math.min(prev.currentStepIndex + 1, checkoutSteps.length - 1),
     }));
   };
 
@@ -79,28 +67,28 @@ class CheckoutPage extends Component<Props, State> {
     this.props.history.push('/');
   };
 
-  renderEmpty() {
-    return (
-      <PageContainer>
-        <PageMainText>Cart is empty. Nothing to Checkout</PageMainText>
-      </PageContainer>
-    );
-  }
-
   render() {
-    if (this.props.cart.length < 1) return this.renderEmpty();
+    if (this.props.cart.length < 1) {
+      return (
+        <PageContainer>
+          <PageMainText>Cart is empty. Nothing to Checkout</PageMainText>
+        </PageContainer>
+      );
+    }
 
     return (
       <CheckoutContainer>
-        <CheckoutProgressBar steps={this.checkoutSteps} current={this.state.currentStepIndex} />
-        <OrderSummary
-          cart={this.props.cart}
-          products={this.props.products}
-          currencies={this.props.currencyList}
-          currency={this.props.currencySelected ?? ''}
-        />
+        <CheckoutProgressBar steps={checkoutSteps} current={this.state.currentStepIndex} />
+        <div>
+          <OrderSummary
+            cart={this.props.cart}
+            products={this.props.products}
+            currencies={this.props.currencyList}
+            currency={this.props.currencySelected ?? ''}
+          />
+        </div>
         <CheckoutForm
-          steps={this.checkoutSteps}
+          steps={checkoutSteps}
           current={this.state.currentStepIndex}
           prevStep={this.prevStep}
           nextStep={this.nextStep}

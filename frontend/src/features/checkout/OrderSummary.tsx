@@ -1,8 +1,9 @@
-import { Component, createRef, ReactNode, RefObject } from 'react';
+import { Component } from 'react';
 import styled from 'styled-components';
 
 import { Currency } from '@/api/types';
 import ChevronIcon from '@/assets/chevron.svg?react';
+import Collapse from '@/components/Collapse';
 import { CartItem } from '@/store/cart';
 import { ProductsMap } from '@/store/products';
 import { formatTotal } from '@/utils/price';
@@ -18,7 +19,7 @@ interface State {
   open: boolean;
 }
 
-export default class OrderSummary extends Component<Props, State> {
+class OrderSummary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = { open: true };
@@ -43,41 +44,54 @@ export default class OrderSummary extends Component<Props, State> {
 
     return (
       <SummaryWrapper>
-        <Collapse title={'Order Summary'} open={this.state.open} onClick={this.toggle}>
-          {this.props.cart.map((cartItem, index) => {
-            const p = this.props.products[cartItem.id]!;
-            return (
-              <SummaryItem key={cartItem.id + index}>
-                <ItemQuantity>
-                  <b>{cartItem.quantity}</b> &times;
-                </ItemQuantity>
-                <ItemDetails>
-                  <div>
-                    <b>{`${p.brand} ${p.name}`}</b>
-                  </div>
-                  {Object.keys(cartItem.attributes).map((attrId) => (
-                    <div key={attrId}>
-                      {attrId}: <b>{cartItem.attributes[attrId]}</b>
+        <Title onClick={this.toggle} className={this.state.open ? 'open' : ''}>
+          <span>Order Summary</span>
+          <Chevron style={{ rotate: this.state.open ? '-180deg' : '0deg' }} />
+        </Title>
+
+        <Collapse open={this.state.open}>
+          <CollapseContent>
+            {this.props.cart.map((cartItem, index) => {
+              const p = this.props.products[cartItem.id]!;
+              return (
+                <SummaryItem key={cartItem.id + index}>
+                  <ItemQuantity>
+                    <b>{cartItem.quantity}</b> &times;
+                  </ItemQuantity>
+                  <ItemDetails>
+                    <div>
+                      <b>{`${p.brand} ${p.name}`}</b>
                     </div>
-                  ))}
-                </ItemDetails>
-                <ItemImage src={p.gallery[0]} />
-              </SummaryItem>
-            );
-          })}
-          <SummaryTotal>
-            <div>Tax 21%:</div>
-            <div>{formatTotal(cartTotal.amount * 0.21, currencyObj!)}</div>
-            <div>To pay:</div>
-            <div>{formatTotal(cartTotal.amount * 1.21, currencyObj!)}</div>
-          </SummaryTotal>
+                    {Object.keys(cartItem.attributes).map((attrId) => (
+                      <div key={attrId}>
+                        {attrId}: <b>{cartItem.attributes[attrId]}</b>
+                      </div>
+                    ))}
+                  </ItemDetails>
+                  <ItemImage src={p.gallery[0]} />
+                </SummaryItem>
+              );
+            })}
+
+            <SummaryTotal>
+              <div>Tax 21%:</div>
+              <div>{formatTotal(cartTotal.amount * 0.21, currencyObj!)}</div>
+              <div>To pay:</div>
+              <div>{formatTotal(cartTotal.amount * 1.21, currencyObj!)}</div>
+            </SummaryTotal>
+          </CollapseContent>
         </Collapse>
       </SummaryWrapper>
     );
   }
 }
 
-const SummaryWrapper = styled.div``;
+export default OrderSummary;
+
+const SummaryWrapper = styled.div`
+  border: 2px solid ${({ theme }) => theme.color.accent};
+  border-radius: ${({ theme }) => theme.size.borderRadius};
+`;
 
 const SummaryItem = styled.div`
   display: flex;
@@ -115,57 +129,7 @@ const SummaryTotal = styled.div`
   }
 `;
 
-interface CollapseProps {
-  title: ReactNode;
-  open: boolean;
-  onClick?: () => void;
-  children?: ReactNode;
-}
-
-interface CollapseState {
-  height: string;
-}
-
-class Collapse extends Component<CollapseProps, CollapseState> {
-  el: RefObject<HTMLDivElement>;
-
-  constructor(props: CollapseProps) {
-    super(props);
-    this.el = createRef();
-    this.state = { height: 'auto' };
-  }
-
-  componentDidMount() {
-    const wrapperDiv = this.el.current;
-    if (wrapperDiv) {
-      this.setState({ height: wrapperDiv.scrollHeight + 'px' });
-    }
-  }
-
-  render() {
-    const elHeight = this.props.open ? this.state.height : '0px';
-
-    return (
-      <CollapseContainer>
-        <CollapseTitle onClick={this.props.onClick} className={this.props.open ? 'open' : ''}>
-          {this.props.title}
-          <Chevron $up={this.props.open} />
-        </CollapseTitle>
-        <CollapseContentWrapper ref={this.el} style={{ height: elHeight }}>
-          <CollapseContent>{this.props.children}</CollapseContent>
-        </CollapseContentWrapper>
-      </CollapseContainer>
-    );
-  }
-}
-
-const CollapseContainer = styled.div`
-  border: 2px solid ${({ theme }) => theme.color.accent};
-  border-radius: ${({ theme }) => theme.size.borderRadius};
-  overflow: hidden;
-`;
-
-const CollapseTitle = styled.h3`
+const Title = styled.h3`
   margin: 0;
   padding: 0.8rem 1rem;
   background-color: ${({ theme }) => theme.color.bg};
@@ -181,16 +145,10 @@ const CollapseTitle = styled.h3`
   }
 `;
 
-const Chevron = styled(ChevronIcon)<{ $up?: boolean }>`
+const Chevron = styled(ChevronIcon)`
   height: 1rem;
   fill: ${({ theme }) => theme.color.text};
-  rotate: ${({ $up }) => ($up ? '-180deg' : 0)};
   transition: ${({ theme }) => theme.transition.default};
-`;
-
-const CollapseContentWrapper = styled.div`
-  transition: ${({ theme }) => theme.transition.default};
-  overflow: hidden;
 `;
 
 const CollapseContent = styled.div`

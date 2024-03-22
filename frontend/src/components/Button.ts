@@ -30,8 +30,8 @@ export const Button = styled.button<{
 
 export const AccentButton = styled(Button)(
   ({ theme }) => css`
-    border: none;
-    color: ${theme.color.bg};
+    border-color: transparent;
+    color: white;
     background-color: ${theme.color.accent};
 
     &:hover {

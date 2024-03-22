@@ -1,7 +1,47 @@
-import { Component, createRef, MouseEvent, ReactNode, RefObject } from 'react';
+import { Component, ReactNode } from 'react';
 import styled from 'styled-components';
 
+import Collapse from '@/components/Collapse';
+
 import { CheckoutStep } from './config';
+
+const FormInput = styled.input`
+  display: block;
+  width: 100%;
+  margin: 1rem 0;
+  padding: 0.8rem 1rem;
+  border: none;
+  border-radius: ${({ theme }) => theme.size.borderRadius};
+  color: ${({ theme }) => theme.color.text};
+  background-color: ${({ theme }) => theme.color.bgButton};
+  transition: ${({ theme }) => theme.transition.default};
+
+  &:hover {
+    box-shadow: 0 0 0 2px ${({ theme }) => theme.color.bgHover};
+  }
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px ${({ theme }) => theme.color.accent};
+  }
+`;
+
+const formSteps: Record<CheckoutStep, ReactNode> = {
+  [CheckoutStep.Shipping]: (
+    <>
+      <label htmlFor={'shipping'}>Shipping info</label>
+      <FormInput name="shipping" type="text" placeholder="Shipping info" />
+    </>
+  ),
+
+  [CheckoutStep.Billing]: (
+    <>
+      <label htmlFor={'billing'}>Billing info</label>
+      <FormInput name="billing" type="text" placeholder="Billing info" />
+    </>
+  ),
+
+  [CheckoutStep.Confirm]: <h3>Click Confirm to send the order!</h3>,
+};
 
 interface Props {
   steps: { id: CheckoutStep; title: string }[];
@@ -11,82 +51,46 @@ interface Props {
   onConfirm: () => void;
 }
 
-export default class CheckoutForm extends Component<Props> {
-  formSteps: Record<
-    CheckoutStep,
-    { el: ReactNode; f: (e: MouseEvent<HTMLButtonElement>) => void }
-  > = {
-    [CheckoutStep.Shipping]: {
-      el: (
-        <>
-          <label htmlFor={'shipping'}>Shipping info</label>
-          <FormInput name="shipping" type="text" placeholder="Shipping info" />
-        </>
-      ),
-      f: (e) => {
-        e.preventDefault();
-        this.props.nextStep();
-      },
-    },
-
-    [CheckoutStep.Billing]: {
-      el: (
-        <>
-          <label htmlFor={'billing'}>Billing info</label>
-          <FormInput name="billing" type="text" placeholder="Billing info" />
-        </>
-      ),
-      f: (e) => {
-        e.preventDefault();
-        this.props.nextStep();
-      },
-    },
-
-    [CheckoutStep.Confirm]: {
-      el: <h3>Click Confirm to send the order!</h3>,
-      f: (e) => {
-        e.preventDefault();
-        this.props.onConfirm();
-      },
-    },
-  };
-
-  goBack = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    this.props.prevStep();
-  };
-
+class CheckoutForm extends Component<Props> {
   render() {
-    const stepId = this.props.steps[this.props.current]!.id;
-    const isFirstStep = this.props.current === 0;
-    const isLastStep = this.props.current === this.props.steps.length - 1;
+    const { steps, current, prevStep, nextStep, onConfirm } = this.props;
+    const isFirst = current === 0;
+    const isLast = current === steps.length - 1;
+    const onNext = isLast ? onConfirm : nextStep;
 
     return (
       <Form>
-        {this.props.steps.map((step, index) => {
-          const title = (
-            <>
-              {step.title} {index < this.props.current && <>&#10004;</>}
-            </>
-          );
-          const current = step.id === stepId;
+        {steps.map((step, index) => {
+          const active = current === index;
+
           return (
-            <Collapse key={step.id} title={title} open={current}>
-              {this.formSteps[step.id].el}
-            </Collapse>
+            <div key={step.id}>
+              <StepTitle className={active ? 'open' : ''}>
+                {step.title} {index < current && <>&#10004;</>}
+              </StepTitle>
+              <Collapse open={active}>
+                <CollapseContent>{formSteps[step.id]}</CollapseContent>
+              </Collapse>
+            </div>
           );
         })}
 
         <ButtonsContainer>
-          {!isFirstStep && <Button onClick={this.goBack}>Back</Button>}
-          <AccentButton onClick={this.formSteps[stepId].f}>
-            {isLastStep ? 'Confirm' : 'Next'}
+          {!isFirst && (
+            <Button type="button" onClick={prevStep}>
+              Back
+            </Button>
+          )}
+          <AccentButton type="button" onClick={onNext}>
+            {isLast ? 'Confirm' : 'Next'}
           </AccentButton>
         </ButtonsContainer>
       </Form>
     );
   }
 }
+
+export default CheckoutForm;
 
 const Form = styled.form`
   flex-grow: 1;
@@ -132,70 +136,7 @@ const AccentButton = styled(Button)`
   }
 `;
 
-const FormInput = styled.input`
-  display: block;
-  width: 100%;
-  margin: 1rem 0;
-  padding: 0.8rem 1rem;
-  border: none;
-  border-radius: ${({ theme }) => theme.size.borderRadius};
-  color: ${({ theme }) => theme.color.text};
-  background-color: ${({ theme }) => theme.color.bgButton};
-  transition: ${({ theme }) => theme.transition.default};
-
-  &:hover {
-    box-shadow: 0 0 0 2px ${({ theme }) => theme.color.bgHover};
-  }
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px ${({ theme }) => theme.color.accent};
-  }
-`;
-
-interface CollapseProps {
-  title: ReactNode;
-  open: boolean;
-  onClick?: () => void;
-  children?: ReactNode;
-}
-
-interface CollapseState {
-  height: string;
-}
-
-class Collapse extends Component<CollapseProps, CollapseState> {
-  el: RefObject<HTMLDivElement>;
-
-  constructor(props: CollapseProps) {
-    super(props);
-    this.el = createRef();
-    this.state = { height: 'auto' };
-  }
-
-  componentDidMount() {
-    const wrapperDiv = this.el.current;
-    if (wrapperDiv) {
-      this.setState({ height: wrapperDiv.scrollHeight + 'px' });
-    }
-  }
-
-  render() {
-    const elHeight = this.props.open ? this.state.height : '0px';
-
-    return (
-      <div>
-        <CollapseTitle onClick={this.props.onClick} className={this.props.open ? 'open' : ''}>
-          {this.props.title}
-        </CollapseTitle>
-        <CollapseContentWrapper ref={this.el} style={{ height: elHeight }}>
-          <CollapseContent>{this.props.children}</CollapseContent>
-        </CollapseContentWrapper>
-      </div>
-    );
-  }
-}
-
-const CollapseTitle = styled.div`
+const StepTitle = styled.div`
   padding: 0.5rem 1rem;
   color: ${({ theme }) => theme.color.text};
   background-color: ${({ theme }) => theme.color.bgHover};
@@ -206,11 +147,6 @@ const CollapseTitle = styled.div`
     color: ${({ theme }) => theme.color.bg};
     background-color: ${({ theme }) => theme.color.accent};
   }
-`;
-
-const CollapseContentWrapper = styled.div`
-  transition: ${({ theme }) => theme.transition.default};
-  overflow: hidden;
 `;
 
 const CollapseContent = styled.div`
