@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { Currency } from '@/api/types';
+import { Category, Currency } from '@/api/types';
 import { ThemeVariant } from '@/theme/theme';
 
 import { LocalStorageValue } from './localStorage';
@@ -10,10 +10,12 @@ const lsCurrency = new LocalStorageValue<Currency | null>('currency', null);
 
 const initialState: {
   theme: ThemeVariant;
+  categories: Category[];
   currencies: Currency[];
   selectedCurrency: Currency | null;
 } = {
   theme: lsTheme.get(),
+  categories: [],
   currencies: [],
   selectedCurrency: lsCurrency.get(),
 };
@@ -28,6 +30,10 @@ const settingsSlice = createSlice({
       const newTheme = state.theme === 'light' ? 'dark' : 'light';
       state.theme = newTheme;
       lsTheme.set(newTheme);
+    },
+
+    loadCategoriesList: (state, action: PayloadAction<Category[]>) => {
+      state.categories = action.payload;
     },
 
     loadCurrencies: (state, action: PayloadAction<Currency[]>) => {
@@ -54,4 +60,5 @@ const settingsSlice = createSlice({
 
 export default settingsSlice.reducer;
 
-export const { switchTheme, loadCurrencies, selectCurrency } = settingsSlice.actions;
+export const { switchTheme, loadCategoriesList, loadCurrencies, selectCurrency } =
+  settingsSlice.actions;

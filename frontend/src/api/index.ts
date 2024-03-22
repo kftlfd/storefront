@@ -1,1 +1,1 @@
-export { getCategoriesCurrenciesCartProducts, getProductsByCategory, getProductById } from './api';
+export { getCategoriesCurrenciesCartProducts, getProductById, getCategoryProducts } from './api';

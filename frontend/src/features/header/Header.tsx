@@ -14,7 +14,7 @@ import MiniCartBtn from './MiniCartBtn';
 import ThemeSwitch from './ThemeSwitch';
 
 const withStore = connect((state: StoreState) => ({
-  categories: state.products.categories,
+  categories: state.settings.categories,
 }));
 
 type StoreProps = ConnectedProps<typeof withStore>;

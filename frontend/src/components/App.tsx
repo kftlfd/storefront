@@ -6,15 +6,15 @@ import Header from '@/features/header/Header';
 import { PageWrapper } from '@/layout/page';
 import Router, { links } from '@/routing/Router';
 import type { StoreState } from '@/store';
-import { loadCategoriesList, loadProduct } from '@/store/products';
-import { loadCurrencies } from '@/store/settings';
+import { loadProduct } from '@/store/products';
+import { loadCategoriesList, loadCurrencies } from '@/store/settings';
 
 import Footer from './Footer';
 import { SplashScreen } from './SplashScreen';
 
 const withStore = connect(
   (state: StoreState) => ({
-    categories: state.products.categories,
+    categories: state.settings.categories,
     cart: state.cart.items,
   }),
   {

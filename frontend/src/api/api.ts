@@ -34,16 +34,11 @@ export async function getCategoriesCurrenciesCartProducts(productIds: Product['i
   });
 }
 
-export async function getProductsByCategory(categoryId: Category) {
+export async function getCategoryProducts(categoryId: Category) {
   const { category } = await query<{ category: Product[] }>({
     category: categoryId,
   });
-  const productIds = category.map((p) => p.id);
-  const productItems = category.reduce(
-    (acc, p) => ({ ...acc, [p.id]: p }),
-    {} as Record<Product['id'], Product>,
-  );
-  return { productIds, productItems };
+  return category;
 }
 
 export async function getProductById(productId: string) {

@@ -3,6 +3,7 @@ import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 
 import cart from './cart';
+import categoryApi from './categoryApi';
 import products from './products';
 import settings from './settings';
 
@@ -11,7 +12,9 @@ const store = configureStore({
     products,
     cart,
     settings,
+    [categoryApi.reducerPath]: categoryApi.reducer,
   },
+  middleware: (gdm) => gdm().concat(categoryApi.middleware),
 });
 
 export type StoreState = ReturnType<typeof store.getState>;

@@ -2,103 +2,70 @@ import { Component, ReactNode } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { getProductsByCategory } from '@/api';
-import { Product } from '@/api/types';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import CategoryView from '@/features/category/CategoryView';
 import { PageContainer, PageMainText } from '@/layout/page';
 import { StoreState } from '@/store';
-import { loadProductIdsByCategory, loadProductsBasics } from '@/store/products';
+import categoryApi from '@/store/categoryApi';
 import { capitalizeFirst } from '@/utils/capitalize';
 
-type RouterProps = RouteComponentProps<{ categoryId: string }>;
+type RouteProps = RouteComponentProps<{ categoryId: string }>;
 
 const withStore = connect(
-  (state: StoreState, ownProps: RouterProps) => ({
-    categoryId: ownProps.match.params.categoryId,
-    categoryItems: state.products.productIdsByCategory[ownProps.match.params.categoryId],
-    products: state.products.products,
-  }),
+  (state: StoreState, ownProps: RouteProps) => {
+    const categoryId = ownProps.match.params.categoryId;
+    return {
+      categoryId,
+      products: categoryApi.endpoints.getCategoryProducts.select(categoryId)(state),
+    };
+  },
   {
-    loadProductIdsByCategory,
-    loadProductsBasics,
+    getCategoryProducts: categoryApi.endpoints.getCategoryProducts.initiate,
   },
 );
 
-type StoreProps = ConnectedProps<typeof withStore>;
+type Props = ConnectedProps<typeof withStore>;
 
-interface Props extends RouterProps, StoreProps {}
-
-interface State {
-  loading: boolean;
-  error: string | null;
-}
-
-class CategoryPage extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      loading: true,
-      error: null,
-    };
-  }
+class CategoryPage extends Component<Props> {
+  unsubscribe: (() => void) | null = null;
 
   componentDidMount() {
-    this.loadCategoryProducts();
+    const query = this.props.getCategoryProducts(this.props.categoryId);
+    this.unsubscribe = () => query.unsubscribe();
   }
 
   componentDidUpdate(prevProps: Props) {
     if (prevProps.categoryId !== this.props.categoryId) {
-      this.setState({
-        error: null,
-        loading: true,
-      });
-      this.loadCategoryProducts();
-      window.scrollTo(0, 0);
+      this.unsubscribe?.();
+      const query = this.props.getCategoryProducts(this.props.categoryId);
+      this.unsubscribe = () => query.unsubscribe();
     }
   }
 
-  loadCategoryProducts = () => {
-    const title = capitalizeFirst(this.props.categoryId);
-
-    if (this.props.categoryItems) {
-      this.setState({ loading: false });
-      document.title = title;
-      return;
-    }
-
-    getProductsByCategory(this.props.categoryId)
-      .then(({ productIds, productItems }) => {
-        const { categoryId } = this.props;
-        this.props.loadProductIdsByCategory({ categoryId, productIds });
-        this.props.loadProductsBasics(productItems);
-        this.setState({ loading: false });
-        document.title = title;
-      })
-      .catch((err) => {
-        console.error(err);
-        this.setState({ error: err instanceof Error ? err.message : 'error' });
-        document.title = 'Not found';
-      });
-  };
+  componentWillUnmount(): void {
+    this.unsubscribe?.();
+  }
 
   render(): ReactNode {
-    const { categoryId, categoryItems } = this.props;
+    const { categoryId, products } = this.props;
+    const title = capitalizeFirst(categoryId);
 
-    const products = (categoryItems || [])
-      .map((id) => this.props.products[id])
-      .filter((p): p is Product => p !== undefined);
+    if (products.isError) {
+      document.title = 'Not found';
+    } else {
+      document.title = title;
+    }
 
     return (
       <PageContainer>
-        {this.state.loading ? (
+        {products.isLoading ? (
           <PageMainText>
             <LoadingSpinner size={60} />
           </PageMainText>
-        ) : this.state.error ? (
+        ) : products.isError || !products.data ? (
           <PageMainText>Page not found</PageMainText>
         ) : (
-          <CategoryView categoryTitle={capitalizeFirst(categoryId)} products={products} />
+          <CategoryView categoryTitle={capitalizeFirst(categoryId)} products={products.data} />
         )}
       </PageContainer>
     );
