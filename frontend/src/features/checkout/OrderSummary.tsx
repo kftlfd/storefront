@@ -1,26 +1,26 @@
 import { Component } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 
-import { Currency } from '@/api/types';
 import ChevronIcon from '@/assets/chevron.svg?react';
 import Collapse from '@/components/Collapse';
-import { CartItem } from '@/store/cart';
-import { ProductsMap } from '@/store/products';
+import { StoreState } from '@/store';
 import { formatTotal } from '@/utils/price';
 
-interface Props {
-  currencies: Currency[];
-  currency: string;
-  cart: CartItem[];
-  products: ProductsMap;
-}
+const withStore = connect((state: StoreState) => ({
+  cart: state.cart.items,
+  currency: state.settings.selectedCurrency,
+  products: state.products.products,
+}));
+
+type StoreProps = ConnectedProps<typeof withStore>;
 
 interface State {
   open: boolean;
 }
 
-class OrderSummary extends Component<Props, State> {
-  constructor(props: Props) {
+class OrderSummary extends Component<StoreProps, State> {
+  constructor(props: StoreProps) {
     super(props);
     this.state = { open: true };
   }
@@ -28,7 +28,7 @@ class OrderSummary extends Component<Props, State> {
   toggle = () => this.setState((prev) => ({ open: !prev.open }));
 
   render() {
-    const currencyObj = this.props.currencies.find((x) => x.label === this.props.currency);
+    const currencyObj = this.props.currency;
 
     const cartTotal = this.props.cart.reduce(
       (acc, item) => {
@@ -75,9 +75,9 @@ class OrderSummary extends Component<Props, State> {
 
             <SummaryTotal>
               <div>Tax 21%:</div>
-              <div>{formatTotal(cartTotal.amount * 0.21, currencyObj!)}</div>
+              <div>{formatTotal(cartTotal.amount * 0.21, currencyObj)}</div>
               <div>To pay:</div>
-              <div>{formatTotal(cartTotal.amount * 1.21, currencyObj!)}</div>
+              <div>{formatTotal(cartTotal.amount * 1.21, currencyObj)}</div>
             </SummaryTotal>
           </CollapseContent>
         </Collapse>
@@ -86,7 +86,7 @@ class OrderSummary extends Component<Props, State> {
   }
 }
 
-export default OrderSummary;
+export default withStore(OrderSummary);
 
 const SummaryWrapper = styled.div`
   border: 2px solid ${({ theme }) => theme.color.accent};

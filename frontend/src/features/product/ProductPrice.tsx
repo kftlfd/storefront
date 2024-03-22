@@ -1,11 +1,11 @@
 import { Component } from 'react';
 import styled from 'styled-components';
 
-import { Price } from '@/api/types';
+import { Currency, Price } from '@/api/types';
 import { formatPrice } from '@/utils/price';
 
 interface Props {
-  currency: string;
+  currency: Currency | null;
   prices: Price[];
 }
 

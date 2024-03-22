@@ -6,12 +6,12 @@ import { ThemeVariant } from '@/theme/theme';
 import { LocalStorageValue } from './localStorage';
 
 const lsTheme = new LocalStorageValue<ThemeVariant>('theme', 'light');
-const lsCurrency = new LocalStorageValue<string | null>('currency', null);
+const lsCurrency = new LocalStorageValue<Currency | null>('currency', null);
 
 const initialState: {
   theme: ThemeVariant;
   currencies: Currency[];
-  selectedCurrency: string | null;
+  selectedCurrency: Currency | null;
 } = {
   theme: lsTheme.get(),
   currencies: [],
@@ -32,19 +32,22 @@ const settingsSlice = createSlice({
 
     loadCurrencies: (state, action: PayloadAction<Currency[]>) => {
       const currencies = action.payload;
-
-      const curr = state.selectedCurrency;
-      const label = curr && currencies.find((x) => x.label === curr) ? curr : currencies[0]?.label;
-
       state.currencies = currencies;
-      state.selectedCurrency = label ?? null;
+
+      if (currencies.length < 1) {
+        state.selectedCurrency = null;
+      }
+      if (!currencies.find(({ label }) => label === state.selectedCurrency?.label)) {
+        state.selectedCurrency = currencies[0] ?? null;
+      }
+
       lsCurrency.set(state.selectedCurrency);
     },
 
-    selectCurrency: (state, action: PayloadAction<string>) => {
-      const label = action.payload;
-      state.selectedCurrency = label;
-      lsCurrency.set(state.selectedCurrency);
+    selectCurrency: (state, action: PayloadAction<Currency>) => {
+      const currency = action.payload;
+      state.selectedCurrency = currency;
+      lsCurrency.set(currency);
     },
   },
 });

@@ -20,9 +20,6 @@ const checkoutSteps: { id: CheckoutStep; title: string }[] = [
 const withStore = connect(
   (state: StoreState) => ({
     cart: state.cart.items,
-    products: state.products.products,
-    currencyList: state.settings.currencies,
-    currencySelected: state.settings.selectedCurrency,
   }),
   {
     emptyCart,
@@ -40,9 +37,7 @@ interface State {
 class CheckoutPage extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = {
-      currentStepIndex: 0,
-    };
+    this.state = { currentStepIndex: 0 };
   }
 
   componentDidMount() {
@@ -80,12 +75,7 @@ class CheckoutPage extends Component<Props, State> {
       <CheckoutContainer>
         <CheckoutProgressBar steps={checkoutSteps} current={this.state.currentStepIndex} />
         <div>
-          <OrderSummary
-            cart={this.props.cart}
-            products={this.props.products}
-            currencies={this.props.currencyList}
-            currency={this.props.currencySelected ?? ''}
-          />
+          <OrderSummary />
         </div>
         <CheckoutForm
           steps={checkoutSteps}

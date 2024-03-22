@@ -35,7 +35,7 @@ export class CurrencySwitch extends Component<StoreProps, State> {
   toggleMenu = () => this.setState((prev) => ({ menuOpen: !prev.menuOpen }));
 
   render() {
-    const currency = this.props.currencyList.find((x) => x.label === this.props.currency);
+    const { currency, currencyList, selectCurrency } = this.props;
 
     return (
       <Dropdown
@@ -49,9 +49,13 @@ export class CurrencySwitch extends Component<StoreProps, State> {
           </HeaderButtonContainer>
         }
       >
-        {this.props.currencyList.map(({ label, symbol }) => (
-          <DropdownMenuItem key={label} onClick={() => this.props.selectCurrency(label)}>
-            {symbol} {label}
+        {currencyList.map((cur) => (
+          <DropdownMenuItem
+            key={cur.label}
+            selected={currency?.label === cur.label}
+            onClick={() => selectCurrency(cur)}
+          >
+            {cur.symbol} {cur.label}
           </DropdownMenuItem>
         ))}
       </Dropdown>
