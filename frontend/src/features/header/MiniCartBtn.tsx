@@ -3,12 +3,12 @@ import { connect, ConnectedProps } from 'react-redux';
 import styled, { css } from 'styled-components';
 
 import CartIcon from '@/assets/cart.svg?react';
-import { HeaderButton, HeaderButtonBackdrop, HeaderButtonContainer } from '@/layout/header';
+import Cart from '@/features/cart/Cart';
 import { hideable } from '@/layout/hideable';
 import { StoreState } from '@/store';
 import { toggleMiniCart } from '@/store/cart';
 
-import Cart from './Cart';
+import { HeaderButton, HeaderButtonContainer } from './HeaderButton';
 
 const withStore = connect(
   (state: StoreState) => ({
@@ -124,4 +124,14 @@ const BackdropTop = styled.div`
 const BackdropBottom = styled.div`
   height: calc(100vh - ${({ theme }) => theme.size.headerHeight});
   background-color: ${({ theme }) => theme.color.backdrop};
+`;
+
+const HeaderButtonBackdrop = styled.div<{ zIndex?: number }>`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  z-index: ${({ zIndex }) => zIndex ?? 'auto'};
+  ${hideable}
 `;

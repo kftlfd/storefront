@@ -1,12 +1,31 @@
-import { Component, createRef, ReactNode, RefObject } from 'react';
+import { Component, createRef, CSSProperties, ReactNode, RefObject } from 'react';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
+
+type Position = 'bottom-left' | 'bottom-right';
+
+const getPositionStyle = (pos: Position, bcr?: DOMRect): CSSProperties => {
+  switch (pos) {
+    case 'bottom-right':
+      return {
+        left: bcr?.right ?? 0,
+        top: bcr?.bottom ?? 0,
+        translate: '-100%',
+      };
+    case 'bottom-left':
+      return {
+        left: bcr?.left ?? 0,
+        top: bcr?.bottom ?? 0,
+      };
+  }
+};
 
 interface Props {
   target: ReactNode;
   children?: ReactNode;
   isOpen?: boolean;
   onClose?: () => void;
+  position?: Position;
 }
 
 interface State {
@@ -34,6 +53,8 @@ export default class Dropdown extends Component<Props, State> {
     const close = this.props.onClose ?? this.close;
 
     const bcr = this.targetRef.current?.getBoundingClientRect();
+    const { position = 'bottom-right' } = this.props;
+    const positionStyle = getPositionStyle(position, bcr);
 
     return (
       <>
@@ -46,14 +67,7 @@ export default class Dropdown extends Component<Props, State> {
             <>
               <Backdrop onClick={close} />
 
-              <DropdownMenu
-                onClick={close}
-                style={{
-                  left: bcr?.right ?? 0,
-                  top: bcr?.bottom ?? 0,
-                  translate: '-100%',
-                }}
-              >
+              <DropdownMenu onClick={close} style={positionStyle}>
                 {this.props.children}
               </DropdownMenu>
             </>,

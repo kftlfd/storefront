@@ -3,9 +3,10 @@ import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 
 import Dropdown, { DropdownMenuItem } from '@/components/Dropdown';
-import { HeaderButton, HeaderButtonContainer } from '@/layout/header';
 import { StoreState } from '@/store';
 import { selectCurrency } from '@/store/settings';
+
+import { HeaderButton, HeaderButtonContainer } from './HeaderButton';
 
 const withStore = connect(
   (state: StoreState) => ({
