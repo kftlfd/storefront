@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { getProductById } from '@/api';
 import { Product } from '@/api/types';
 import CartIcon from '@/assets/cart.svg?react';
-import { links } from '@/pages/Router';
+import { links } from '@/routing/Router';
 import { StoreState } from '@/store';
 import { addToCart, toggleMiniCart } from '@/store/cart';
 import { loadProduct } from '@/store/products';

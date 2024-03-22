@@ -5,7 +5,6 @@ import { ThemeProvider as StyledProvider } from 'styled-components';
 import { StoreState } from '@/store';
 import { switchTheme } from '@/store/settings';
 
-import { ThemeContext, type ThemeContextValue } from './context';
 import { getTheme, ThemeVariant } from './theme';
 
 const withStore = connect(
@@ -36,26 +35,10 @@ class ThemeProvider extends Component<Props, State> {
     };
   }
 
-  switchTheme = () => {
-    this.setState((prev) => ({
-      variant: prev.variant === 'light' ? 'dark' : 'light',
-    }));
-    this.props.switchTheme();
-  };
-
   render() {
-    const contextVal: ThemeContextValue = {
-      switchTheme: this.switchTheme,
-      variant: this.state.variant,
-    };
+    const theme = getTheme(this.props.theme);
 
-    const theme = getTheme(contextVal.variant);
-
-    return (
-      <ThemeContext.Provider value={contextVal}>
-        <StyledProvider theme={theme}>{this.props.children}</StyledProvider>
-      </ThemeContext.Provider>
-    );
+    return <StyledProvider theme={theme}>{this.props.children}</StyledProvider>;
   }
 }
 

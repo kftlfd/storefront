@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 import App from '@/components/App';
-import RouterProvider from '@/pages/RouterProvider';
-import StoreProvider from '@/store/StoreProvider';
-import ThemeProvider from '@/theme/ThemeProvider';
+import RouterProvider from '@/routing';
+import StoreProvider from '@/store';
+import ThemeProvider from '@/theme';
 
 const rootEl = document.getElementById('root');
 

@@ -4,7 +4,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { getCategoriesCurrenciesCartProducts } from '@/api';
 import Header from '@/features/header/Header';
 import { PageWrapper } from '@/layout/page';
-import Router, { links } from '@/pages/Router';
+import Router, { links } from '@/routing/Router';
 import type { StoreState } from '@/store';
 import { loadCategoriesList, loadProduct } from '@/store/products';
 import { loadCurrencies } from '@/store/settings';

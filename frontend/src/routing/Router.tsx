@@ -10,6 +10,7 @@ const Error = lazy(() => import('@/pages/Error'));
 const Product = lazy(() => import('@/pages/Product'));
 
 export const links = {
+  root: '/',
   category: (id: string) => `/category/${id}`,
   product: (id: string) => `/product/${id}`,
   cart: '/cart',
