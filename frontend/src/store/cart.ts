@@ -7,6 +7,7 @@ export type CartItem = {
   id: string;
   attributes: Record<string, string>;
   quantity: number;
+  attributesSelected?: boolean;
 };
 
 type CartItemPayload = Omit<CartItem, 'quantity'>;
@@ -52,6 +53,12 @@ const cartSlice = createSlice({
       lsCart.set(state.items);
     },
 
+    updateItem: (state, action: PayloadAction<{ index: number; item: CartItem }>) => {
+      const { index, item } = action.payload;
+      state.items[index] = { ...state.items[index], ...item };
+      lsCart.set(state.items);
+    },
+
     increaseQuantity: (state, action: PayloadAction<number>) => {
       const index = action.payload;
       const item = state.items[index];
@@ -87,5 +94,11 @@ const cartSlice = createSlice({
 
 export default cartSlice.reducer;
 
-export const { addToCart, increaseQuantity, decreaseQuantity, toggleMiniCart, emptyCart } =
-  cartSlice.actions;
+export const {
+  addToCart,
+  updateItem,
+  increaseQuantity,
+  decreaseQuantity,
+  toggleMiniCart,
+  emptyCart,
+} = cartSlice.actions;

@@ -3,24 +3,20 @@ import { connect, ConnectedProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { getProductById } from '@/api';
 import { Product } from '@/api/types';
 import CartIcon from '@/assets/cart.svg?react';
 import { links } from '@/routing/Router';
 import { StoreState } from '@/store';
 import { addToCart, toggleMiniCart } from '@/store/cart';
-import { loadProduct } from '@/store/products';
 import { formatPrice } from '@/utils/price';
 
 const withStore = connect(
   (state: StoreState) => ({
     currency: state.settings.selectedCurrency,
-    products: state.products.products,
   }),
   {
     addToCart,
     toggleMiniCart,
-    loadProduct,
   },
 );
 
@@ -31,32 +27,9 @@ interface Props extends StoreProps, RouteComponentProps {
 }
 
 class ProductCard extends Component<Props> {
-  loadProduct = async (id: string) => {
-    const product = await getProductById(id);
-    this.props.loadProduct(product);
-    return product;
-  };
-
-  addToCart = async () => {
-    const { item, products } = this.props;
-    const { id } = item;
-
-    const product = products[id]?.loaded ? products[id] : await this.loadProduct(id);
-
-    if (!product) {
-      console.warn('No product');
-      return;
-    }
-
-    const attributes: Record<string, string> = {};
-    product.attributes?.forEach((attr) => {
-      const itemId = attr.items[0]?.id;
-      if (itemId) {
-        attributes[attr.id] = itemId;
-      }
-    });
-
-    this.props.addToCart({ id, attributes });
+  addToCart = () => {
+    const { item } = this.props;
+    this.props.addToCart({ id: item.id, attributes: {} });
     this.props.toggleMiniCart(true);
   };
 
@@ -72,7 +45,7 @@ class ProductCard extends Component<Props> {
   render() {
     const { item, currency } = this.props;
     const available = item.inStock;
-    const price = formatPrice(item.prices, currency ?? '');
+    const price = formatPrice(item.prices, currency);
 
     return (
       <Card className={available ? '' : 'out-of-stock'} onClick={this.handleClick}>

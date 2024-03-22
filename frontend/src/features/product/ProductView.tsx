@@ -13,6 +13,7 @@ import { links } from '@/routing/Router';
 import { StoreState } from '@/store';
 import { addToCart, toggleMiniCart } from '@/store/cart';
 import { capitalizeFirst } from '@/utils/capitalize';
+import { getDefaultAttributes } from '@/utils/defaultAttributes';
 
 const withStore = connect(
   (state: StoreState) => ({
@@ -38,17 +39,9 @@ class ProductView extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    const attributes = this.props.product.attributes ?? [];
-
-    const selectedAttrs = attributes.reduce<Record<string, string>>((selected, attr) => {
-      const firstItem = attr.items[0];
-      if (firstItem) {
-        selected[attr.id] = firstItem.id;
-      }
-      return selected;
-    }, {});
-
-    this.state = { selectedAttrs };
+    this.state = {
+      selectedAttrs: getDefaultAttributes(props.product.attributes ?? []),
+    };
   }
 
   componentDidMount(): void {
@@ -65,6 +58,7 @@ class ProductView extends Component<Props, State> {
     this.props.addToCart({
       id: this.props.product.id,
       attributes: this.state.selectedAttrs,
+      attributesSelected: true,
     });
     this.props.toggleMiniCart(true);
   };
@@ -96,7 +90,7 @@ class ProductView extends Component<Props, State> {
           )}
 
           {spacer}
-          <ProductPrice currency={this.props.currency ?? ''} prices={product.prices} />
+          <ProductPrice currency={this.props.currency} prices={product.prices} />
           {spacer}
 
           {product.inStock && (

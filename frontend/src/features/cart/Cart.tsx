@@ -3,9 +3,9 @@ import { connect, ConnectedProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { links } from '@/pages/Router';
+import { links } from '@/routing/Router';
 import { StoreState } from '@/store';
-import { decreaseQuantity, increaseQuantity, toggleMiniCart } from '@/store/cart';
+import { decreaseQuantity, increaseQuantity, toggleMiniCart, updateItem } from '@/store/cart';
 import { formatTotal } from '@/utils/price';
 
 import { AccentButton, Button } from '../../components/Button';
@@ -14,12 +14,12 @@ import CartItem from './CartItem';
 
 const withStore = connect(
   (state: StoreState) => ({
-    currencyLabel: state.settings.selectedCurrency,
-    currencyList: state.settings.currencies,
+    currency: state.settings.selectedCurrency,
     cart: state.cart.items,
     products: state.products.products,
   }),
   {
+    updateItem,
     increaseQuantity,
     decreaseQuantity,
     toggleMiniCart,
@@ -34,7 +34,7 @@ interface Props extends StoreProps, RouteComponentProps {
 
 class Cart extends Component<Props> {
   openCartPage = () => {
-    this.props.toggleMiniCart();
+    this.props.toggleMiniCart(false);
     this.props.history.push(links.cart);
   };
 
@@ -46,17 +46,16 @@ class Cart extends Component<Props> {
   closeCart = () => this.props.toggleMiniCart(false);
 
   render() {
-    if (this.props.cart.length < 1) {
+    const { cart, currency, products, mini, updateItem, decreaseQuantity, increaseQuantity } =
+      this.props;
+
+    if (cart.length < 1) {
       return <EmptyCart>Cart is empty</EmptyCart>;
     }
 
-    const currencyObj = this.props.currencyList.find((x) => x.label === this.props.currencyLabel);
-
-    const cartTotal = this.props.cart.reduce(
+    const cartTotal = cart.reduce(
       (acc, item) => {
-        const price = this.props.products[item.id]?.prices.find(
-          (p) => p.currency.label === currencyObj?.label,
-        );
+        const price = products[item.id]?.prices.find((p) => p.currency.label === currency?.label);
         acc.quantity += item.quantity;
         acc.amount += (price?.amount ?? 0) * item.quantity;
         return acc;
@@ -66,7 +65,7 @@ class Cart extends Component<Props> {
 
     return (
       <>
-        {this.props.mini ? (
+        {mini ? (
           <MiniCartInfo.Container>
             <MiniCartInfo.HeaderText>My cart, </MiniCartInfo.HeaderText>
             <MiniCartInfo.HeaderCount>
@@ -77,28 +76,18 @@ class Cart extends Component<Props> {
           <FullCartTitle>Cart</FullCartTitle>
         )}
 
-        <CartContent mini={this.props.mini}>
-          {this.props.cart.map((item, index) => {
-            const product = this.props.products[item.id];
-            if (!product) {
-              console.warn('No product');
-              return null;
-            }
-
-            return (
-              <CartItem
-                key={item.id + index}
-                mini={this.props.mini}
-                item={item}
-                product={product}
-                currency={currencyObj?.label ?? ''}
-                cartItemIndex={index}
-                increaseQuantity={this.props.increaseQuantity}
-                decreaseQuantity={this.props.decreaseQuantity}
-                closeCart={this.closeCart}
-              />
-            );
-          })}
+        <CartContent mini={mini}>
+          {cart.map((item, index) => (
+            <CartItem
+              key={item.id + index}
+              item={item}
+              onUpdate={(item) => updateItem({ index, item })}
+              increaseQuantity={() => increaseQuantity(index)}
+              decreaseQuantity={() => decreaseQuantity(index)}
+              closeCart={this.closeCart}
+              mini={this.props.mini}
+            />
+          ))}
         </CartContent>
 
         {this.props.mini ? (
@@ -106,7 +95,7 @@ class Cart extends Component<Props> {
             <MiniCartInfo.Total>
               <MiniCartInfo.TotalText>Total:</MiniCartInfo.TotalText>
               <MiniCartInfo.TotalAmount>
-                {formatTotal(cartTotal.amount, currencyObj!)}
+                {formatTotal(cartTotal.amount, currency)}
               </MiniCartInfo.TotalAmount>
             </MiniCartInfo.Total>
           </MiniCartInfo.Container>
@@ -116,10 +105,10 @@ class Cart extends Component<Props> {
             <TextBold>{cartTotal.quantity}</TextBold>
 
             <TextSemibold>Total:</TextSemibold>
-            <TextBold>{formatTotal(cartTotal.amount, currencyObj!)}</TextBold>
+            <TextBold>{formatTotal(cartTotal.amount, currency)}</TextBold>
 
             <TextNormal>Tax 21%:</TextNormal>
-            <TextBold>{formatTotal(cartTotal.amount * 0.21, currencyObj!)}</TextBold>
+            <TextBold>{formatTotal(cartTotal.amount * 0.21, currency)}</TextBold>
           </FullCartTotal>
         )}
 
