@@ -48,6 +48,7 @@ export class CurrencySwitch extends Component<StoreProps, State> {
             </HeaderButton>
           </HeaderButtonContainer>
         }
+        fixed
       >
         {currencyList.map((cur) => (
           <DropdownMenuItem

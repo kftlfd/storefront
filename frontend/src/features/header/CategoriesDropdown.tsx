@@ -43,6 +43,7 @@ class CategoriesDropdown extends Component<Props, State> {
             </CategoriesDropdownBtn>
           }
           position="bottom-left"
+          fixed
         >
           {this.props.categories.map((id) => (
             <CategoriesDropdownMenuBtn key={id} to={links.category(id)}>

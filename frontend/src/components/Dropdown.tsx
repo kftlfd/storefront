@@ -26,6 +26,7 @@ interface Props {
   isOpen?: boolean;
   onClose?: () => void;
   position?: Position;
+  fixed?: boolean;
 }
 
 interface State {
@@ -53,7 +54,7 @@ export default class Dropdown extends Component<Props, State> {
     const close = this.props.onClose ?? this.close;
 
     const bcr = this.targetRef.current?.getBoundingClientRect();
-    const { position = 'bottom-right' } = this.props;
+    const { position = 'bottom-right', fixed } = this.props;
     const positionStyle = getPositionStyle(position, bcr);
 
     return (
@@ -65,9 +66,12 @@ export default class Dropdown extends Component<Props, State> {
         {isOpen &&
           createPortal(
             <>
-              <Backdrop onClick={close} />
+              <Backdrop onClick={close} style={fixed ? { position: 'fixed' } : undefined} />
 
-              <DropdownMenu onClick={close} style={positionStyle}>
+              <DropdownMenu
+                onClick={close}
+                style={{ ...positionStyle, ...(fixed ? { position: 'fixed' } : {}) }}
+              >
                 {this.props.children}
               </DropdownMenu>
             </>,
