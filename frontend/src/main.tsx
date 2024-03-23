@@ -6,6 +6,8 @@ import RouterProvider from '@/routing';
 import StoreProvider from '@/store';
 import ThemeProvider from '@/theme';
 
+import { GQlClientProvider } from './api/graphql';
+
 const rootEl = document.getElementById('root');
 
 if (!rootEl) {
@@ -14,12 +16,14 @@ if (!rootEl) {
 
 ReactDOM.createRoot(rootEl).render(
   <React.StrictMode>
-    <StoreProvider>
-      <ThemeProvider>
-        <RouterProvider>
-          <App />
-        </RouterProvider>
-      </ThemeProvider>
-    </StoreProvider>
+    <GQlClientProvider>
+      <StoreProvider>
+        <ThemeProvider>
+          <RouterProvider>
+            <App />
+          </RouterProvider>
+        </ThemeProvider>
+      </StoreProvider>
+    </GQlClientProvider>
   </React.StrictMode>,
 );
