@@ -111,7 +111,7 @@ class CategoryView extends Component<Props> {
     const { categoryTitle, products } = this.props;
     const { page, sort, asc } = this.parseParams();
 
-    let items = products;
+    let items = [...products];
 
     if (sort) items.sort(productSort[sort]);
     if (!asc) items.reverse();

@@ -44,8 +44,7 @@ const cartSlice = createSlice({
         inCart.quantity++;
       } else {
         state.items.push({
-          id: newItem.id,
-          attributes: newItem.attributes,
+          ...newItem,
           quantity: 1,
         });
       }

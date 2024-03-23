@@ -40,10 +40,11 @@ const settingsSlice = createSlice({
       const currencies = action.payload;
       state.currencies = currencies;
 
-      if (currencies.length < 1) {
-        state.selectedCurrency = null;
-      }
-      if (!currencies.find(({ label }) => label === state.selectedCurrency?.label)) {
+      const selectedCurrencyFound = currencies.find(({ label, symbol }) => {
+        return label === state.selectedCurrency?.label && symbol === state.selectedCurrency?.symbol;
+      });
+
+      if (!selectedCurrencyFound) {
         state.selectedCurrency = currencies[0] ?? null;
       }
 

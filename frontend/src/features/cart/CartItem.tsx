@@ -42,7 +42,7 @@ class CartItem extends Component<Props, State> {
     const { item, products } = this.props;
 
     this.state = {
-      loading: !products[item.id]?.loaded,
+      loading: !products[item.id],
       error: null,
     };
   }
@@ -65,7 +65,7 @@ class CartItem extends Component<Props, State> {
     }
 
     const inStore = products[item.id];
-    const product = inStore?.loaded ? inStore : await this.loadProduct(item.id);
+    const product = inStore ?? (await this.loadProduct(item.id));
 
     onUpdate({
       ...item,

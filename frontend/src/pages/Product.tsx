@@ -53,7 +53,7 @@ class ProductPage extends Component<Props, State> {
   }
 
   loadProduct = async () => {
-    if (this.props.product && this.props.product.loaded) {
+    if (this.props.product) {
       return;
     }
     const product = await getProductById(this.props.productId);
