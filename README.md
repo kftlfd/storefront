@@ -6,37 +6,23 @@ ExpressJS server is used to serve the app and the mock data.
 
 Video showcase: https://www.youtube.com/watch?v=r8tBN6XFiRk
 
+Usage of React class components was initially dictated by the requirements of the test task (for a position of frontend developer). Even though it's no longer required, and and using functional components with hooks would be much more preferable (personally), I still only use class components for this project as a practice/challenge.
+
 # Setup
 
 ## Development
 
 ```
-# 0. install dependencies
+### install dependencies
 $ yarn install
 
-# 1. start API server
-$ yarn serve
+### start API server
+backend/ $ yarn build && yarn serve
+### or
+backend/ $ yarn dev
 
-# 2. in other terminal start the app
-$ yarn start
-```
-
-or
-
-```
-$ npm install
-$ npm run serve
-$ npm run start
-```
-
-## Production
-
-```
-$ yarn install
-$ yarn build
-$ yarn serve
-
-go to http://localhost:8000
+### start frontend dev-server
+frontend/ $ yarn dev
 ```
 
 ## Docker
@@ -44,10 +30,20 @@ go to http://localhost:8000
 ```
 $ docker compose up [-d] [--build]
 
-go to http://localhost:8000
+### served at http://localhost:8000
 ```
 
 # Changelog
+
+## v.0.3.0
+
+- separate workspaces for backend and frontend
+- refactored frontend
+  - improved folder structure, components splitting for reduced responsibility
+  - removed Sass
+  - load svgs as React components
+  - simplify Redux store, use RTK Query
+  - other minor improvements
 
 ## v.0.2.0
 

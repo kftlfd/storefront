@@ -2,15 +2,14 @@ import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 
 import { getCategoriesCurrenciesCartProducts } from '@/api';
+import Footer from '@/components/Footer';
+import { SplashScreen } from '@/components/SplashScreen';
 import Header from '@/features/header/Header';
 import { PageWrapper } from '@/layout/page';
 import Router, { links } from '@/routing/Router';
 import type { StoreState } from '@/store';
 import { loadProduct } from '@/store/products';
 import { loadCategoriesList, loadCurrencies } from '@/store/settings';
-
-import Footer from './Footer';
-import { SplashScreen } from './SplashScreen';
 
 const withStore = connect(
   (state: StoreState) => ({
