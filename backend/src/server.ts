@@ -8,7 +8,7 @@ const app = express();
 const port = process.env['PORT'] || 8000;
 
 const root = process.cwd();
-const staticDir = join(root, 'build');
+const staticDir = join(root, 'public');
 const indexFile = join(staticDir, 'index.html');
 
 app.use(express.static(staticDir));

@@ -232,7 +232,7 @@ const products = [
       "<p>When you're shopping for your next fleece hooded sweatshirt, why not choose one that you can feel good about buying while feeling good wearing? Hanes® EcoSmart® fleece is your new go-to wardrobe staple. Soft and plush, this cozy hoodie is made of mid-weight cotton/poly fleece with up to 5% of the poly fibers. The fleece in this classic hoodie is pill-resistant, super-soft, and made to keep its plush feel for a long time. And it will hold its shape thanks to ribbed cuffs and hem. Double-needle stitching at the neck and armhole seams further enhance quality and durability. In classic hoodie style, there's also a front kangaroo pocket. Here's a soft, warm, fleece hooded sweatshirt to wear well and with pride.</p>",
     ),
 
-  new Product('Nike-Air-Force', Category.Home, 130.4)
+  new Product('Nike-Air-Force', Category.Fashion, 130.4)
     .setPrices(currencies)
     .setBrand('Nike')
     .setName("Air Force 1 '07 Low")
@@ -258,7 +258,7 @@ const products = [
       <p><b>Closure Type:</b> Lace-Up</p>',
     ),
 
-  new Product('CHICWISH-Womens-Coat', Category.Home, 73.56)
+  new Product('CHICWISH-Womens-Coat', Category.Fashion, 73.56)
     .setPrices(currencies)
     .setBrand('CHICWISH')
     .setName("Women's Classy Light Tan/Black Open Front Knit Coat Cardigan")
