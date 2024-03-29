@@ -1,7 +1,7 @@
-import React from 'react';
+import { Component, ReactNode } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 
-import { getCategoriesCurrenciesCartProducts } from '@/api';
+import { useCategoriesCurrenciesProductsQuery } from '@/api/graphql';
 import Footer from '@/components/Footer';
 import { SplashScreen } from '@/components/SplashScreen';
 import Header from '@/features/header/Header';
@@ -25,50 +25,59 @@ const withStore = connect(
 
 export type StoreProps = ConnectedProps<typeof withStore>;
 
-interface State {
-  loading: boolean;
-  error: null | string;
-}
+export class App extends Component<StoreProps> {
+  productIds: string[] = [];
 
-export class App extends React.Component<StoreProps, State> {
   constructor(props: StoreProps) {
     super(props);
-    this.state = {
-      loading: true,
-      error: null,
-    };
+    this.productIds = Array.from(new Set(this.props.cart.map((p) => p.id)));
   }
-
-  componentDidMount() {
-    this.setupApp()
-      .then(() => {
-        this.setState({ loading: false });
-      })
-      .catch((err) => {
-        this.setState({ error: err instanceof Error ? err.message : 'Unknown Error' });
-      });
-  }
-
-  setupApp = async () => {
-    const productIdsInCart = Array.from(new Set(this.props.cart.map((p) => p.id)));
-
-    const { categories, currencies, products } =
-      await getCategoriesCurrenciesCartProducts(productIdsInCart);
-
-    this.props.loadCategoriesList(categories);
-    this.props.loadCurrencies(currencies);
-    this.props.loadProduct(products);
-  };
 
   render() {
-    const { error, loading } = this.state;
-    const defCategory = this.props.categories[0] ?? null;
+    return <WithQuery {...this.props} productIds={this.productIds} />;
+  }
+}
+
+const WithQuery = ({
+  productIds,
+  ...props
+}: Omit<ApppProps, 'query'> & { productIds: string[] }) => {
+  const q = useCategoriesCurrenciesProductsQuery(productIds);
+
+  const newProps: ApppProps = { ...props, query: q };
+
+  return <Appp {...newProps} />;
+};
+
+type ApppProps = StoreProps & { query: ReturnType<typeof useCategoriesCurrenciesProductsQuery> };
+
+class Appp extends Component<ApppProps> {
+  loadData = () => {
+    const { data } = this.props.query;
+    if (data) {
+      this.props.loadCategoriesList(data.categories);
+      this.props.loadCurrencies(data.currencies);
+      this.props.loadProduct(data.products);
+    }
+  };
+
+  componentDidMount(): void {
+    this.loadData();
+  }
+
+  componentDidUpdate(): void {
+    this.loadData();
+  }
+
+  render(): ReactNode {
+    const { loading, error, data } = this.props.query;
+    const defCategory = data?.categories[0] ?? null;
     const defaultRoute = defCategory ? links.category(defCategory) : 'error';
 
     return (
       <PageWrapper>
         {error ? (
-          <SplashScreen error={error} />
+          <SplashScreen error={error.message} />
         ) : loading ? (
           <SplashScreen />
         ) : (
